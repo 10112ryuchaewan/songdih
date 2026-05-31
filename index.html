@@ -1517,12 +1517,17 @@ function getForgeOptions() {
 }
 
 function openForge() {
-  // 어느 강화인지 파악
-  const forgeId = !(window._clearedStages||[]).includes('forge') ? 'forge'
-    : !(window._clearedStages||[]).includes('forge2') ? 'forge2'
-    : 'forge3';
+  // 현재 표시된(열린) forge 노드 기준으로 판별
+  let forgeId = 'forge';
+  if (document.getElementById('stage-forge3')?.style.display !== 'none' && document.getElementById('stage-forge3')?.style.display) {
+    forgeId = 'forge3';
+  } else if (document.getElementById('stage-forge2')?.style.display !== 'none' && document.getElementById('stage-forge2')?.style.display) {
+    forgeId = 'forge2';
+  } else {
+    forgeId = 'forge';
+  }
   window._currentForgeId = forgeId;
-  if ((window._clearedStages||[]).includes(forgeId + '-done') || (window._clearedStages||[]).includes(forgeId)) {
+  if ((window._clearedStages||[]).includes(forgeId)) {
     alert('이미 강화를 완료했습니다!');
     return;
   }
