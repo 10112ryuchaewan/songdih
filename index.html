@@ -835,7 +835,7 @@ let dummyConfig = { hp: 150, touchDmg: 0, canMove: false };
 
 
 // ── 유저 시스템 ──
-let currentUser = null;
+window.currentUser = null;
 
 async function loginUser() {
   const nick = document.getElementById('loginNick').value.trim();
@@ -2016,6 +2016,7 @@ function checkHiddenCode(val) {
     const charId = hiddenCodes[code];
     if (!unlockedHidden.has(charId)) {
       unlockedHidden.add(charId);
+      saveUnlockedHidden(); // 서버에 저장
       const unlockedDef = CHARACTER_DEFS.find(d => d.id === charId);
       if (unlockedDef) {
         if (unlockedDef.id === 'geumilcheol') {
