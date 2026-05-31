@@ -530,7 +530,7 @@
   </div>
   <!-- 캠페인 버튼 -->
   <div id="campaignResultBtns" style="display:none">
-    <button class="btn" id="btn-campaign-next" style="margin-bottom:8px">진행하기 →</button>
+    <button class="btn" id="btn-campaign-next" style="margin-bottom:8px">맵으로 →</button>
     <button class="btn btn-secondary" id="btn-campaign-back">메인으로</button>
   </div>
 </div>
@@ -665,7 +665,7 @@ const CHARACTER_DEFS = [
       cooldown: 18000,
       label: '살아나는 기지개',
       barColor: '#2c5f2e',
-      healAmt: 20,
+      healAmt: 15,
     },
     skill3: {
       label: '올라가!',
@@ -688,7 +688,7 @@ const CHARACTER_DEFS = [
     name: '류병헌',
     group: 'STUDENTS',
     color: '#7b3fa0',
-    hp: 110,
+    hp: 130,
     radius: 28,
     touchDmg: 14,
     skill: {
@@ -872,6 +872,26 @@ const CHARACTER_DEFS = [
   }
 ,
   {
+    id: 'jumi',
+    name: '이주미T',
+    group: 'CAMPAIGN_NPC',
+    color: '#5b8c5a',
+    hp: 200,
+    radius: 28,
+    touchDmg: 0,
+    skill: {
+      cooldown: 5000,
+      label: '염산',
+      barColor: '#7abf00',
+    },
+    skill2: {
+      cooldown: 12000,
+      label: '화학식',
+      barColor: '#3a7a3a',
+    }
+  }
+,
+  {
     id: 'sehwan',
     name: '한세환T',
     group: 'HIDDEN',
@@ -985,28 +1005,10 @@ function _initTouchBindings() {
   });
   _bindBtn('btn-result-main', () => showScreen('mainMenu'));
   _bindBtn('btn-campaign-next', () => {
-    if (window._lastClearedStage === '1-1') unlockStage('1-2');
-    if (window._lastClearedStage === '1-2') unlockStage('1-3');
-    if (window._lastClearedStage === '1-3') unlockStage('forge');
-    if (window._lastClearedStage === '1-4') unlockStage('1-5');
-    if (window._lastClearedStage === '1-5') unlockStage('1-6');
-    if (window._lastClearedStage === '1-6') unlockStage('forge2');
-    if (window._lastClearedStage === '1-7') unlockStage('1-8');
-    if (window._lastClearedStage === '1-8') unlockStage('1-9');
-    if (window._lastClearedStage === '1-9') unlockStage('forge3');
     window._campaignJustWon = false;
     showScreen('campaignMap');
   });
   _bindBtn('btn-campaign-back', () => {
-    if (window._campaignJustWon && window._lastClearedStage === '1-1') unlockStage('1-2');
-    if (window._campaignJustWon && window._lastClearedStage === '1-2') unlockStage('1-3');
-    if (window._campaignJustWon && window._lastClearedStage === '1-3') unlockStage('forge');
-    if (window._campaignJustWon && window._lastClearedStage === '1-4') unlockStage('1-5');
-    if (window._campaignJustWon && window._lastClearedStage === '1-5') unlockStage('1-6');
-    if (window._campaignJustWon && window._lastClearedStage === '1-6') unlockStage('forge2');
-    if (window._campaignJustWon && window._lastClearedStage === '1-7') unlockStage('1-8');
-    if (window._campaignJustWon && window._lastClearedStage === '1-8') unlockStage('1-9');
-    if (window._campaignJustWon && window._lastClearedStage === '1-9') unlockStage('forge3');
     window._campaignJustWon = false;
     campaignChar = null;
     showScreen('mainMenu');
@@ -1184,6 +1186,13 @@ function openCampaign() {
       <div class="char-name">${def.name}</div>
       <div class="char-stats">HP: ${def.hp}<br>접촉: ${def.touchDmg}</div>
     `;
+    if (campaignClearedChars.has(def.id)) {
+      card.style.position = 'relative';
+      const gb = document.createElement('span');
+      gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+      gb.textContent = '🏆';
+      card.appendChild(gb);
+    }
     card.onclick = () => selectCampaignChar(def);
     card.ontouchstart = (e) => { e.preventDefault(); selectCampaignChar(def); };
     row.appendChild(card);
@@ -1304,13 +1313,17 @@ function loadCampaignProgress() {
         markStageCleared(stageId);
       }
     });
-    // 강화 노드 복원
-    if ((progress.clearedStages || []).includes('1-3')) {
-      const fl = document.getElementById('stage-forge-locked');
-      const fu = document.getElementById('stage-forge');
-      if (fl) fl.style.display = 'none';
-      if (fu) fu.style.display = 'block';
-    }
+    // 다음 스테이지 언락 복원 (클리어된 스테이지 기준)
+    const _nextMapLoad = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3' };
+    (window._clearedStages || []).forEach(sid => {
+      const nextId = _nextMapLoad[sid];
+      if (nextId && !(window._clearedStages || []).includes(nextId)) {
+        const lk = document.getElementById('stage-' + nextId + '-locked');
+        const ul = document.getElementById('stage-' + nextId);
+        if (lk) lk.style.display = 'none';
+        if (ul) { ul.style.display = 'block'; ul.style.pointerEvents = 'auto'; }
+      }
+    });
   } catch(e) { console.error('load campaign error', e); }
 }
 
@@ -1369,7 +1382,7 @@ function resetCampaign() {
           circle.style.background = '#f5c518';
           circle.style.borderColor = '#c8a800';
           circle.style.filter = '';
-        } else if (sid === 'forge') {
+        } else if (sid === 'forge' || sid === 'forge2' || sid === 'forge3') {
           circle.style.background = 'linear-gradient(135deg,#ff8c00,#ffd700)';
           circle.style.borderColor = '#cc6600';
           circle.style.filter = '';
@@ -1380,7 +1393,7 @@ function resetCampaign() {
         }
       }
       // onclick 복원
-      if (sid === 'forge') unlocked.onclick = () => openForge();
+      if (sid === 'forge' || sid === 'forge2' || sid === 'forge3') unlocked.onclick = () => openForge(sid);
       else unlocked.onclick = () => startCampaignStage(sid);
     }
   });
@@ -1918,13 +1931,6 @@ function buildCharSelect() {
       if (window._charSelectFirstVisit) {
         card.classList.add('card-slide');
       }
-      if (campaignClearedChars.has(def.id)) {
-        card.style.position = 'relative';
-        const gb = document.createElement('span');
-        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
-        gb.textContent = '🏆';
-        card.appendChild(gb);
-      }
       card.addEventListener('click', () => toggleChar(def.id));
       card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
       card.innerHTML = `
@@ -1932,10 +1938,54 @@ function buildCharSelect() {
         <div class="char-name">${def.name}</div>
         <div class="char-stats">HP: ${def.hp}<br>접촉 데미지: ${def.touchDmg}<br>스킬: ${def.skill.label}</div>
       `;
+      if (campaignClearedChars.has(def.id)) {
+        card.style.position = 'relative';
+        const gb = document.createElement('span');
+        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+        gb.textContent = '🏆';
+        card.appendChild(gb);
+      }
       groupRow.appendChild(card);
     });
     row.appendChild(groupRow);
   });
+
+  // CAMPAIGN_NPC 섹션 (이주미T 등)
+  const campaignNpcDefs = CHARACTER_DEFS.filter(d => d.group === 'CAMPAIGN_NPC' && !d.isDummy);
+  if (campaignNpcDefs.length > 0) {
+    const cnSep = document.createElement('div');
+    cnSep.style.cssText = 'width:100%;border-top:1px dashed #5b8c5a;margin:12px 0 6px;';
+    row.appendChild(cnSep);
+    const cnLabel = document.createElement('div');
+    cnLabel.style.cssText = 'width:100%;font-size:11px;font-weight:800;color:#5b8c5a;letter-spacing:3px;margin-bottom:6px;text-align:left;padding-left:4px;';
+    cnLabel.textContent = '📖 CAMPAIGN';
+    row.appendChild(cnLabel);
+    const cnRow = document.createElement('div');
+    cnRow.style.cssText = 'display:flex;gap:16px;flex-wrap:wrap;';
+    campaignNpcDefs.forEach(def => {
+      const card = document.createElement('div');
+      card.className = 'char-card';
+      card.id = 'card-' + def.id;
+      card.style.cssText += 'border-color:#5b8c5a;box-shadow:0 0 6px rgba(91,140,90,0.3);';
+      if (window._charSelectFirstVisit) card.classList.add('card-slide');
+      card.addEventListener('click', () => toggleChar(def.id));
+      card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
+      card.innerHTML = `
+        <div class="char-circle" style="background:${def.color}">${def.name}</div>
+        <div class="char-name">${def.name}</div>
+        <div class="char-stats">HP: ${def.hp}<br>접촉: ${def.touchDmg}<br>스킬: ${def.skill.label}</div>
+      `;
+      if (campaignClearedChars.has(def.id)) {
+        card.style.position = 'relative';
+        const gb = document.createElement('span');
+        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+        gb.textContent = '🏆';
+        card.appendChild(gb);
+      }
+      cnRow.appendChild(card);
+    });
+    row.appendChild(cnRow);
+  }
 
   // 히든 캐릭터 섹션 (해금된 경우만)
   const hiddenDefs = CHARACTER_DEFS.filter(d => d.group === 'HIDDEN' && unlockedHidden.has(d.id));
@@ -1958,13 +2008,6 @@ function buildCharSelect() {
       if (window._charSelectFirstVisit) {
         card.classList.add('card-thud');
       }
-      if (campaignClearedChars.has(def.id)) {
-        card.style.position = 'relative';
-        const gb = document.createElement('span');
-        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
-        gb.textContent = '🏆';
-        card.appendChild(gb);
-      }
       card.addEventListener('click', () => toggleChar(def.id));
       card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
       card.innerHTML = `
@@ -1972,6 +2015,13 @@ function buildCharSelect() {
         <div class="char-name">${def.name}</div>
         <div class="char-stats">${def._randomStats ? 'HP: ??<br>접촉: ??<br>스킬: ??' : `HP: ${def.hp}<br>접촉: ${def.touchDmg}<br>스킬: ${def.skill.label}`}</div>
       `;
+      if (campaignClearedChars.has(def.id)) {
+        card.style.position = 'relative';
+        const gb = document.createElement('span');
+        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+        gb.textContent = '🏆';
+        card.appendChild(gb);
+      }
       hRow.appendChild(card);
     });
     row.appendChild(hRow);
@@ -1996,6 +2046,9 @@ function buildCharSelect() {
       if (window._charSelectFirstVisit) {
         card.classList.add('card-super-thud');
       }
+      card.addEventListener('click', () => toggleChar(def.id));
+      card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
+      card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats">${def._randomStats ? 'HP: ??<br>접촉: ??<br>스킬: ??' : `HP: ${def.hp}<br>접촉: ${def.touchDmg}<br>스킬: ${def.skill.label}`}</div>`;
       if (campaignClearedChars.has(def.id)) {
         card.style.position = 'relative';
         const gb = document.createElement('span');
@@ -2003,9 +2056,6 @@ function buildCharSelect() {
         gb.textContent = '🏆';
         card.appendChild(gb);
       }
-      card.addEventListener('click', () => toggleChar(def.id));
-      card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
-      card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats">${def._randomStats ? 'HP: ??<br>접촉: ??<br>스킬: ??' : `HP: ${def.hp}<br>접촉: ${def.touchDmg}<br>스킬: ${def.skill.label}`}</div>`;
       shRow.appendChild(card);
     });
     row.appendChild(shRow);
@@ -2094,11 +2144,11 @@ const unlockedHidden = new Set();
 
 const HYUNGJUN_SKILL_POOL = [
   {
-    id: 'codeManip',
-    label: '코드 조작',
-    cooldown: 8000,
+    id: 'hack',
+    label: '해킹',
+    cooldown: 6000,
     barColor: '#00ff88',
-    desc: '적 스텟 10% 복사'
+    desc: '적 스킬 봉인'
   },
   {
     id: 'aiSteam',
@@ -2777,6 +2827,110 @@ function updateSelectUI() {
 }
 
 // ─────────────────────────────────────────
+// 도경윤 건담 파츠 (전역)
+// ─────────────────────────────────────────
+// ─────────────────────────────────────────
+// 차형준T 흡수 스킬 발동
+// ─────────────────────────────────────────
+function fireAbsorbedSkill(f, abs, enemies, fighters, particles, gs) {
+  const aliveEnemies = enemies.filter(e => e.hp > 0);
+  const fIdx = fighters.indexOf(f);
+
+  // 발동 공통 텍스트
+  if (gs.dmgTexts) gs.dmgTexts.push({
+    x: f.x, y: f.y - f.r - 16,
+    text: '[' + abs.label + ']', life: 1000, maxLife: 1000,
+    vy: -0.35, color: '#00ffcc', fontSize: 11,
+  });
+  spawnParticle(particles, f.x, f.y, '#00ffcc', 8);
+
+  const fIdx2 = fIdx;
+  // 원본 캐릭터 def 전체를 사용하되, 차형준 위치에서 발동하는 임시 fighter 생성
+  const targetCharDef = CHARACTER_DEFS.find(d => d.id === abs.charId);
+  if (!targetCharDef) {
+    // fallback: 가장 가까운 적에게 20 데미지
+    const closestEn = aliveEnemies.length > 0
+      ? aliveEnemies.reduce((a,b) => Math.hypot(a.x-f.x,a.y-f.y)<Math.hypot(b.x-f.x,b.y-f.y)?a:b)
+      : null;
+    if (closestEn) { closestEn.lastDmgFrom = fIdx2; applyDmg(closestEn, 20, f); }
+    return;
+  }
+
+  // update 루프에서만 처리되는 스킬 직접 발동
+  const cid = abs.charId, sk2 = abs.skillKey;
+
+  // 김태양 트름(skill2): 가스 장판 생성
+  if (cid === 'taeyoung' && sk2 === 'skill2') {
+    const sd = targetCharDef.skill2;
+    gs.gases.push({ x: f.x, y: f.y, r: f.r * 3, life: sd.gasDuration || 5000, maxLife: sd.gasDuration || 5000, ownerId: fIdx2, hitCooldown: 0 });
+    spawnParticle(particles, f.x, f.y, '#7abf00', 10);
+    return;
+  }
+
+  // 김태양 태양빛(skill): skillActive 방식 → 차형준 자신에게 직접 적용
+  if (cid === 'taeyoung' && sk2 === 'skill') {
+    f.skillActive = true;
+    f.auraTimer = targetCharDef.skill.duration || 4000;
+    f.auraDmgTimer = 0;
+    // aura tick은 taeyoung id 체크라 안 돌아가므로 직접 범위 데미지
+    const auraR = f.r * (targetCharDef.skill.auraRadiusMult || 5);
+    aliveEnemies.forEach(en => {
+      if (Math.hypot(en.x - f.x, en.y - f.y) < auraR + en.r) {
+        en.lastDmgFrom = fIdx2; applyDmg(en, targetCharDef.skill.auraDmg * 10 || 6, f);
+      }
+    });
+    spawnParticle(particles, f.x, f.y, '#e8900a', 12);
+    return;
+  }
+
+  // 한세환 진실의 방(skill): 방 생성
+  if (cid === 'sehwan' && sk2 === 'skill') {
+    const roomR = 100;
+    gs.sehwanRoom = true;
+    gs.sehwanRoomX = f.x; gs.sehwanRoomY = f.y; gs.sehwanRoomR = roomR;
+    spawnParticle(particles, f.x, f.y, '#1a6b3a', 14);
+    return;
+  }
+
+  // 홍은주 삼각비(skill): 즉시 범위 밀치기
+  if (cid === 'eunju' && sk2 === 'skill') {
+    aliveEnemies.forEach(en => {
+      const ang = Math.atan2(en.y - f.y, en.x - f.x);
+      en.vx += Math.cos(ang) * 8; en.vy += Math.sin(ang) * 8;
+      en.lastDmgFrom = fIdx2; applyDmg(en, 10, f);
+    });
+    spawnParticle(particles, f.x, f.y, '#d4186c', 12);
+    return;
+  }
+
+  // 차형준의 위치/인덱스를 유지하면서 def만 원본으로 교체
+  const origDef = f.def;
+  const origSkillUseCount = f.skillUseCount;
+  f.def = { ...targetCharDef }; // 원본 def 완전 복원 (wallSize, spikeLen 등 포함)
+  // skill2/skill3 흡수 시 해당 스킬을 def.skill로 옮겨 activateSkill이 발동하게
+  if (sk2 === 'skill2' && targetCharDef.skill2) f.def = { ...f.def, skill: targetCharDef.skill2 };
+  if (sk2 === 'skill3' && targetCharDef.skill3) f.def = { ...f.def, skill: targetCharDef.skill3 };
+
+  activateSkill(f, fIdx2, null);
+
+  // 복원
+  f.def = origDef;
+  f.skillUseCount = origSkillUseCount;
+}
+
+const _gundamPartNames = ['머리','가슴','왼팔','오른팔','왼다리','오른다리','검'];
+function _spawnNextGundamPart(collectedCount) {
+  if (!gameState || collectedCount >= _gundamPartNames.length) return;
+  const name = _gundamPartNames[collectedCount];
+  const canvas = document.getElementById('gameCanvas');
+  const W = canvas ? canvas.width : 800;
+  const H = canvas ? canvas.height : 450;
+  const x = 60 + Math.random() * (W - 120);
+  const y = 60 + Math.random() * (H - 120);
+  gameState.gundamParts.push({ x, y, name, r: name === '검' ? 20 : 14, collected: false });
+}
+
+// ─────────────────────────────────────────
 // BATTLE SETUP
 // ─────────────────────────────────────────
 function startBattle() {
@@ -2956,6 +3110,19 @@ function startBattle() {
       _hyungjunSkillId: null,
       _hyungjunSkillCooldown: 0,
       _codeParticles: [], // 코드 조작 파티클
+      _hackActive: false,
+      _hackTarget: null,
+      _hackTimer: 0,
+      _sealedSkills: null,
+      _absorbedSkills: [],    // 흡수한 스킬 [{skillDef, cooldown, cdTimer, charId, label}]
+      _absorbedFromChars: [],       // 흡수한 캐릭터 id 배열
+      // 이주미T
+      jumiSkill2Cooldown: 12000,
+      jumiBindTarget: null,   // 속박 대상
+      jumiBindTimer: 0,       // 속박 남은 시간
+      jumiBindApproaching: false, // 접근 중
+      jumiQuizActive: false,  // 화학식 퀴즈 활성
+      jumiQuizTimer: 0,       // 퀴즈 제한 시간
       // 금일철P
       geumGoldTargets: [],
       geumBulletCooldown: 10000,
@@ -3045,29 +3212,11 @@ function startBattle() {
     return f;
   });
   const gundamParts = []; // 도경윤 건담 파츠
-  // 도경윤 있으면 건담 파츠 6개 배치
+  // 도경윤 있으면 첫 파츠 1개만 배치
   if (defs.some(d => d.id === 'dogyungyun')) {
-    const partNames = ['머리','가슴','왼팔','오른팔','왼다리','오른다리','검'];
-    const corners = [
-      {x: 30 + Math.random()*40, y: 30 + Math.random()*40},
-      {x: W-70 + Math.random()*40, y: 30 + Math.random()*40},
-      {x: 30 + Math.random()*40, y: H-70 + Math.random()*40},
-      {x: W-70 + Math.random()*40, y: H-70 + Math.random()*40},
-    ].sort(()=>Math.random()-0.5).slice(0,2);
-    partNames.forEach((name, i) => {
-      let x, y;
-      if (name === '검') {
-        // 검은 맵 중앙 근처
-        x = W/2 + (Math.random()-0.5)*100;
-        y = H/2 + (Math.random()-0.5)*100;
-      } else if (i < 2) {
-        x = corners[i].x; y = corners[i].y;
-      } else {
-        x = 60 + Math.random() * (W - 120);
-        y = 60 + Math.random() * (H - 120);
-      }
-      gundamParts.push({ x, y, name, r: name === '검' ? 20 : 14, collected: false });
-    });
+    const x = 60 + Math.random() * (W - 120);
+    const y = 60 + Math.random() * (H - 120);
+    gundamParts.push({ x, y, name: _gundamPartNames[0], r: 14, collected: false });
   }
   const notes = [];
   const particles = [];
@@ -3085,7 +3234,7 @@ function startBattle() {
   const greenHairs = []; // 유채완 회복용 초록 머리카락
 
   const dmgDealt = new Array(fighters.length).fill(0);
-  gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], shake: 0, over: false, winner: null };
+  gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], shake: 0, over: false, winner: null };
 
   // 캠페인 버프 적용
   if (window._campaignMode && campaignChar) {
@@ -3941,10 +4090,12 @@ function update(dt) {
             f.hp = Math.min(f.maxHp, f.hp + 10);
             spawnParticle(particles, part.x, part.y, '#4a90d9', 10);
             if (gameState.dmgTexts) gameState.dmgTexts.push({
-              x: f.x, y: f.y - f.r - 10, text: part.name + ' 획득!',
+              x: f.x, y: f.y - f.r - 10, text: part.name + ' 획득! (' + f.gundamCollected.length + '/7)',
               life: 1000, maxLife: 1000, vy: -0.4, color: '#4a90d9', fontSize: 12,
             });
-            // 6개 다 모으면 변신
+            // 다음 파츠 스폰 (7개 미만이면)
+            if (f.gundamCollected.length < 7) _spawnNextGundamPart(f.gundamCollected.length);
+            // 7개 다 모으면 변신
             if (f.gundamCollected.length >= 7 && !f.gundamTransformAnim) {
               // 변신 연출 시작: 경직+무적
               f.gundamTransformAnim = true;
@@ -4224,46 +4375,252 @@ function update(dt) {
         });
       }
 
-      // 코드 조작 스킬
-      if (f._hyungjunSkillId === 'codeManip' && f._hyungjunSkillCooldown <= 0) {
-        f._hyungjunSkillCooldown = f.def.skill.cooldown;
-        let totalDmgBonus = 0, totalSpdBonus = 0, totalHeal = 0;
-        enemies.forEach(en => {
-          if (en.hp <= 0) return;
-          const dmgSteal = en.def.touchDmg * 0.1;
-          const spdSteal = (en.speedMult || 1) * 0.1;
-          const healAmt = en.hp * 0.05;
-          totalDmgBonus += dmgSteal;
-          totalSpdBonus += spdSteal;
-          totalHeal += healAmt;
-          // 코드 파티클 생성
-          for (let pi = 0; pi < 4; pi++) {
-            f._codeParticles.push({
-              sx: en.x + (Math.random()-0.5)*en.r*2,
-              sy: en.y + (Math.random()-0.5)*en.r*2,
-              x: en.x, y: en.y,
-              life: 600 + Math.random()*200, maxLife: 800,
-              char: ['0','1','E','R','R','{','}','#'][Math.floor(Math.random()*8)],
-            });
+      // 해킹 스킬
+      if (f._hyungjunSkillId === 'hack') {
+        // 해킹 진행 중 처리
+        if (f._hackActive && f._hackTarget) {
+          const tgt = f._hackTarget;
+          if (tgt.hp <= 0) {
+            // 타겟 사망 → 취소
+            f._hackActive = false; f._hackTarget = null; f._hackTimer = 0;
+            f._hyungjunSkillCooldown = f.def.skill.cooldown;
+          } else {
+            f._hackTimer = (f._hackTimer || 0) + dt;
+            // 해킹 파티클
+            if (Math.random() < 0.3) {
+              f._codeParticles.push({
+                sx: tgt.x + (Math.random()-0.5)*tgt.r*2,
+                sy: tgt.y + (Math.random()-0.5)*tgt.r*2,
+                x: tgt.x, y: tgt.y,
+                life: 500 + Math.random()*200, maxLife: 700,
+                char: ['0','1','>','<','{','}','#','!'][Math.floor(Math.random()*8)],
+              });
+            }
+            if (f._hackTimer >= 3000) {
+              // 해킹 성공!
+              f._hackActive = false;
+              const wasHacked = f._hackTarget;
+              f._hackTarget = null;
+              f._hackTimer = 0;
+              f._hyungjunSkillCooldown = f.def.skill.cooldown;
+              // 봉인 가능한 스킬 목록 수집
+              const sealableKeys = ['skill','skill2','skill3'].filter(k => {
+                if (!wasHacked.def[k]) return false;
+                if (!wasHacked._sealedSkills) wasHacked._sealedSkills = {};
+                return !wasHacked._sealedSkills[k];
+              });
+              if (sealableKeys.length === 0) {
+                // 봉인할 스킬 없음 → 20 데미지
+                wasHacked.lastDmgFrom = fighters.indexOf(f);
+                applyDmg(wasHacked, 20, f);
+                if (gameState.dmgTexts) gameState.dmgTexts.push({
+                  x: wasHacked.x, y: wasHacked.y - wasHacked.r - 14,
+                  text: '해킹 성공! -20', life: 1200, maxLife: 1200,
+                  vy: -0.4, color: '#00ff88', fontSize: 13,
+                });
+              } else {
+                // 랜덤 스킬 하나 봉인
+                const toSeal = sealableKeys[Math.floor(Math.random() * sealableKeys.length)];
+                if (!wasHacked._sealedSkills) wasHacked._sealedSkills = {};
+                wasHacked._sealedSkills[toSeal] = true;
+                // 최초 1회 해킹 성공 시 스킬 흡수
+                if (!f._absorbedFromChars) f._absorbedFromChars = [];
+                if (!f._absorbedSkills) f._absorbedSkills = [];
+                const alreadyAbsorbed = f._absorbedFromChars.includes(wasHacked.def.id);
+                if (!alreadyAbsorbed) {
+                  f._absorbedFromChars.push(wasHacked.def.id);
+                  const sealedSkillDef = wasHacked.def[toSeal];
+                  if (sealedSkillDef) {
+                    const absorbedCooldown = Math.round((sealedSkillDef.cooldown || 8000) * 1.5);
+                    f._absorbedSkills.push({
+                      charId: wasHacked.def.id,
+                      charName: wasHacked.def.name,
+                      label: sealedSkillDef.label || toSeal,
+                      skillKey: toSeal,
+                      skillDef: { ...sealedSkillDef, cooldown: absorbedCooldown },
+                      cdTimer: 0,
+                    });
+                  }
+                  if (gameState.dmgTexts) gameState.dmgTexts.push({
+                    x: f.x, y: f.y - f.r - 28,
+                    text: '⬆ ' + sealedSkillDef.label + ' 흡수!', life: 1600, maxLife: 1600,
+                    vy: -0.4, color: '#00ffcc', fontSize: 12,
+                  });
+                }
+                if (gameState.dmgTexts) gameState.dmgTexts.push({
+                  x: wasHacked.x, y: wasHacked.y - wasHacked.r - 14,
+                  text: '🔒 ' + wasHacked.def[toSeal].label + ' 봉인!', life: 1400, maxLife: 1400,
+                  vy: -0.4, color: '#00ff88', fontSize: 13,
+                });
+              }
+              spawnParticle(particles, wasHacked.x, wasHacked.y, '#00ff88', 14);
+            }
           }
-        });
-        f.def = { ...f.def, touchDmg: f.def.touchDmg + totalDmgBonus };
-        f.speedMult = (f.speedMult || 1) + totalSpdBonus;
-        f.hp = Math.min(f.maxHp, f.hp + totalHeal);
-        if (gameState.dmgTexts) {
-          gameState.dmgTexts.push({
-            x: f.x, y: f.y - f.r - 12,
-            text: `코드 조작! +${totalDmgBonus.toFixed(1)}dmg`, life: 1200, maxLife: 1200,
-            vy: -0.4, color: '#00ff88', fontSize: 12,
-          });
-          if (totalHeal > 0) gameState.dmgTexts.push({
-            x: f.x, y: f.y - f.r - 26,
-            text: `+${totalHeal.toFixed(1)} HP`, life: 1000, maxLife: 1000,
-            vy: -0.35, color: '#88ff88', fontSize: 11,
+        }
+        // 흡수된 스킬 발동 (쿨타임 감소 + 자동 사용)
+        if (f._absorbedSkills && f._absorbedSkills.length > 0) {
+          f._absorbedSkills.forEach(abs => {
+            abs.cdTimer = Math.max(0, (abs.cdTimer || 0) - dt);
+            if (abs.cdTimer <= 0) {
+              abs.cdTimer = abs.skillDef.cooldown;
+              // 효과: charId + skillKey 기반 발동
+              fireAbsorbedSkill(f, abs, enemies, fighters, particles, gameState);
+            }
           });
         }
-        spawnParticle(particles, f.x, f.y, '#00ff88', 10);
+
+        // 해킹 시작 (쿨타임 끝 & 비활성)
+        if (!f._hackActive && f._hyungjunSkillCooldown <= 0) {
+          const aliveEnemies = enemies.filter(en => en.hp > 0);
+          if (aliveEnemies.length === 0) return;
+          // 가장 가까운 적
+          let closest = null, closestDist = Infinity;
+          aliveEnemies.forEach(en => {
+            const d = Math.hypot(en.x - f.x, en.y - f.y);
+            if (d < closestDist) { closestDist = d; closest = en; }
+          });
+          f._hackActive = true;
+          f._hackTarget = closest;
+          f._hackTimer = 0;
+          if (gameState.dmgTexts) gameState.dmgTexts.push({
+            x: f.x, y: f.y - f.r - 14,
+            text: '> 해킹 시작...', life: 900, maxLife: 900,
+            vy: -0.3, color: '#00ff88', fontSize: 12,
+          });
+        }
       }
+    }
+
+    // 이주미T 처리
+    if (f.def.id === 'jumi' && f.hp > 0) {
+      // 스킬1 쿨타임
+      if (!f.isHyunLifted) f.skillCooldown = Math.max(0, (f.skillCooldown || 5000) - dt);
+      // 스킬2 쿨타임 (속박 중 아닐 때만)
+      if (!f.isHyunLifted && !f.jumiBindTarget) f.jumiSkill2Cooldown = Math.max(0, (f.jumiSkill2Cooldown || 12000) - dt);
+
+      // ── 속박 로직 ──
+      if (f.jumiBindTarget) {
+        const bt = f.jumiBindTarget;
+        // 타겟 사망 → 즉시 해제
+        if (bt.hp <= 0) {
+          f.jumiBindTarget = null; f.jumiBindApproaching = false;
+          f.jumiBindTimer = 0; f.jumiQuizActive = false;
+        } else if (f.jumiBindApproaching) {
+          // 타겟 쪽으로 접근 (거리 90 목표)
+          const dx = bt.x - f.x, dy = bt.y - f.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          if (dist > 95) {
+            f.vx = (dx / dist) * BASE_SPEED * 1.5;
+            f.vy = (dy / dist) * BASE_SPEED * 1.5;
+          } else {
+            // 도달 → 속박 시작
+            f.vx = 0; f.vy = 0;
+            f.jumiBindApproaching = false;
+            f.jumiBindTimer = 5000;   // 이주미 대기 시간
+            bt._jumibound = true;
+            bt._jumiboundTimer = 5000; // 타겟 속박 시간
+            f.jumiQuizFired = false;
+          }
+        } else if (f.jumiBindTimer > 0) {
+          // 속박 유지: 이주미 정지
+          f.vx = 0; f.vy = 0;
+          f.jumiBindTimer -= dt;
+          bt._jumiboundTimer = Math.max(0, (bt._jumiboundTimer || 0) - dt);
+          bt._jumibound = bt._jumiboundTimer > 0;
+          // 퀴즈 발동 (2초 지난 후 1회)
+          if (!f.jumiQuizFired && f.jumiBindTimer < 3000) {
+            f.jumiQuizFired = true;
+            f.jumiQuizActive = true;
+            if (gameState.dmgTexts) gameState.dmgTexts.push({
+              x: f.x, y: f.y - f.r - 20,
+              text: '이 화학식의 이름은? H₂SO₄', life: 3200, maxLife: 3200,
+              vy: -0.08, color: '#7abf00', fontSize: 13,
+            });
+          }
+          // 속박 시간 종료 → 판정
+          if (f.jumiBindTimer <= 0) {
+            const wrong = Math.random() < 0.7;
+            // 해제: 속박 먼저 풀기
+            bt._jumibound = false;
+            bt._jumiboundTimer = 0;
+            if (wrong) {
+              bt.lastDmgFrom = fighters.indexOf(f);
+              applyDmg(bt, 30, f);
+              const ang = Math.atan2(bt.y - f.y, bt.x - f.x);
+              bt.vx = Math.cos(ang) * BASE_SPEED * 12;
+              bt.vy = Math.sin(ang) * BASE_SPEED * 12;
+              if (gameState.dmgTexts) gameState.dmgTexts.push({
+                x: bt.x, y: bt.y - bt.r - 16,
+                text: '❌ 오답! -30', life: 1400, maxLife: 1400,
+                vy: -0.5, color: '#ff4444', fontSize: 14,
+              });
+            } else {
+              if (gameState.dmgTexts) gameState.dmgTexts.push({
+                x: bt.x, y: bt.y - bt.r - 16,
+                text: '⭕ 정답!', life: 1200, maxLife: 1200,
+                vy: -0.4, color: '#44ff88', fontSize: 14,
+              });
+            }
+            f.jumiBindTarget = null;
+            f.jumiBindTimer = 0;
+            f.jumiQuizActive = false;
+            f.jumiQuizFired = false;
+          }
+        } else {
+          // 비정상 상태 정리
+          f.jumiBindTarget = null;
+        }
+      }
+
+      // 속박 중이면 공격 행동 안 함
+      const jumiIsBusy = !!(f.jumiBindTarget && (f.jumiBindApproaching || f.jumiBindTimer > 0));
+
+      // 스킬1: 염산 플라스크 투척
+      if (f.skillCooldown <= 0 && !jumiIsBusy && enemies.length > 0) {
+        f.skillCooldown = f.def.skill.cooldown;
+        const tgt = enemies.filter(e => e.hp > 0).reduce((a, b) =>
+          Math.hypot(a.x-f.x,a.y-f.y) < Math.hypot(b.x-f.x,b.y-f.y) ? a : b);
+        if (tgt) {
+          // 포물선 투척: 속도 계산
+          const dx = tgt.x - f.x, dy = tgt.y - f.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          const spd = 5;
+          if (!gameState.jumiFlasks) gameState.jumiFlasks = [];
+          gameState.jumiFlasks.push({
+            x: f.x, y: f.y,
+            vx: (dx / dist) * spd,
+            vy: (dy / dist) * spd - 2, // 약간 위로 던짐
+            gravity: 0.08,
+            ownerId: fighters.indexOf(f),
+            r: 8, life: 2000, broken: false,
+          });
+          spawnParticle(particles, f.x, f.y, '#7abf00', 6);
+        }
+      }
+
+      // 스킬2: 화학식 속박
+      if (f.jumiSkill2Cooldown <= 0 && !jumiIsBusy && enemies.length > 0) {
+        f.jumiSkill2Cooldown = f.def.skill2.cooldown;
+        const tgt = enemies.filter(e => e.hp > 0).reduce((a, b) =>
+          Math.hypot(a.x-f.x,a.y-f.y) < Math.hypot(b.x-f.x,b.y-f.y) ? a : b);
+        if (tgt) {
+          f.jumiBindTarget = tgt;
+          f.jumiBindApproaching = true;
+          f.jumiBindTimer = 0;
+          f.jumiQuizTimer = 0;
+          f.jumiQuizActive = false;
+          if (gameState.dmgTexts) gameState.dmgTexts.push({
+            x: f.x, y: f.y - f.r - 14,
+            text: '화학식 접근...', life: 900, maxLife: 900,
+            vy: -0.3, color: '#7abf00', fontSize: 12,
+          });
+        }
+      }
+    }
+
+    // 속박된 캐릭터: 이동 불가, 스킬 쿨 감소 불가, 공격 불가
+    if (f._jumibound && f._jumiboundTimer > 0) {
+      f.vx = 0; f.vy = 0;
     }
 
     // 금일철P 처리
@@ -4667,11 +5024,6 @@ function update(dt) {
       } else {
         // 아이템 끝나면 잔상 페이드아웃만 (즉시 지우지 않음)
       }
-      // 잔상 알파 감소 (항상)
-      if (f.rushTrail && f.rushTrail.length > 0) {
-        f.rushTrail.forEach(t => { t.alpha -= 0.04; });
-        f.rushTrail = f.rushTrail.filter(t => t.alpha > 0);
-      }
       f.yeonhooItemTimer -= dt;
       // 자력: 주변 적 끌어당김
       if (f.yeonhooItem === '자력') {
@@ -4701,6 +5053,11 @@ function update(dt) {
         }
         f.yeonhooItem = null;
       }
+    }
+    // 서연후 잔상 알파 감소 (아이템 종료 후에도 계속 처리)
+    if (f.def.id === 'yeonhoo' && f.rushTrail && f.rushTrail.length > 0) {
+      f.rushTrail.forEach(t => { t.alpha -= 0.04; });
+      f.rushTrail = f.rushTrail.filter(t => t.alpha > 0);
     }
 
     // 출혈 처리 (모든 캐릭터)
@@ -5169,7 +5526,7 @@ function update(dt) {
             const next = att.eunjuFibA + att.eunjuFibB;
             att.eunjuFibA = att.eunjuFibB;
             att.eunjuFibB = next;
-            att.def = { ...att.def, touchDmg: att.eunjuFibB };
+            att.def = { ...att.def, touchDmg: Math.min(67, att.eunjuFibB) };
             if (gameState.dmgTexts) gameState.dmgTexts.push({
               x: att.x, y: att.y - att.r - 10, text: 'DMG: ' + att.eunjuFibB,
               life: 600, maxLife: 600, vy: -0.3, color: '#d4186c', fontSize: 11,
@@ -6037,6 +6394,40 @@ function update(dt) {
     });
   }
 
+  // 이주미T 플라스크 업데이트
+  if (gameState.jumiFlasks) {
+    for (let i = gameState.jumiFlasks.length - 1; i >= 0; i--) {
+      const fl = gameState.jumiFlasks[i];
+      fl.life -= dt;
+      fl.vy += fl.gravity;
+      fl.x += fl.vx;
+      fl.y += fl.vy;
+      let broken = false;
+      // 벽 충돌
+      if (fl.x < fl.r || fl.x > W - fl.r || fl.y < fl.r || fl.y > H - fl.r) broken = true;
+      // 캐릭터 충돌 (소유자 제외)
+      if (!broken) {
+        fighters.forEach((ft, fi) => {
+          if (fi === fl.ownerId || ft.hp <= 0) return;
+          if (Math.hypot(ft.x - fl.x, ft.y - fl.y) < ft.r + fl.r) broken = true;
+        });
+      }
+      if (broken || fl.life <= 0) {
+        // 깨짐 → 독 장판 생성
+        gameState.gases.push({
+          x: fl.x, y: fl.y,
+          r: 55,
+          life: 5000, maxLife: 5000,
+          ownerId: fl.ownerId,
+          hitCooldown: 0,
+          isJumiAcid: true, // 이주미 전용: 즉시 데미지
+        });
+        spawnParticle(gameState.particles, fl.x, fl.y, '#7abf00', 10);
+        gameState.jumiFlasks.splice(i, 1);
+      }
+    }
+  }
+
   // 가스 업데이트 (김태양 트름)
   const { gases } = gameState;
   for (let i = gases.length - 1; i >= 0; i--) {
@@ -6049,9 +6440,16 @@ function update(dt) {
       if (f.hp <= 0) return;
       const dist = Math.hypot(f.x - g.x, f.y - g.y);
       if (dist < g.r + f.r && g.hitCooldown <= 0) {
-        f.poisonTimer = 3000;
-        f.poisonDmgTimer = 0;
-        g.hitCooldown = 500; // 0.5초마다 재적용
+        if (g.isJumiAcid) {
+          // 이주미 염산: 15 데미지를 5초에 걸쳐 DoT (1초마다 3씩)
+          if (!f._poisonDots) f._poisonDots = [];
+          f._poisonDots.push({ total: 15, elapsed: 0, duration: 5000, dmgInterval: 1000, dmgTimer: 0, ownerId: g.ownerId });
+          g.hitCooldown = 6000; // 중복 적용 방지
+        } else {
+          f.poisonTimer = 3000;
+          f.poisonDmgTimer = 0;
+          g.hitCooldown = 500;
+        }
         spawnParticle(gameState.particles, f.x, f.y, '#7abf00', 4);
       }
     });
@@ -6266,6 +6664,49 @@ function update(dt) {
     }
   }
 
+  // 이주미 속박 중 스킬 쿨 감소 차단 + 이동 완전 정지
+  gameState.fighters.forEach(f => {
+    if (!f._jumibound || f._jumiboundTimer <= 0) return;
+    f.vx = 0; f.vy = 0;
+    // 모든 쿨타임 진행 막기 (BIG 값으로 고정하지 않고, 감소된 만큼 되돌림)
+    // 실용적으로: 봉인과 동일하게 큰 값 유지
+    const kBIG = 9999999;
+    f.skillCooldown        = Math.max(f.skillCooldown || 0, kBIG);
+    f.skill2Cooldown       = Math.max(f.skill2Cooldown || 0, kBIG);
+    f.seungohSkill2Cooldown = Math.max(f.seungohSkill2Cooldown || 0, kBIG);
+    f.hyekyungSkill2Cooldown = Math.max(f.hyekyungSkill2Cooldown || 0, kBIG);
+    f.sehwanSkillCooldown  = Math.max(f.sehwanSkillCooldown || 0, kBIG);
+    f._hyungjunSkillCooldown = Math.max(f._hyungjunSkillCooldown || 0, kBIG);
+    f.jumiSkill2Cooldown   = Math.max(f.jumiSkill2Cooldown || 0, kBIG);
+  });
+
+  // 봉인된 스킬 쿨타임 강제 유지 (매 프레임 끝에 덮어씌움)
+  gameState.fighters.forEach(f => {
+    if (!f._sealedSkills) return;
+    const BIG = 9999999;
+    if (f._sealedSkills.skill) {
+      f.skillCooldown           = BIG;
+      f.sehwanSkillCooldown     = BIG;
+      f._hyungjunSkillCooldown  = BIG;
+    }
+    if (f._sealedSkills.skill2) {
+      f.skill2Cooldown          = BIG;
+      f.seungohSkill2Cooldown   = BIG;
+      f.hyekyungSkill2Cooldown  = BIG;
+      f.geumBulletCooldown      = BIG;
+      f.hyunSkill2Triggered     = true;
+    }
+    if (f._sealedSkills.skill3) {
+      f.skill3Cooldown          = BIG;
+      f.hyekyungSkill3Cooldown  = BIG;
+    }
+    // 금일철 교장말씀(skill) / 철갑탄(skill2) 명시 처리
+    if (f.def && f.def.id === 'geumilcheol') {
+      if (f._sealedSkills.skill)  { f.skillCooldown = BIG; f.geumSpeechActive = false; }
+      if (f._sealedSkills.skill2) f.geumBulletCooldown = BIG;
+    }
+  });
+
   updateBattleUI(fighters);
 }
 
@@ -6331,6 +6772,18 @@ function applyDmg(f, dmg, attacker) {
   const prevHp = f.hp;
   f.hp = Math.max(0, f.hp - dmg);
   const actualDmg = prevHp - f.hp;
+  // 차형준T 해킹 중 피격 → 해킹 취소
+  if (actualDmg > 0 && f.def && f.def.id === 'hyungjun' && f._hackActive) {
+    f._hackActive = false;
+    f._hackTarget = null;
+    f._hackTimer = 0;
+    f._hyungjunSkillCooldown = f.def.skill.cooldown;
+    if (gameState && gameState.dmgTexts) gameState.dmgTexts.push({
+      x: f.x, y: f.y - f.r - 14,
+      text: '해킹 실패!', life: 900, maxLife: 900,
+      vy: -0.4, color: '#ff4444', fontSize: 13,
+    });
+  }
 
   // 캠페인 흡혈: 공격자가 흡혈 버프 보유 시 회복
   if (actualDmg > 0 && attacker && attacker._campaignVampire) {
@@ -7345,6 +7798,73 @@ function render(ctx) {
     ctx.setLineDash([]);
   });
 
+  // 이주미T 플라스크 렌더
+  if (gameState.jumiFlasks) {
+    gameState.jumiFlasks.forEach(fl => {
+      ctx.save();
+      ctx.translate(fl.x, fl.y);
+      const ang = Math.atan2(fl.vy, fl.vx);
+      ctx.rotate(ang + Math.PI / 4);
+      // 플라스크 몸통
+      ctx.fillStyle = 'rgba(100,200,60,0.85)';
+      ctx.strokeStyle = '#3a7a1a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.ellipse(0, 2, 6, 8, 0, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+      // 플라스크 목
+      ctx.fillStyle = 'rgba(140,220,80,0.9)';
+      ctx.beginPath();
+      ctx.rect(-3, -10, 6, 6);
+      ctx.fill(); ctx.stroke();
+      // 액체 반짝임
+      ctx.fillStyle = 'rgba(200,255,100,0.5)';
+      ctx.beginPath();
+      ctx.ellipse(-1, 1, 2, 4, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  // 속박 중 연결선 렌더 (이주미)
+  gameState.fighters.forEach(f => {
+    if (f.def.id !== 'jumi' || !f.jumiBindTarget || !f.jumiBindTarget.hp) return;
+    const bt = f.jumiBindTarget;
+    if (f.jumiBindApproaching) {
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = '#7abf00';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5,5]);
+      ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.lineTo(bt.x, bt.y); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    } else if (f.jumiBindTimer > 0 && bt._jumibound) {
+      // 속박 링
+      ctx.save();
+      const pulse = 0.5 + 0.4 * Math.sin(Date.now() / 200);
+      ctx.globalAlpha = 0.7 * pulse;
+      ctx.strokeStyle = '#7abf00';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.arc(bt.x, bt.y, bt.r + 10, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]);
+      // 속박 타이머
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = '#7abf00';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('⛓ ' + (f.jumiBindTimer / 1000).toFixed(1) + 's', bt.x, bt.y - bt.r - 16);
+      // 퀴즈 활성 시 표시
+      if (f.jumiQuizActive) {
+        ctx.fillStyle = '#ffcc00';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.fillText('❓ H₂SO₄ = ?', bt.x, bt.y + bt.r + 18);
+      }
+      ctx.restore();
+    }
+  });
+
   // Gears (김기원 톱니바퀴)
   gameState.gears.forEach(gear => {
     ctx.save();
@@ -8015,6 +8535,49 @@ function render(ctx) {
       }
     }
 
+    // 차형준T 해킹 연결선 렌더
+    if (def.id === 'hyungjun' && f._hackActive && f._hackTarget && f._hackTarget.hp > 0) {
+      const tgt = f._hackTarget;
+      const prog = Math.min(1, (f._hackTimer || 0) / 3000);
+      ctx.save();
+      ctx.globalAlpha = 0.7 + 0.3 * Math.sin(Date.now() / 120);
+      ctx.strokeStyle = '#00ff88';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([8, 6]);
+      ctx.lineDashOffset = -(Date.now() / 60) % 14;
+      ctx.beginPath();
+      ctx.moveTo(f.x, f.y);
+      ctx.lineTo(tgt.x, tgt.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // 타겟 위 타이머 링
+      const remain = (3 - (f._hackTimer || 0) / 1000).toFixed(1);
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = '#00ff88';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(tgt.x, tgt.y, tgt.r + 8, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * prog);
+      ctx.stroke();
+      ctx.fillStyle = '#00ff88';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = '#00ff88';
+      ctx.shadowBlur = 6;
+      ctx.fillText('HACKING ' + remain + 's', tgt.x, tgt.y - tgt.r - 18);
+      ctx.shadowBlur = 0;
+      // 봉인 아이콘 표시
+      if (tgt._sealedSkills) {
+        const sealed = Object.keys(tgt._sealedSkills).filter(k => tgt._sealedSkills[k]).map(k => tgt.def[k]?.label || '').filter(Boolean);
+        if (sealed.length > 0) {
+          ctx.fillStyle = '#ff4444';
+          ctx.font = 'bold 10px monospace';
+          ctx.fillText('🔒 ' + sealed.join(' / '), tgt.x, tgt.y + tgt.r + 16);
+        }
+      }
+      ctx.restore();
+    }
+
     // 차형준T 코드 조작 파티클
     if (def.id === 'hyungjun' && f._codeParticles && f._codeParticles.length > 0) {
       f._codeParticles.forEach(cp => {
@@ -8463,6 +9026,11 @@ function buildBattleUI(fighters) {
       html += lbl('sk2lbl', '#ff6b00', '쳐웃기 — HP 50% 이하 + 근접 시 자동발동');
       html += bar('ng', '#cc0000', '0%', '4px');
       html += lbl('nglbl', '#999', '하핚!! — 쳐웃기 사용 후 활성화');
+    } else if (id === 'jumi') {
+      html += bar('sk', '#7abf00', '50%', '4px');
+      html += lbl('sklbl', '#7abf00', '염산 (5s)');
+      html += bar('jumi2', '#3a7a3a', '0%', '4px');
+      html += lbl('jumi2lbl', '#3a7a3a', '화학식 (12s)');
     } else {
       // 공통 스킬바
       html += bar('sk', f.def.skill.barColor, '50%', '4px');
@@ -8603,10 +9171,69 @@ function updateBattleUI(fighters) {
         if (lbHj) lbHj.textContent = '스킬: 결정 중...';
       } else if (skHj) {
         const cd = f._hyungjunSkillCooldown || 0;
-        const maxCd = (f.def.skill && f.def.skill.cooldown) || 8000;
-        skHj.style.width = (1 - cd/maxCd)*100 + '%';
-        skHj.style.background = '#00ff88';
-        if (lbHj) lbHj.textContent = cd <= 0 ? `${f.def.skill.label} ✦` : `${f.def.skill.label} (${(cd/1000).toFixed(1)}s)`;
+        const maxCd = (f.def.skill && f.def.skill.cooldown) || 6000;
+        if (f._hackActive && f._hackTarget) {
+          const prog = Math.min(1, (f._hackTimer || 0) / 3000);
+          skHj.style.width = (prog * 100) + '%';
+          skHj.style.background = '#00ff88';
+          if (lbHj) lbHj.textContent = `해킹 중... ${(3 - (f._hackTimer||0)/1000).toFixed(1)}s`;
+        } else {
+          skHj.style.width = (1 - cd/maxCd)*100 + '%';
+          skHj.style.background = cd <= 0 ? '#00ff88' : '#555';
+          if (lbHj) lbHj.textContent = cd <= 0 ? `${f.def.skill.label} ✦` : `${f.def.skill.label} (${(cd/1000).toFixed(1)}s)`;
+        }
+        // 흡수된 스킬 목록 표시
+        // 흡수 스킬바: 스킬바 스타일로 하나씩 추가
+        const hjPanel = document.getElementById('ui-' + pid);
+        if (hjPanel && f._absorbedSkills) {
+          f._absorbedSkills.forEach((abs, ai) => {
+            const barId = 'abs-bar-' + pid + '-' + ai;
+            const lblId = 'abs-lbl-' + pid + '-' + ai;
+            let barWrap = document.getElementById(barId + '-wrap');
+            if (!barWrap) {
+              barWrap = document.createElement('div');
+              barWrap.id = barId + '-wrap';
+              barWrap.innerHTML =
+                `<div class="skill-bar-bg" style="margin-top:4px"><div class="skill-bar-fill" id="${barId}" style="width:0%;background:#00ffcc"></div></div>` +
+                `<div class="skill-label" id="${lblId}" style="color:#00ffcc;margin-top:2px"></div>`;
+              hjPanel.appendChild(barWrap);
+            }
+            const barEl = document.getElementById(barId);
+            const lblEl = document.getElementById(lblId);
+            const pct = Math.min(100, (1 - (abs.cdTimer||0) / abs.skillDef.cooldown) * 100);
+            const ready = (abs.cdTimer||0) <= 0;
+            if (barEl) barEl.style.width = pct + '%';
+            if (lblEl) {
+              lblEl.textContent = ready
+                ? `[흡수] ${abs.label} ✦`
+                : `[흡수] ${abs.label} (${((abs.cdTimer||0)/1000).toFixed(1)}s)`;
+              lblEl.style.color = ready ? '#00ffcc' : '#559988';
+            }
+          });
+        }
+      }
+    }
+
+    // 이주미T UI
+    if (f.def.id === 'jumi') {
+      const skJ = document.getElementById('sk-' + pid);
+      const lbJ = document.getElementById('sklbl-' + pid);
+      const j2 = document.getElementById('jumi2-' + pid);
+      const j2lbl = document.getElementById('jumi2lbl-' + pid);
+      if (skJ) skJ.style.width = (1 - (f.skillCooldown||0) / 5000) * 100 + '%';
+      if (lbJ) lbJ.textContent = (f.skillCooldown||0) <= 0 ? '염산 ✦' : `염산 (${((f.skillCooldown||0)/1000).toFixed(1)}s)`;
+      if (j2) j2.style.width = (1 - (f.jumiSkill2Cooldown||0) / 12000) * 100 + '%';
+      if (j2lbl) {
+        if (f.jumiBindTarget && f.jumiBindApproaching) {
+          j2lbl.textContent = '화학식 접근 중...';
+          j2lbl.style.color = '#7abf00';
+        } else if (f.jumiBindTarget && f.jumiBindTimer > 0) {
+          j2lbl.textContent = '⛓ 속박 중 ' + (f.jumiBindTimer/1000).toFixed(1) + 's' + (f.jumiQuizActive ? ' ❓' : '');
+          j2lbl.style.color = '#ffcc00';
+        } else {
+          j2lbl.textContent = (f.jumiSkill2Cooldown||0) <= 0 ? '화학식 ✦' : `화학식 (${((f.jumiSkill2Cooldown||0)/1000).toFixed(1)}s)`;
+          j2lbl.style.color = '#3a7a3a';
+        }
       }
     }
 
@@ -8719,7 +9346,7 @@ function updateBattleUI(fighters) {
           skLbl4.style.color = (f.gundamSwordTimer||0) <= 0 ? '#cc0000' : '#999';
         } else {
           const collected = (f.gundamCollected || []).length;
-          skEl4.style.width = (collected / 6 * 100) + '%';
+          skEl4.style.width = (collected / 7 * 100) + '%';
           skEl4.style.background = '#4a90d9';
           skLbl4.textContent = `건담 파츠 ${collected}/7 수집`;
           skLbl4.style.color = '#4a90d9';
@@ -9069,10 +9696,17 @@ function endGame() {
         }
         window._lastClearedStage = window._campaignStage;
         window._campaignJustWon = true;
-        window._clearedStages = window._clearedStages || [];
-        if (!window._clearedStages.includes(window._campaignStage)) {
-          window._clearedStages.push(window._campaignStage);
-          markStageCleared(window._campaignStage);
+        // 보스 클리어 시엔 이미 위에서 초기화했으므로 markStageCleared 스킵
+        if (!isBossClear) {
+          window._clearedStages = window._clearedStages || [];
+          if (!window._clearedStages.includes(window._campaignStage)) {
+            window._clearedStages.push(window._campaignStage);
+            markStageCleared(window._campaignStage);
+          }
+          // 다음 스테이지 즉시 언락
+          const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3' };
+          const _nextStage = _nextMap[window._campaignStage];
+          if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
         }
         saveCampaignProgress();
       }
