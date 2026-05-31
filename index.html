@@ -433,7 +433,7 @@
           <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">강화</div>
         </div>
         <!-- 강화 열림 -->
-        <div id="stage-forge" onclick="openForge()" style="display:none;position:absolute;left:820px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+        <div id="stage-forge" onclick="openForge('forge')" style="display:none;position:absolute;left:820px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
           <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#ff8c00,#ffd700);border:4px solid #cc6600;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(255,140,0,0.5);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🔨</div>
           <div style="font-size:9px;font-weight:700;color:#ffd700;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">강화</div>
         </div>
@@ -471,7 +471,7 @@
           <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
           <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">강화</div>
         </div>
-        <div id="stage-forge2" onclick="openForge()" style="display:none;position:absolute;left:1680px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+        <div id="stage-forge2" onclick="openForge('forge2')" style="display:none;position:absolute;left:1680px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
           <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#ff8c00,#ffd700);border:4px solid #cc6600;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(255,140,0,0.5);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🔨</div>
           <div style="font-size:9px;font-weight:700;color:#ffd700;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">강화</div>
         </div>
@@ -503,7 +503,7 @@
           <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
           <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">강화</div>
         </div>
-        <div id="stage-forge3" onclick="openForge()" style="display:none;position:absolute;left:2480px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+        <div id="stage-forge3" onclick="openForge('forge3')" style="display:none;position:absolute;left:2480px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
           <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#ff8c00,#ffd700);border:4px solid #cc6600;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(255,140,0,0.5);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🔨</div>
           <div style="font-size:9px;font-weight:700;color:#ffd700;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">강화</div>
         </div>
@@ -1516,16 +1516,8 @@ function getForgeOptions() {
   return pool;
 }
 
-function openForge() {
-  // 현재 표시된(열린) forge 노드 기준으로 판별
-  let forgeId = 'forge';
-  if (document.getElementById('stage-forge3')?.style.display !== 'none' && document.getElementById('stage-forge3')?.style.display) {
-    forgeId = 'forge3';
-  } else if (document.getElementById('stage-forge2')?.style.display !== 'none' && document.getElementById('stage-forge2')?.style.display) {
-    forgeId = 'forge2';
-  } else {
-    forgeId = 'forge';
-  }
+function openForge(forgeId) {
+  forgeId = forgeId || 'forge';
   window._currentForgeId = forgeId;
   if ((window._clearedStages||[]).includes(forgeId)) {
     alert('이미 강화를 완료했습니다!');
@@ -9019,7 +9011,7 @@ function endGame() {
               circle.onmouseover = function() { this.style.transform = 'scale(1.12)'; };
               circle.onmouseout = function() { this.style.transform = 'scale(1)'; };
             }
-            if (sid === 'forge') unlocked.onclick = () => openForge();
+            if (sid === 'forge') unlocked.onclick = () => openForge('forge');
             else unlocked.onclick = () => startCampaignStage(sid);
           }
         });
@@ -9062,7 +9054,7 @@ function endGame() {
                 circle.onmouseover = function() { this.style.transform = 'scale(1.12)'; };
                 circle.onmouseout = function() { this.style.transform = 'scale(1)'; };
               }
-              if (sid === 'forge' || sid === 'forge2' || sid === 'forge3') unlocked.onclick = () => openForge();
+              if (sid === 'forge' || sid === 'forge2' || sid === 'forge3') unlocked.onclick = () => openForge(sid);
               else unlocked.onclick = () => startCampaignStage(sid);
             }
           });
