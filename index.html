@@ -184,9 +184,10 @@
 <div id="mainMenu" class="screen" onclick="void(0)">
   <div class="game-title drop-item" style="animation-delay:0.7s">SONGDIH</div>
   <div class="game-subtitle drop-item" style="animation-delay:0.9s">THE BATTLE OF LEGENDS</div>
-  <button class="btn drop-item" id="btn-start" style="animation-delay:1.1s">게임 시작</button>
+  <button class="btn drop-item" id="btn-start" style="animation-delay:1.1s">⚔️ 프리플레이</button>
   <button class="btn btn-secondary drop-item" id="btn-predict" style="margin-top:8px;animation-delay:1.3s">🔮 예측 모드</button>
   <div id="main-streak-display" style="font-size:12px;color:#f5c518;font-weight:700;margin-top:4px;height:18px;animation-delay:1.4s" class="drop-item"></div>
+  <button class="btn btn-secondary drop-item" id="btn-campaign" style="margin-top:8px;animation-delay:1.5s">📖 캠페인</button>
 </div>
 
 <!-- 금일철 컷씬 -->
@@ -267,6 +268,31 @@
   </div>
 </div>
 
+
+
+<!-- 캠페인 치트 패널 -->
+<div id="cheatPanel" style="display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:5000;background:#111;border:2px solid #9b30ff;border-left:none;border-radius:0 12px 12px 0;padding:12px;width:200px;box-shadow:4px 0 20px rgba(155,48,255,0.4)">
+  <div style="font-size:13px;font-weight:900;color:#cc88ff;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+    🔧 치트 강화
+    <button onclick="document.getElementById('cheatPanel').style.display='none'" style="background:none;border:none;color:#888;cursor:pointer;font-size:16px">×</button>
+  </div>
+  <div style="font-size:11px;color:#888;margin-bottom:8px">일반 강화</div>
+  <div id="cheatNormalList" style="display:flex;flex-direction:column;gap:4px;margin-bottom:10px"></div>
+  <div style="font-size:11px;color:#888;margin-bottom:8px">특수 강화</div>
+  <div id="cheatSpecialList" style="display:flex;flex-direction:column;gap:4px"></div>
+</div>
+
+<!-- 강화 모달 -->
+<div id="forgeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;align-items:center;justify-content:center;flex-direction:column">
+  <div style="background:#1a1a1a;border:2px solid #cc6600;border-radius:20px;padding:28px 24px;max-width:500px;width:92%;text-align:center;box-shadow:0 0 40px rgba(255,140,0,0.4)">
+    <div style="font-size:28px;margin-bottom:4px">🔨</div>
+    <div style="font-size:20px;font-weight:900;color:#ffd700;margin-bottom:4px">강화</div>
+    <div style="font-size:12px;color:#888;margin-bottom:20px">하나를 선택하세요. 캠페인 한정 적용됩니다.</div>
+    <div id="forgeOptions" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px"></div>
+    <button onclick="closeForge()" style="background:none;border:1px solid #555;color:#888;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px">닫기</button>
+  </div>
+</div>
+
 <!-- CHARACTER SELECT -->
 <div id="charSelect" class="screen" onclick="void(0)">
   <div class="select-title">캐릭터 선택</div>
@@ -319,11 +345,194 @@
 </div>
 
 <!-- RESULT -->
+
+<!-- 캠페인: 캐릭터 선택 -->
+<div id="campaignCharSelect" class="screen" onclick="void(0)" style="overflow-y:auto;justify-content:flex-start;padding:24px 16px">
+  <div class="select-title" style="margin-bottom:2px">📖 캠페인</div>
+  <div style="font-size:12px;color:#888;font-style:italic;margin-bottom:4px">"Who Bro thinks Main Character."</div>
+  <div style="font-size:13px;color:#aaa;margin-bottom:20px">함께할 캐릭터를 선택하세요</div>
+  <div id="campaignCharRow" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:700px;margin-bottom:24px"></div>
+  <button class="btn btn-secondary" onclick="showScreen('mainMenu')" style="margin-bottom:20px">← 돌아가기</button>
+</div>
+
+<!-- 캠페인: 스테이지 맵 -->
+<div id="campaignMap" class="screen" onclick="void(0)">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+    <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px" onclick="showScreen('mainMenu')">← 메뉴</button>
+    <div style="font-weight:900;font-size:18px;color:#2d5a1b">📖 캠페인</div>
+    <div id="campaignCharBadge" style="font-size:12px;color:#555;margin-left:auto"></div>
+    <button onclick="resetCampaign()" style="background:none;border:1px solid #ddd;color:#aaa;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;margin-left:8px">초기화</button>
+  </div>
+  <!-- 초원 스크롤 맵 -->
+  <div style="position:relative;width:100%;max-width:900px;border-radius:16px;border:2px solid #3a7a1a;overflow:hidden">
+    <div id="campaignScroll" style="overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch">
+      <div style="position:relative;width:3200px;height:260px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 45%,#5a9e3a 45%,#4a8a2a 100%)">
+        <!-- 구름 -->
+        <div style="position:absolute;top:20px;left:80px;background:#fff;border-radius:50px;width:90px;height:28px;opacity:0.9"></div>
+        <div style="position:absolute;top:30px;left:280px;background:#fff;border-radius:50px;width:70px;height:22px;opacity:0.9"></div>
+        <div style="position:absolute;top:15px;left:500px;background:#fff;border-radius:50px;width:110px;height:30px;opacity:0.9"></div>
+        <div style="position:absolute;top:25px;left:780px;background:#fff;border-radius:50px;width:80px;height:24px;opacity:0.9"></div>
+        <div style="position:absolute;top:18px;left:970px;background:#fff;border-radius:50px;width:95px;height:26px;opacity:0.9"></div>
+        <!-- 나무 -->
+        <div style="position:absolute;bottom:50px;left:40px;text-align:center"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:30px solid #2d7a1b;margin:0 auto"></div><div style="width:8px;height:14px;background:#8b4513;margin:0 auto"></div></div>
+        <div style="position:absolute;bottom:50px;left:360px;text-align:center"><div style="width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:34px solid #2d7a1b;margin:0 auto"></div><div style="width:9px;height:16px;background:#8b4513;margin:0 auto"></div></div>
+        <div style="position:absolute;bottom:50px;left:700px;text-align:center"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #2d7a1b;margin:0 auto"></div><div style="width:8px;height:12px;background:#8b4513;margin:0 auto"></div></div>
+        <div style="position:absolute;bottom:50px;left:1020px;text-align:center"><div style="width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid #2d7a1b;margin:0 auto"></div><div style="width:10px;height:18px;background:#8b4513;margin:0 auto"></div></div>
+        <!-- 점선 연결 SVG -->
+        <svg style="position:absolute;inset:0;width:3200px;height:260px;pointer-events:none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="172" y1="130" x2="338" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <line x1="408" y1="130" x2="578" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <line x1="648" y1="130" x2="808" y2="130" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 강화 → 1-4 -->
+          <line x1="878" y1="130" x2="1008" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 1-4 → 1-5 -->
+          <line x1="1078" y1="130" x2="1208" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 1-5 → 1-6 -->
+          <line x1="1278" y1="130" x2="1408" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 1-6 → 강화2 -->
+          <line x1="1508" y1="130" x2="1648" y2="130" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 강화2 → 1-7 -->
+          <line x1="1718" y1="130" x2="1848" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 1-7 → 1-8 -->
+          <line x1="1918" y1="130" x2="2048" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 1-8 → 1-9 -->
+          <line x1="2118" y1="130" x2="2248" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 1-9 → 강화3 -->
+          <line x1="2318" y1="130" x2="2448" y2="130" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 강화3 → Boss -->
+          <line x1="2518" y1="130" x2="2648" y2="130" stroke="rgba(255,50,50,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+        </svg>
+        <!-- 1-1 (항상 열림) -->
+        <div id="stage-1-1" onclick="startCampaignStage('1-1')" style="position:absolute;left:100px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:80px">
+          <div style="width:64px;height:64px;border-radius:50%;background:#f5c518;border:4px solid #c8a800;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#111;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-1</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">빛나는 악취</div>
+        </div>
+        <!-- 1-2 잠김 -->
+        <div id="stage-1-2-locked" style="position:absolute;left:340px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-2</div>
+        </div>
+        <!-- 1-2 열림 -->
+        <div id="stage-1-2" onclick="startCampaignStage('1-2')" style="display:none;position:absolute;left:340px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-2</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">끊임없이 자라나는 머리털</div>
+        </div>
+        <!-- 1-3 잠김 -->
+        <div id="stage-1-3-locked" style="position:absolute;left:580px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-3</div>
+        </div>
+        <!-- 1-3 열림 -->
+        <div id="stage-1-3" onclick="startCampaignStage('1-3')" style="display:none;position:absolute;left:580px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-3</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">사라지지 않는 소음</div>
+        </div>
+        <!-- 강화 잠김 -->
+        <div id="stage-forge-locked" style="position:absolute;left:820px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:70px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">강화</div>
+        </div>
+        <!-- 강화 열림 -->
+        <div id="stage-forge" onclick="openForge()" style="display:none;position:absolute;left:820px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#ff8c00,#ffd700);border:4px solid #cc6600;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(255,140,0,0.5);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🔨</div>
+          <div style="font-size:9px;font-weight:700;color:#ffd700;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">강화</div>
+        </div>
+        <!-- 1-4 잠김 -->
+        <div id="stage-1-4-locked" style="position:absolute;left:1040px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-4</div>
+        </div>
+        <!-- 1-4 열림 -->
+        <div id="stage-1-4" onclick="startCampaignStage('1-4')" style="display:none;position:absolute;left:1040px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-4</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">식물 재배장</div>
+        </div>
+        <!-- 1-5 잠김 -->
+        <div id="stage-1-5-locked" style="position:absolute;left:1240px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-5</div>
+        </div>
+        <!-- 1-5 열림 -->
+        <div id="stage-1-5" onclick="startCampaignStage('1-5')" style="display:none;position:absolute;left:1240px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-5</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">잠자는 분노</div>
+        </div>
+        <!-- 1-6 잠김 -->
+        <div id="stage-1-6-locked" style="position:absolute;left:1440px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-6</div>
+        </div>
+        <!-- 1-6 열림 -->
+        <div id="stage-1-6" onclick="startCampaignStage('1-6')" style="display:none;position:absolute;left:1440px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-6</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">무한 증식</div>
+        </div>
+        <div id="stage-forge2-locked" style="position:absolute;left:1680px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:70px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">강화</div>
+        </div>
+        <div id="stage-forge2" onclick="openForge()" style="display:none;position:absolute;left:1680px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#ff8c00,#ffd700);border:4px solid #cc6600;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(255,140,0,0.5);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🔨</div>
+          <div style="font-size:9px;font-weight:700;color:#ffd700;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">강화</div>
+        </div>
+                <div id="stage-1-7-locked" style="position:absolute;left:1880px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-7</div>
+        </div>
+        <div id="stage-1-7" onclick="startCampaignStage('1-7')" style="display:none;position:absolute;left:1880px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-7</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">고중력 지대</div>
+        </div>
+                <div id="stage-1-8-locked" style="position:absolute;left:2080px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-8</div>
+        </div>
+        <div id="stage-1-8" onclick="startCampaignStage('1-8')" style="display:none;position:absolute;left:2080px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-8</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">천조국의 선율</div>
+        </div>
+                <div id="stage-1-9-locked" style="position:absolute;left:2280px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">1-9</div>
+        </div>
+        <div id="stage-1-9" onclick="startCampaignStage('1-9')" style="display:none;position:absolute;left:2280px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4caf50;border:4px solid #2d8a2d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">1-9</div>
+          <div style="font-size:9px;font-weight:700;color:#fff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">졸음과의 싸움</div>
+        </div>
+        <div id="stage-forge3-locked" style="position:absolute;left:2480px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:70px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">강화</div>
+        </div>
+        <div id="stage-forge3" onclick="openForge()" style="display:none;position:absolute;left:2480px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#ff8c00,#ffd700);border:4px solid #cc6600;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(255,140,0,0.5);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🔨</div>
+          <div style="font-size:9px;font-weight:700;color:#ffd700;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">강화</div>
+        </div>
+                <div id="stage-boss1-locked" style="position:absolute;left:2680px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">💀</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">BOSS</div>
+        </div>
+        <div id="stage-boss1" onclick="startCampaignStage('boss1')" style="display:none;position:absolute;left:2680px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#8b0000;border:4px solid #ff2222;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#ffcccc;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">BOSS</div>
+          <div style="font-size:9px;font-weight:700;color:#ff6666;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">황금비율의 첫경험</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="result" class="screen" onclick="void(0)">
   <div class="winner-text" id="winnerName"></div>
   <div class="victory-text" id="resultText">승리!</div>
-  <button class="btn" id="btn-result-retry">다시하기</button>
-  <button class="btn btn-secondary" id="btn-result-main" style="margin-top:8px">메인 메뉴</button>
+  <!-- 일반 버튼 -->
+  <div id="normalResultBtns">
+    <button class="btn" id="btn-result-retry">다시하기</button>
+    <button class="btn btn-secondary" id="btn-result-main" style="margin-top:8px">메인 메뉴</button>
+  </div>
+  <!-- 캠페인 버튼 -->
+  <div id="campaignResultBtns" style="display:none">
+    <button class="btn" id="btn-campaign-next" style="margin-bottom:8px">진행하기 →</button>
+    <button class="btn btn-secondary" id="btn-campaign-back">메인으로</button>
+  </div>
 </div>
 
 <script>
@@ -767,6 +976,7 @@ function _initTouchBindings() {
   _bindBtn('btn-cam-next', () => camShift(1));
   _bindBtn('btn-retry-predict', startPredictMode);
   _bindBtn('loginBtn', loginUser);
+  _bindBtn('btn-campaign', openCampaign);
   _bindBtn('signupBtn', signupUser);
   _bindBtn('guestBtn', guestStart);
   _bindBtn('btn-result-retry', () => {
@@ -774,6 +984,33 @@ function _initTouchBindings() {
     else { showCharSelect(); }
   });
   _bindBtn('btn-result-main', () => showScreen('mainMenu'));
+  _bindBtn('btn-campaign-next', () => {
+    if (window._lastClearedStage === '1-1') unlockStage('1-2');
+    if (window._lastClearedStage === '1-2') unlockStage('1-3');
+    if (window._lastClearedStage === '1-3') unlockStage('forge');
+    if (window._lastClearedStage === '1-4') unlockStage('1-5');
+    if (window._lastClearedStage === '1-5') unlockStage('1-6');
+    if (window._lastClearedStage === '1-6') unlockStage('forge2');
+    if (window._lastClearedStage === '1-7') unlockStage('1-8');
+    if (window._lastClearedStage === '1-8') unlockStage('1-9');
+    if (window._lastClearedStage === '1-9') unlockStage('forge3');
+    window._campaignJustWon = false;
+    showScreen('campaignMap');
+  });
+  _bindBtn('btn-campaign-back', () => {
+    if (window._campaignJustWon && window._lastClearedStage === '1-1') unlockStage('1-2');
+    if (window._campaignJustWon && window._lastClearedStage === '1-2') unlockStage('1-3');
+    if (window._campaignJustWon && window._lastClearedStage === '1-3') unlockStage('forge');
+    if (window._campaignJustWon && window._lastClearedStage === '1-4') unlockStage('1-5');
+    if (window._campaignJustWon && window._lastClearedStage === '1-5') unlockStage('1-6');
+    if (window._campaignJustWon && window._lastClearedStage === '1-6') unlockStage('forge2');
+    if (window._campaignJustWon && window._lastClearedStage === '1-7') unlockStage('1-8');
+    if (window._campaignJustWon && window._lastClearedStage === '1-8') unlockStage('1-9');
+    if (window._campaignJustWon && window._lastClearedStage === '1-9') unlockStage('forge3');
+    window._campaignJustWon = false;
+    campaignChar = null;
+    showScreen('mainMenu');
+  });
   _bindBtn('unlockOkBtn', closeUnlockOverlay);
   ['05','1','2','3'].forEach((s,i) => {
     const speeds = [0.5,1,2,3];
@@ -891,7 +1128,8 @@ function onLoginSuccess() {
   const badge = document.getElementById('userBadge');
   const nickEl = document.getElementById('userBadgeNick');
   if (badge) { badge.style.display = 'block'; nickEl.textContent = '👤 ' + currentUser.nickname; }
-  buildCharSelect();
+  loadCampaignClearedChars().then(() => { buildCharSelect(); });
+  loadCampaignProgress();
   showScreen('mainMenu');
 }
 
@@ -919,6 +1157,449 @@ async function saveUnlockedHidden() {
     });
     currentUser.unlocked_hidden = hiddenStr;
   } catch(e) { console.error('save unlocked error', e); }
+}
+
+
+// ── 캠페인 ──
+let campaignChar = null;
+
+function openCampaign() {
+  loadCampaignProgress();
+  // 이미 캐릭 선택했으면 바로 맵으로
+  if (campaignChar) {
+    const badge = document.getElementById('campaignCharBadge');
+    if (badge) badge.textContent = '캐릭터: ' + campaignChar.name;
+    showScreen('campaignMap');
+    return;
+  }
+  const row = document.getElementById('campaignCharRow');
+  if (!row) return;
+  row.innerHTML = '';
+  CHARACTER_DEFS.filter(d => d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && !d.isDummy).forEach(def => {
+    const card = document.createElement('div');
+    card.className = 'char-card';
+    card.style.cursor = 'pointer';
+    card.innerHTML = `
+      <div class="char-circle" style="background:${def.color}">${def.name}</div>
+      <div class="char-name">${def.name}</div>
+      <div class="char-stats">HP: ${def.hp}<br>접촉: ${def.touchDmg}</div>
+    `;
+    card.onclick = () => selectCampaignChar(def);
+    card.ontouchstart = (e) => { e.preventDefault(); selectCampaignChar(def); };
+    row.appendChild(card);
+  });
+  showScreen('campaignCharSelect');
+}
+
+function selectCampaignChar(def) {
+  campaignChar = def;
+  window._clearedStages = [];
+  const badge = document.getElementById('campaignCharBadge');
+  if (badge) badge.textContent = '캐릭터: ' + def.name;
+  saveCampaignProgress();
+  showScreen('campaignMap');
+}
+
+function startCampaignStage(stageId) {
+  if (!campaignChar) return;
+  if ((window._clearedStages || []).includes(stageId)) {
+    alert('이미 클리어한 스테이지입니다!');
+    return;
+  }
+  if (stageId === '1-1') {
+    window._campaignMode = true;
+    window._campaignStage = '1-1';
+    const enemyDef = CHARACTER_DEFS.find(d => d.id === 'taeyoung');
+    if (!enemyDef) return;
+    selectedChars = [campaignChar.id, enemyDef.id];
+    startBattle();
+  } else if (stageId === '1-2') {
+    window._campaignMode = true;
+    window._campaignStage = '1-2';
+    const enemyDef = CHARACTER_DEFS.find(d => d.id === 'chaewan');
+    if (!enemyDef) return;
+    selectedChars = [campaignChar.id, enemyDef.id];
+    startBattle();
+  } else if (stageId === '1-3') {
+    window._campaignMode = true;
+    window._campaignStage = '1-3';
+    const enemyDef = CHARACTER_DEFS.find(d => d.id === 'sumin');
+    if (!enemyDef) return;
+    selectedChars = [campaignChar.id, enemyDef.id];
+    startBattle();
+  } else if (stageId === '1-4') {
+    window._campaignMode = true;
+    window._campaignStage = '1-4';
+    const enemyDef = CHARACTER_DEFS.find(d => d.id === 'seungbin');
+    if (!enemyDef) return;
+    selectedChars = [campaignChar.id, enemyDef.id];
+    startBattle();
+  } else if (stageId === '1-5') {
+    window._campaignMode = true;
+    window._campaignStage = '1-5';
+    const enemyDef = CHARACTER_DEFS.find(d => d.id === 'junjoo');
+    if (!enemyDef) return;
+    selectedChars = [campaignChar.id, enemyDef.id];
+    startBattle();
+  } else if (stageId === '1-6') {
+    window._campaignMode = true;
+    window._campaignStage = '1-6';
+    const enemyDef = CHARACTER_DEFS.find(d => d.id === 'byungheon');
+    if (!enemyDef) return;
+    selectedChars = [campaignChar.id, enemyDef.id];
+    startBattle();
+  } else if (stageId === '1-7') {
+    window._campaignMode = true; window._campaignStage = '1-7';
+    window._campaignEnemyBuff = { id: 'hyuncheol', hpBonus: 30 };
+    selectedChars = [campaignChar.id, 'hyuncheol']; startBattle();
+  } else if (stageId === '1-8') {
+    window._campaignMode = true; window._campaignStage = '1-8';
+    window._campaignEnemyBuff = { id: 'seungoh', dmgMult: 1.2 };
+    selectedChars = [campaignChar.id, 'seungoh']; startBattle();
+  } else if (stageId === '1-9') {
+    window._campaignMode = true; window._campaignStage = '1-9';
+    window._campaignEnemyBuff = { id: 'youngouk', hpBonus: 150 };
+    selectedChars = [campaignChar.id, 'youngouk']; startBattle();
+  } else if (stageId === 'boss1') {
+    window._campaignMode = true; window._campaignStage = 'boss1';
+    window._campaignEnemyBuff = { id: 'eunju', hpBonus: 210 };
+    selectedChars = [campaignChar.id, 'eunju']; startBattle();
+  }
+}
+
+
+async function saveCampaignProgress() {
+  if (!currentUser) return;
+  const progress = {
+    charId: campaignChar ? campaignChar.id : null,
+    clearedStages: window._clearedStages || [],
+    buffs: campaignBuffs || [],
+  };
+  try {
+    await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
+      method: 'PATCH',
+      headers: SB_HEADERS,
+      body: JSON.stringify({ campaign_progress: JSON.stringify(progress) })
+    });
+    currentUser.campaign_progress = JSON.stringify(progress);
+  } catch(e) { console.error('save campaign error', e); }
+}
+
+function loadCampaignProgress() {
+  if (!currentUser || !currentUser.campaign_progress) return;
+  try {
+    const progress = JSON.parse(currentUser.campaign_progress);
+    if (progress.charId) {
+      campaignChar = CHARACTER_DEFS.find(d => d.id === progress.charId) || null;
+    }
+    window._clearedStages = progress.clearedStages || [];
+    campaignBuffs = progress.buffs || [];
+    // 클리어된 스테이지 노드 열기 + 완료 표시
+    (window._clearedStages || []).forEach(stageId => {
+      const locked = document.getElementById('stage-' + stageId + '-locked');
+      const unlocked = document.getElementById('stage-' + stageId);
+      if (locked) locked.style.display = 'none';
+      if (unlocked) {
+        unlocked.style.display = 'block';
+        markStageCleared(stageId);
+      }
+    });
+    // 강화 노드 복원
+    if ((progress.clearedStages || []).includes('1-3')) {
+      const fl = document.getElementById('stage-forge-locked');
+      const fu = document.getElementById('stage-forge');
+      if (fl) fl.style.display = 'none';
+      if (fu) fu.style.display = 'block';
+    }
+  } catch(e) { console.error('load campaign error', e); }
+}
+
+function markStageCleared(stageId) {
+  const node = document.getElementById('stage-' + stageId);
+  if (!node) return;
+  // 이미 표시됐으면 스킵
+  if (node.querySelector('.cleared-mark')) return;
+  const circle = node.querySelector('div');
+  if (circle) {
+    circle.style.background = '#666';
+    circle.style.borderColor = '#444';
+    // onmouseover/onmouseout 제거 (transform 간섭 방지)
+    circle.removeAttribute('onmouseover');
+    circle.removeAttribute('onmouseout');
+    circle.style.transform = '';
+  }
+  // ✓ 뱃지 (node 기준 position:absolute)
+  const mark = document.createElement('span');
+  mark.className = 'cleared-mark';
+  mark.style.cssText = 'position:absolute;top:2px;right:2px;background:#4caf50;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;z-index:10;pointer-events:none';
+  mark.textContent = '✓';
+  node.style.position = node.style.position || 'absolute';
+  node.appendChild(mark);
+  node.onclick = () => alert('이미 클리어한 스테이지입니다!');
+}
+
+
+function resetCampaign() {
+  if (!confirm('캠페인을 초기화할까요?')) return;
+  campaignChar = null;
+  campaignBuffs = [];
+  window._clearedStages = [];
+  window._lastClearedStage = null;
+  window._campaignJustWon = false;
+
+  // 모든 스테이지 노드 초기화
+  ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
+    const locked = document.getElementById('stage-' + sid + '-locked');
+    const unlocked = document.getElementById('stage-' + sid);
+    // 1-1 제외 잠금
+    if (sid !== '1-1') {
+      if (locked) locked.style.display = 'block';
+      if (unlocked) unlocked.style.display = 'none';
+    }
+    // 완료 표시 제거 (노드 내부 circle 완전 복원)
+    if (unlocked) {
+      // 완료 뱃지 제거
+      unlocked.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+      // circle div 복원
+      const circle = unlocked.querySelector('div');
+      if (circle) {
+        circle.style.opacity = '1';
+        circle.style.cursor = 'pointer';
+        if (sid === '1-1') {
+          circle.style.background = '#f5c518';
+          circle.style.borderColor = '#c8a800';
+          circle.style.filter = '';
+        } else if (sid === 'forge') {
+          circle.style.background = 'linear-gradient(135deg,#ff8c00,#ffd700)';
+          circle.style.borderColor = '#cc6600';
+          circle.style.filter = '';
+        } else {
+          circle.style.background = '#4caf50';
+          circle.style.borderColor = '#2d8a2d';
+          circle.style.filter = '';
+        }
+      }
+      // onclick 복원
+      if (sid === 'forge') unlocked.onclick = () => openForge();
+      else unlocked.onclick = () => startCampaignStage(sid);
+    }
+  });
+
+  saveCampaignProgress();
+  showScreen('mainMenu');
+}
+
+// 치트 코드 감지
+let _cheatBuffer = '';
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('campaignMap')?.classList.contains('active')) { _cheatBuffer = ''; return; }
+  _cheatBuffer += e.key.toLowerCase();
+  if (_cheatBuffer.length > 10) _cheatBuffer = _cheatBuffer.slice(-10);
+  if (_cheatBuffer.endsWith('cheat')) {
+    _cheatBuffer = '';
+    openCheatPanel();
+  }
+});
+
+function openCheatPanel() {
+  const panel = document.getElementById('cheatPanel');
+  if (!panel) return;
+  const normalList = document.getElementById('cheatNormalList');
+  const specialList = document.getElementById('cheatSpecialList');
+  if (!normalList || !specialList) return;
+  normalList.innerHTML = '';
+  specialList.innerHTML = '';
+  FORGE_NORMAL.forEach(opt => {
+    const btn = document.createElement('button');
+    const has = campaignBuffs.includes(opt.id);
+    btn.style.cssText = `width:100%;padding:5px 8px;background:${has?'#333':'#222'};border:1px solid ${has?'#555':'#cc6600'};border-radius:6px;color:${has?'#888':'#ffd700'};font-size:11px;cursor:pointer;text-align:left`;
+    btn.textContent = opt.icon + ' ' + opt.label + (has?' ✓':'');
+    if (!has) btn.onclick = () => { campaignBuffs.push(opt.id); openCheatPanel(); };
+    normalList.appendChild(btn);
+  });
+  FORGE_SPECIAL.forEach(opt => {
+    const btn = document.createElement('button');
+    const has = campaignBuffs.includes(opt.id);
+    btn.style.cssText = `width:100%;padding:5px 8px;background:${has?'#2a1a3a':'#1a1a2a'};border:1px solid ${has?'#555':'#9b30ff'};border-radius:6px;color:${has?'#888':'#cc88ff'};font-size:11px;cursor:pointer;text-align:left`;
+    btn.textContent = opt.icon + ' ' + opt.label + (has?' ✓':'');
+    if (!has) btn.onclick = () => { campaignBuffs.push(opt.id); openCheatPanel(); };
+    specialList.appendChild(btn);
+  });
+  panel.style.display = 'block';
+}
+
+function unlockStage(stageId) {
+  const locked = document.getElementById('stage-' + stageId + '-locked');
+  const unlocked = document.getElementById('stage-' + stageId);
+  if (!locked || !unlocked) return;
+  locked.style.display = 'none';
+  unlocked.style.display = 'block';
+  unlocked.style.opacity = '0';
+  unlocked.style.transition = 'opacity 0.5s';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      unlocked.style.opacity = '1';
+    });
+  });
+  // 섬광
+  const flash = document.createElement('div');
+  flash.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,0.35);z-index:999;pointer-events:none;transition:opacity 0.4s';
+  document.body.appendChild(flash);
+  setTimeout(() => { flash.style.opacity = '0'; setTimeout(() => flash.remove(), 400); }, 150);
+}
+
+
+
+// ── 캠페인 클리어 캐릭터 ──
+let campaignClearedChars = new Set();
+
+async function loadCampaignClearedChars() {
+  if (!currentUser) return;
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}&select=campaign_cleared`, { headers: SB_HEADERS });
+    const rows = await r.json();
+    if (rows.length && rows[0].campaign_cleared) {
+      rows[0].campaign_cleared.split(',').filter(Boolean).forEach(id => campaignClearedChars.add(id));
+    }
+  } catch(e) {}
+}
+
+async function addCampaignClearChar(charId) {
+  campaignClearedChars.add(charId);
+  if (!currentUser) return;
+  const str = Array.from(campaignClearedChars).join(',');
+  try {
+    await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
+      method: 'PATCH',
+      headers: SB_HEADERS,
+      body: JSON.stringify({ campaign_cleared: str })
+    });
+    currentUser.campaign_cleared = str;
+    buildCharSelect(); // 선택창 업데이트
+  } catch(e) { console.error('save cleared error', e); }
+}
+
+// ── 캠페인 강화 ──
+let campaignBuffs = []; // 적용된 버프 목록
+// 일반 강화 풀
+const FORGE_NORMAL = [
+  { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' },
+  { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' },
+  { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' },
+  { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' },
+  { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' },
+  { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' },
+];
+// 특수 강화 풀 (각 1회만 등장)
+const FORGE_SPECIAL = [
+  { id: 'vampire', label: '흡혈', desc: '접촉 공격에 25% 흡혈 추가', icon: '🧛', type: 'special' },
+  { id: 'satellite', label: '위성', desc: '주변 공전하는 별 3개 (+2 데미지)', icon: '⭐', type: 'special' },
+  { id: 'poison', label: '독', desc: '피해 +20% 단 3초에 걸쳐 데미지 적용', icon: '☠️', type: 'special' },
+];
+
+function getForgeOptions() {
+  // 특수 강화 중 아직 안 나온 것
+  const availableSpecial = FORGE_SPECIAL.filter(s => !campaignBuffs.includes(s.id));
+  const pool = [];
+  // 3개 뽑기
+  for (let i = 0; i < 3; i++) {
+    const roll = Math.random();
+    if (roll < 0.3 && availableSpecial.length > 0) {
+      // 특수 강화
+      const pick = availableSpecial.splice(Math.floor(Math.random() * availableSpecial.length), 1)[0];
+      pool.push(pick);
+    } else {
+      // 일반 강화 (중복 가능)
+      pool.push(FORGE_NORMAL[Math.floor(Math.random() * FORGE_NORMAL.length)]);
+    }
+  }
+  return pool;
+}
+
+function openForge() {
+  // 어느 강화인지 파악
+  const forgeId = !(window._clearedStages||[]).includes('forge') ? 'forge'
+    : !(window._clearedStages||[]).includes('forge2') ? 'forge2'
+    : 'forge3';
+  window._currentForgeId = forgeId;
+  if ((window._clearedStages||[]).includes(forgeId + '-done') || (window._clearedStages||[]).includes(forgeId)) {
+    alert('이미 강화를 완료했습니다!');
+    return;
+  }
+  const modal = document.getElementById('forgeModal');
+  const optionsEl = document.getElementById('forgeOptions');
+  if (!modal || !optionsEl) return;
+  optionsEl.innerHTML = '';
+  const opts = getForgeOptions();
+  opts.forEach(opt => {
+    const isSpecial = opt.type === 'special';
+    const alreadyHas = isSpecial && campaignBuffs.includes(opt.id);
+    const btn = document.createElement('button');
+    btn.style.cssText = `display:flex;align-items:center;gap:14px;padding:14px 16px;background:${alreadyHas?'#2a2a2a':'#222'};border:2px solid ${isSpecial?'#9b30ff':'#cc6600'};border-radius:12px;cursor:${alreadyHas?'default':'pointer'};text-align:left;width:100%;opacity:${alreadyHas?'0.5':'1'};transition:background 0.15s`;
+    btn.innerHTML = `
+      <span style="font-size:26px">${opt.icon}</span>
+      <div style="flex:1">
+        <div style="font-weight:900;color:${isSpecial?'#cc88ff':'#ffd700'};font-size:15px">${opt.label}${isSpecial?' <span style="font-size:10px;background:#9b30ff;color:#fff;border-radius:4px;padding:1px 5px;vertical-align:middle">특수</span>':''}${alreadyHas?' ✓':''}</div>
+        <div style="color:#aaa;font-size:12px;margin-top:2px">${opt.desc}</div>
+      </div>
+    `;
+    if (!alreadyHas) {
+      btn.onclick = () => selectForgeBuff(opt.id);
+      btn.onmouseover = () => { btn.style.background = '#333'; };
+      btn.onmouseout = () => { btn.style.background = '#222'; };
+    }
+    optionsEl.appendChild(btn);
+  });
+  modal.style.display = 'flex';
+}
+
+function selectForgeBuff(buffId) {
+  // 특수 강화는 1회만, 일반 강화는 중복 가능
+  const isSpecial = FORGE_SPECIAL.some(s => s.id === buffId);
+  if (isSpecial && campaignBuffs.includes(buffId)) return;
+  campaignBuffs.push(buffId);
+  window._clearedStages = window._clearedStages || [];
+  const stageId = window._currentForgeId || 'forge';
+  if (!window._clearedStages.includes(stageId)) {
+    window._clearedStages.push(stageId);
+  }
+  if (stageId === 'forge') {
+    markStageCleared('forge');
+    setTimeout(() => unlockStage('1-4'), 300);
+  } else if (stageId === 'forge2') {
+    markStageCleared('forge2');
+    setTimeout(() => unlockStage('1-7'), 300);
+  } else if (stageId === 'forge3') {
+    markStageCleared('forge3');
+    setTimeout(() => unlockStage('boss1'), 300);
+  }
+  saveCampaignProgress();
+  closeForge();
+}
+
+function closeForge() {
+  const modal = document.getElementById('forgeModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function applyCampaignBuffs(fighter) {
+  if (!fighter || !campaignBuffs.length) return;
+  campaignBuffs.forEach(buffId => {
+    // HP 강화
+    if (buffId === 'hp_10') { fighter.hp += 10; fighter.maxHp += 10; }
+    if (buffId === 'hp_20') { fighter.hp += 20; fighter.maxHp += 20; }
+    if (buffId === 'hp_30') { fighter.hp += 30; fighter.maxHp += 30; }
+    // 공격 강화
+    if (buffId === 'dmg_5') { fighter.def = { ...fighter.def, touchDmg: fighter.def.touchDmg + 5 }; }
+    if (buffId === 'dmg_7') { fighter.def = { ...fighter.def, touchDmg: fighter.def.touchDmg + 7 }; }
+    if (buffId === 'dmg_9') { fighter.def = { ...fighter.def, touchDmg: fighter.def.touchDmg + 9 }; }
+    // 특수: 흡혈
+    if (buffId === 'vampire') { fighter._campaignVampire = true; }
+    // 특수: 위성
+    if (buffId === 'satellite') { fighter._campaignSatellite = true; fighter._satAngle = 0; }
+    // 특수: 독
+    if (buffId === 'poison') { fighter._campaignPoison = true; }
+  });
 }
 
 // ── 예측 순위표 ──
@@ -1236,6 +1917,13 @@ function buildCharSelect() {
       if (window._charSelectFirstVisit) {
         card.classList.add('card-slide');
       }
+      if (campaignClearedChars.has(def.id)) {
+        card.style.position = 'relative';
+        const gb = document.createElement('span');
+        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+        gb.textContent = '🏆';
+        card.appendChild(gb);
+      }
       card.addEventListener('click', () => toggleChar(def.id));
       card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
       card.innerHTML = `
@@ -1269,6 +1957,13 @@ function buildCharSelect() {
       if (window._charSelectFirstVisit) {
         card.classList.add('card-thud');
       }
+      if (campaignClearedChars.has(def.id)) {
+        card.style.position = 'relative';
+        const gb = document.createElement('span');
+        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+        gb.textContent = '🏆';
+        card.appendChild(gb);
+      }
       card.addEventListener('click', () => toggleChar(def.id));
       card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
       card.innerHTML = `
@@ -1299,6 +1994,13 @@ function buildCharSelect() {
       card.style.cssText += 'border-color:#c8a800;box-shadow:0 0 12px rgba(200,168,0,0.6);';
       if (window._charSelectFirstVisit) {
         card.classList.add('card-super-thud');
+      }
+      if (campaignClearedChars.has(def.id)) {
+        card.style.position = 'relative';
+        const gb = document.createElement('span');
+        gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+        gb.textContent = '🏆';
+        card.appendChild(gb);
       }
       card.addEventListener('click', () => toggleChar(def.id));
       card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
@@ -2384,6 +3086,22 @@ function startBattle() {
   const dmgDealt = new Array(fighters.length).fill(0);
   gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], shake: 0, over: false, winner: null };
 
+  // 캠페인 버프 적용
+  if (window._campaignMode && campaignChar) {
+    const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
+    if (playerFighter) applyCampaignBuffs(playerFighter);
+    // 적 캠페인 버프
+    if (window._campaignEnemyBuff) {
+      const eb = window._campaignEnemyBuff;
+      const enemyFighter = fighters.find(f => f.def.id === eb.id && f.def.id !== campaignChar.id);
+      if (enemyFighter) {
+        if (eb.hpBonus) { enemyFighter.hp += eb.hpBonus; enemyFighter.maxHp += eb.hpBonus; }
+        if (eb.dmgMult) { enemyFighter.def = { ...enemyFighter.def, touchDmg: enemyFighter.def.touchDmg * eb.dmgMult }; }
+      }
+      window._campaignEnemyBuff = null;
+    }
+  }
+
   // 차형준T 랜덤 스텟 결정
   const hyungjunF = fighters.find(f => f.def.id === 'hyungjun');
   if (hyungjunF) {
@@ -3425,6 +4143,28 @@ function update(dt) {
         // 잠든 캐릭터 없음: 타이머 리셋, 자연스럽게 이동
         f.youngoukChargeTimer = 0;
       }
+    }
+
+    // 캠페인 특수 버프 처리
+    if (f._campaignSatellite) {
+      f._satAngle = (f._satAngle || 0) + dt * 0.003;
+      // 위성 충돌 체크 (렌더는 아래서)
+      const satR = 55;
+      enemies.forEach(en => {
+        for (let si = 0; si < 3; si++) {
+          const ang = f._satAngle + (si * Math.PI * 2 / 3);
+          const sx = f.x + Math.cos(ang) * satR;
+          const sy = f.y + Math.sin(ang) * satR;
+          if (!f._satHitCooldown) f._satHitCooldown = [0,0,0];
+          f._satHitCooldown[si] = Math.max(0, (f._satHitCooldown[si]||0) - dt);
+          if (f._satHitCooldown[si] <= 0 && Math.hypot(en.x - sx, en.y - sy) < en.r + 8) {
+            en.lastDmgFrom = idx;
+            applyDmg(en, 2);
+            f._satHitCooldown[si] = 400;
+            spawnParticle(particles, sx, sy, '#ffff00', 4);
+          }
+        }
+      });
     }
 
     // 차형준T 스킬 처리
@@ -5042,6 +5782,27 @@ function update(dt) {
     }
   }
 
+  // 캠페인 독 DoT 처리
+  fighters.forEach(ft => {
+    if (!ft._poisonDots || !ft._poisonDots.length) return;
+    ft._poisonDots = ft._poisonDots.filter(dot => {
+      dot.elapsed += dt;
+      const tickDmg = (dot.total / dot.duration) * dt;
+      ft.hp = Math.max(0, ft.hp - tickDmg);
+      // 0.5초마다 텍스트 표시
+      dot._textTimer = (dot._textTimer || 0) + dt;
+      if (dot._textTimer >= 500 && gameState.dmgTexts) {
+        dot._textTimer = 0;
+        gameState.dmgTexts.push({
+          x: ft.x + (Math.random()-0.5)*16, y: ft.y - ft.r - 4,
+          text: '☠️ ' + (dot.total / 6).toFixed(1),
+          life: 600, maxLife: 600, vy: -0.35, color: '#88ff44', fontSize: 10,
+        });
+      }
+      return dot.elapsed < dot.duration && ft.hp > 0;
+    });
+  });
+
   // 차형준T 네트워크 통제 전자파 처리
   if (!gameState.netWaves) gameState.netWaves = [];
   for (let nwi = gameState.netWaves.length - 1; nwi >= 0; nwi--) {
@@ -5569,6 +6330,24 @@ function applyDmg(f, dmg, attacker) {
   const prevHp = f.hp;
   f.hp = Math.max(0, f.hp - dmg);
   const actualDmg = prevHp - f.hp;
+
+  // 캠페인 흡혈: 공격자가 흡혈 버프 보유 시 회복
+  if (actualDmg > 0 && attacker && attacker._campaignVampire) {
+    const healAmt = actualDmg * 0.25;
+    attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmt);
+    if (gameState && gameState.dmgTexts) gameState.dmgTexts.push({
+      x: attacker.x, y: attacker.y - attacker.r - 14,
+      text: '+' + healAmt.toFixed(1) + ' 🩸', life: 800, maxLife: 800,
+      vy: -0.4, color: '#ff4466', fontSize: 11,
+    });
+  }
+
+  // 캠페인 독: 피해 +20% DoT로 추가 적용
+  if (actualDmg > 0 && attacker && attacker._campaignPoison) {
+    const poisonDmg = actualDmg * 0.2;
+    if (!f._poisonDots) f._poisonDots = [];
+    f._poisonDots.push({ total: poisonDmg, elapsed: 0, duration: 3000 });
+  }
   // 딜량 집계: 누가 데미지를 입었는지 기록 (피해량 총합)
   if (actualDmg > 0 && gameState && gameState.dmgDealt) {
     let dealerIdx = (f.lastDmgFrom !== undefined) ? f.lastDmgFrom : -1;
@@ -7211,6 +7990,30 @@ function render(ctx) {
       ctx.fillText('📢', f.x, f.y - f.r - 18);
     }
 
+    // 캠페인 위성 렌더
+    if (f._campaignSatellite) {
+      const satR = 55;
+      for (let si = 0; si < 3; si++) {
+        const ang = (f._satAngle||0) + (si * Math.PI * 2 / 3);
+        const sx = f.x + Math.cos(ang) * satR;
+        const sy = f.y + Math.sin(ang) * satR;
+        ctx.save();
+        ctx.fillStyle = '#ffff00';
+        ctx.shadowColor = '#ffff00';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 7, 0, Math.PI*2);
+        ctx.fill();
+        // 별 모양
+        ctx.fillStyle = '#fff';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('★', sx, sy);
+        ctx.restore();
+      }
+    }
+
     // 차형준T 코드 조작 파티클
     if (def.id === 'hyungjun' && f._codeParticles && f._codeParticles.length > 0) {
       f._codeParticles.forEach(cp => {
@@ -8173,12 +8976,115 @@ function endGame() {
       return;
     }
     stopGame();
-    if (draw) {
-      document.getElementById('winnerName').textContent = '무승부';
-      document.getElementById('resultText').textContent = '!!';
+    const normalBtns = document.getElementById('normalResultBtns');
+    const campaignBtns = document.getElementById('campaignResultBtns');
+    if (window._campaignMode) {
+      window._campaignMode = false;
+      const playerWon = winner && winner.def.id === campaignChar?.id;
+      const isDraw = draw;
+      if (normalBtns) normalBtns.style.display = 'none';
+      if (campaignBtns) campaignBtns.style.display = 'block';
+      if (isDraw || !playerWon) {
+        document.getElementById('winnerName').textContent = '패배..';
+        document.getElementById('resultText').textContent = '캠페인이 초기화됩니다.';
+        document.getElementById('btn-campaign-next').style.display = 'none';
+        document.getElementById('btn-campaign-back').textContent = '돌아가기';
+        window._campaignJustWon = false;
+        // 초기화 (resetCampaign과 동일)
+        campaignChar = null;
+        campaignBuffs = [];
+        window._clearedStages = [];
+        window._lastClearedStage = null;
+        ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
+          const locked = document.getElementById('stage-' + sid + '-locked');
+          const unlocked = document.getElementById('stage-' + sid);
+          if (sid !== '1-1') {
+            if (locked) locked.style.display = 'block';
+            if (unlocked) unlocked.style.display = 'none';
+          }
+          if (unlocked) {
+            unlocked.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+            const circle = unlocked.querySelector('div');
+            if (circle) {
+              circle.style.opacity = '1';
+              circle.style.cursor = 'pointer';
+              if (sid === '1-1') { circle.style.background = '#f5c518'; circle.style.borderColor = '#c8a800'; }
+              else if (sid === 'forge') { circle.style.background = 'linear-gradient(135deg,#ff8c00,#ffd700)'; circle.style.borderColor = '#cc6600'; }
+              else { circle.style.background = '#4caf50'; circle.style.borderColor = '#2d8a2d'; }
+              circle.onmouseover = function() { this.style.transform = 'scale(1.12)'; };
+              circle.onmouseout = function() { this.style.transform = 'scale(1)'; };
+            }
+            if (sid === 'forge') unlocked.onclick = () => openForge();
+            else unlocked.onclick = () => startCampaignStage(sid);
+          }
+        });
+        saveCampaignProgress();
+      } else {
+        const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '황금비율의 첫경험' };
+        const isBossClear = window._campaignStage === 'boss1';
+        if (isBossClear) {
+          document.getElementById('winnerName').textContent = '🏆 캠페인 완수!';
+          document.getElementById('resultText').textContent = campaignChar ? campaignChar.name + '(으)로 클리어!' : '';
+          document.getElementById('btn-campaign-next').style.display = 'none';
+          document.getElementById('btn-campaign-back').textContent = '메인으로';
+          // 금 뱃지 저장
+          if (campaignChar) addCampaignClearChar(campaignChar.id);
+          // 자동 초기화
+          campaignBuffs = [];
+          window._clearedStages = [];
+          window._lastClearedStage = null;
+          const charToReset = campaignChar;
+          campaignChar = null;
+          saveCampaignProgress();
+          // 노드 초기화 (1-1 제외)
+          ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
+            const locked = document.getElementById('stage-' + sid + '-locked');
+            const unlocked = document.getElementById('stage-' + sid);
+            if (sid !== '1-1') {
+              if (locked) locked.style.display = 'block';
+              if (unlocked) unlocked.style.display = 'none';
+            }
+            if (unlocked) {
+              unlocked.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+              const circle = unlocked.querySelector('div');
+              if (circle) {
+                circle.style.opacity = '1';
+                circle.style.cursor = 'pointer';
+                if (sid === '1-1') { circle.style.background = '#f5c518'; circle.style.borderColor = '#c8a800'; }
+                else if (sid === 'forge' || sid === 'forge2' || sid === 'forge3') { circle.style.background = 'linear-gradient(135deg,#ff8c00,#ffd700)'; circle.style.borderColor = '#cc6600'; }
+                else if (sid === 'boss1') { circle.style.background = '#8b0000'; circle.style.borderColor = '#ff2222'; }
+                else { circle.style.background = '#4caf50'; circle.style.borderColor = '#2d8a2d'; }
+                circle.onmouseover = function() { this.style.transform = 'scale(1.12)'; };
+                circle.onmouseout = function() { this.style.transform = 'scale(1)'; };
+              }
+              if (sid === 'forge' || sid === 'forge2' || sid === 'forge3') unlocked.onclick = () => openForge();
+              else unlocked.onclick = () => startCampaignStage(sid);
+            }
+          });
+        } else {
+          document.getElementById('winnerName').textContent = '스테이지 클리어!';
+          document.getElementById('resultText').textContent = window._campaignStage + ' ' + (stageNames[window._campaignStage] || '');
+          document.getElementById('btn-campaign-next').style.display = 'block';
+        }
+        window._lastClearedStage = window._campaignStage;
+        window._campaignJustWon = true;
+        window._clearedStages = window._clearedStages || [];
+        if (!window._clearedStages.includes(window._campaignStage)) {
+          window._clearedStages.push(window._campaignStage);
+          markStageCleared(window._campaignStage);
+        }
+        saveCampaignProgress();
+      }
     } else {
-      document.getElementById('winnerName').textContent = winner ? winner.def.name : '???';
-      document.getElementById('resultText').textContent = '승리!';
+      if (normalBtns) normalBtns.style.display = 'block';
+      if (campaignBtns) campaignBtns.style.display = 'none';
+      if (draw) {
+        document.getElementById('winnerName').textContent = '무승부';
+        document.getElementById('resultText').textContent = '!!';
+      } else {
+        document.getElementById('winnerName').textContent = winner ? winner.def.name : '???';
+        document.getElementById('resultText').textContent = '승리!';
+      }
     }
     showScreen('result');
   }, 500);
