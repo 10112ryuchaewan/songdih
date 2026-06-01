@@ -489,7 +489,6 @@
 </div>
 
 <script>const _r=Math.random.bind(Math),_hp=Math.hypot.bind(Math),_a2=Math.atan2.bind(Math),_co=Math.cos.bind(Math),_si=Math.sin.bind(Math),_mn=Math.min.bind(Math),_mx=Math.max.bind(Math),_fl=Math.floor.bind(Math),_abs=Math.abs.bind(Math),_rnd=Math.round.bind(Math),_PI2=Math.PI*2;
-function _sp(x,y,c,n){_sp(x,y,c,n);}
 function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.push({x,y,text:t,life:l,maxLife:l,vy:v,color:c,fontSize:s});}
 
 const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.64, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 220, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } } ];
@@ -2636,6 +2635,12 @@ function _spawnNextGundamPart(collectedCount) {
 
 function startBattle() {
  if (selectedChars.length < 2) return;
+ // 이전 모드 플래그 완전 초기화
+ if (!window._campaignMode) window._campaignMode = false;
+ if (!window._predictMode)  window._predictMode  = false;
+ if (!window._onlineMode)   window._onlineMode   = false;
+ window._campaignEnemyBuff  = null;
+ window._campaignEnemyBuffs = null;
  showScreen('battle');
  timeScale = 1; setSpeed(1);
  const predOverlay = document.getElementById('predict-overlay');
@@ -2871,6 +2876,7 @@ function startBattle() {
   _suminDead: false,
   _sumin67Timer: 0,
   _sumin67Active: false,
+  _sumin67Done: false,
   _waving67: false,
   _waving67Timer: 0,
   _waving67Hand: 0,
@@ -3899,7 +3905,7 @@ function update(dt) {
   f.youngoukChargeTimer = 0;
   }
 
-  if (!f.isHyunLifted) f['youngouk급발진Timer'] = _mx(0, (f['youngouk급발진Timer'] || 15000) - dt);
+  if (!f.isHyunLifted) f['youngouk급발진Timer'] = _mx(0, ((isNaN(f['youngouk급발진Timer']) ? 15000 : f['youngouk급발진Timer']) || 15000) - dt);
   if (f['youngouk급발진Timer'] <= 0) {
   f['youngouk급발진Timer'] = 10000 + _r() * 20000;
   const sk2 = f.def.skill2;
@@ -5323,6 +5329,7 @@ function update(dt) {
 
  fighters.forEach((f, fi) => {
  if (!f._waving67 || f._waving67Timer <= 0) return;
+ if (f.hp <= 0) { f._waving67 = false; return; }
  f._waving67Timer = _mx(0, f._waving67Timer - dt);
  f._waving67Hand = (f._waving67Hand || 0) + dt;
  f.vx = 0; f.vy = 0;
@@ -5334,7 +5341,7 @@ function update(dt) {
   f._waving67DmgTimer = 500;
   const dmg = f._waving67DmgPhase % 2 === 0 ? 6 : 7;
   f._waving67DmgPhase++;
-  const suminIdx = fighters.findIndex(ft => ft.def.id === 'sumin' && ft._suminRevived);
+  const suminIdx = fighters.findIndex(ft => ft.def.id === 'sumin' && ft._suminRevived && ft.hp > 0);
   f.lastDmgFrom = suminIdx >= 0 ? suminIdx : fi;
   applyDmg(f, dmg, suminIdx >= 0 ? fighters[suminIdx] : null);
   if (gameState.dmgTexts) _dt(f.x + (_r()-0.5)*20,f.y - f.r - 10,String(dmg),600,-0.5,'#ff6b00',15);
@@ -5344,17 +5351,17 @@ function update(dt) {
   f._waving67 = false;
   f._waving67DmgTimer = 500;
   f._waving67DmgPhase = 0;
-  const _r = (cur, def) => cur >= 9999990 ? def : cur;
-  f.skillCooldown = _r(f.skillCooldown, f.def.skill ? f.def.skill.cooldown : 8000);
-  f.skill2Cooldown = _r(f.skill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown : 10000);
-  f.seungohSkill2Cooldown = _r(f.seungohSkill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown : 13000);
-  f.hyekyungSkill2Cooldown = _r(f.hyekyungSkill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown : 10000);
-  f.hyekyungSkill3Cooldown = _r(f.hyekyungSkill3Cooldown, f.def.skill3 ? f.def.skill3.cooldown : 60000);
-  f.sehwanSkillCooldown = _r(f.sehwanSkillCooldown, f.def.skill ? f.def.skill.cooldown : 20000);
-  f._hyungjunSkillCooldown = _r(f._hyungjunSkillCooldown, 6000);
-  f.jumiSkill2Cooldown = _r(f.jumiSkill2Cooldown, 12000);
-  f._cheoCooldown = _r(f._cheoCooldown, 5000);
-  f.geumBulletCooldown = _r(f.geumBulletCooldown, 10000);
+  const _rc = (cur, def) => cur >= 9999990 ? def : cur;
+  f.skillCooldown = _rc(f.skillCooldown, f.def.skill ? f.def.skill.cooldown : 8000);
+  f.skill2Cooldown = _rc(f.skill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown : 10000);
+  f.seungohSkill2Cooldown = _rc(f.seungohSkill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown : 13000);
+  f.hyekyungSkill2Cooldown = _rc(f.hyekyungSkill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown : 10000);
+  f.hyekyungSkill3Cooldown = _rc(f.hyekyungSkill3Cooldown, f.def.skill3 ? f.def.skill3.cooldown : 60000);
+  f.sehwanSkillCooldown = _rc(f.sehwanSkillCooldown, f.def.skill ? f.def.skill.cooldown : 20000);
+  f._hyungjunSkillCooldown = _rc(f._hyungjunSkillCooldown, 6000);
+  f.jumiSkill2Cooldown = _rc(f.jumiSkill2Cooldown, 12000);
+  f._cheoCooldown = _rc(f._cheoCooldown, 5000);
+  f.geumBulletCooldown = _rc(f.geumBulletCooldown, 10000);
   if ((f['youngouk급발진Timer'] || 0) >= 9999990) f['youngouk급발진Timer'] = 10000 + _r() * 20000;
  }
  });
@@ -6314,6 +6321,7 @@ function applyDmg(f, dmg, attacker) {
 
  if ((f.sleepTimer || 0) >= 0) {
  f.sleepTimer = -1;
+ f.sleepDamageBoosted = false;
  f.sleepNextTimer = 5000 + _r() * 10000;
  const sleepRa = _r() * _PI2;
  f.vx = _co(sleepRa) * BASE_SPEED * (f.speedMult || 1);
@@ -6541,6 +6549,15 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  }
 }
 
+function spawnParticle(arr, x, y, color, n) {
+ const _arr = arr || (gameState && gameState.particles);
+ if (!_arr) return;
+ for (let i = 0; i < (n || 6); i++) {
+  const angle = _r() * _PI2;
+  const spd = _r() * 1.8 + 0.4;
+  _arr.push({ x, y, vx: _co(angle)*spd, vy: _si(angle)*spd, life: 350, maxLife: 350, color, r: _r()*2.5+1 });
+ }
+}
 function _sp(x, y, color, count = 6) {
  const _arr = (typeof particles !== 'undefined' && particles) || (gameState && gameState.particles);
  if (!_arr) return;
@@ -8919,6 +8936,11 @@ function stopGame() {
  if (gameLoop) { cancelAnimationFrame(gameLoop); gameLoop = null; }
  const predOverlay = document.getElementById('predict-overlay');
  if (predOverlay) predOverlay.style.display = 'none';
+ window._campaignMode  = false;
+ window._predictMode   = false;
+ window._onlineMode    = false;
+ window._onlineIsHost  = false;
+ _onlineBattleStarted  = false;
  gameState = null;
 }
 
@@ -9252,7 +9274,11 @@ function _buildCampaignNodes() {
 
   container.appendChild(actDiv);
  });
-
+ // 1-1은 항상 처음부터 열려있음
+ const lk11 = document.getElementById('stage-1-1-locked');
+ const ul11 = document.getElementById('stage-1-1');
+ if (lk11) lk11.style.display = 'none';
+ if (ul11) ul11.style.display = 'block';
 }
 // ── 온라인 PvP ──
 let _onlineRole = null;   // 'host' | 'guest'
@@ -9348,18 +9374,22 @@ function _onRoomUpdate(payload) {
   const room = payload.new;
   if (!room) return;
 
-  if (room.status === 'selecting' && _onlineRole === 'host') {
-    document.getElementById('onlineWaitStatus').textContent = `${room.guest_id} 입장! 캐릭터 선택 중...`;
+  // Host: 게스트 입장 감지 → 캐릭터 선택 화면
+  if (room.status === 'selecting' && _onlineRole === 'host' && !_onlineBattleStarted) {
+    const waitEl = document.getElementById('onlineWaitStatus');
+    if (waitEl) waitEl.textContent = (room.guest_id || '상대방') + ' 입장! 캐릭터 선택 중...';
     _startOnlineSelecting();
   }
 
+  // 둘 다 캐릭터 선택 완료 → 전투 시작
   if (room.host_char && room.guest_char && room.status === 'selecting') {
     _onlineOpponentChar = _onlineRole === 'host' ? room.guest_char : room.host_char;
     _startOnlineBattle(room);
   }
 
-  if (room.status === 'playing' && room.game_state && _onlineRole === 'guest') {
-    _applyRemoteState(room.game_state);
+  // Guest: Host가 playing 상태로 바꾼 후 game_state 수신
+  if (room.status === 'playing' && _onlineRole === 'guest') {
+    if (room.game_state) _applyRemoteState(room.game_state);
   }
 }
 
@@ -9421,8 +9451,10 @@ async function _selectOnlineChar(def, card) {
   });
 }
 
+let _onlineBattleStarted = false;
 function _startOnlineBattle(room) {
-  if (_onlineSubscription) { clearInterval(_onlineSubscription); _onlineSubscription = null; }
+  if (_onlineBattleStarted) return; // 중복 방지
+  _onlineBattleStarted = true;
   document.getElementById('onlineSelecting').style.display = 'none';
   const hostChar = room.host_char;
   const guestChar = room.guest_char;
@@ -9431,7 +9463,21 @@ function _startOnlineBattle(room) {
     : [guestChar, hostChar];
   window._onlineMode = true;
   window._onlineIsHost = (_onlineRole === 'host');
-  startBattle();
+
+  if (_onlineRole === 'host') {
+    // Host: status를 playing으로 업데이트 후 전투 시작
+    fetch(`${SB_URL}/rest/v1/rooms?code=eq.${_onlineRoom}`, {
+      method: 'PATCH',
+      headers: SB_HEADERS,
+      body: JSON.stringify({ status: 'playing', updated_at: new Date().toISOString() })
+    }).then(() => startBattle());
+  } else {
+    // Guest: 폴링 유지하면서 화면만 전환 (게임 루프는 _applyRemoteState에서 시작)
+    // startBattle 호출하지 않음 - _applyRemoteState가 처리
+    showScreen('battle');
+    document.getElementById('speed-btns').style.display = 'none';
+    document.getElementById('cam-ui').style.display = 'none';
+  }
 }
 
 // Host: 매 프레임 상태 전송
@@ -9496,8 +9542,8 @@ function _applyRemoteState(state) {
     buildBattleUI(gameState.fighters);
     const ctx = document.getElementById('gameCanvas').getContext('2d');
     function guestLoop() {
-      if (!window._onlineMode) return;
-      render(ctx);
+      if (!window._onlineMode || !gameState) return;
+      try { render(ctx); } catch(e) {}
       requestAnimationFrame(guestLoop);
     }
     requestAnimationFrame(guestLoop);
@@ -9527,6 +9573,7 @@ async function cancelRoom() {
   if (_onlineSubscription) { clearInterval(_onlineSubscription); _onlineSubscription = null; }
   if (_onlineChannel) { _onlineChannel.unsubscribe(); _onlineChannel = null; }
   _onlineRoom = null; _onlineRole = null; _onlineMyChar = null;
+  _onlineBattleStarted = false;
   window._onlineMode = false;
   openOnline();
 }
