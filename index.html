@@ -151,6 +151,12 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  @keyframes broFadeOut {
+    0%   { opacity:0; transform:translate(-50%,-50%) scale(0.7); }
+    15%  { opacity:1; transform:translate(-50%,-50%) scale(1.05); }
+    70%  { opacity:1; transform:translate(-50%,-50%) scale(1); }
+    100% { opacity:0; transform:translate(-50%,-50%) scale(1.1); }
+  }
   @keyframes starFloat {
     0% { transform: translateY(0) scale(1); opacity: 1; }
     100% { transform: translateY(-80px) scale(0.3); opacity: 0; }
@@ -366,7 +372,7 @@
   <!-- 초원 스크롤 맵 -->
   <div style="position:relative;width:100%;max-width:900px;border-radius:16px;border:2px solid #3a7a1a;overflow:hidden">
     <div id="campaignScroll" style="overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;padding-bottom:10px">
-      <div style="position:relative;width:3200px;height:280px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 42%,#5a9e3a 42%,#4a8a2a 100%)">
+      <div style="position:relative;width:4300px;height:280px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 42%,#5a9e3a 42%,#4a8a2a 100%)">
         <!-- 구름 -->
         <div style="position:absolute;top:20px;left:80px;background:#fff;border-radius:50px;width:90px;height:28px;opacity:0.9"></div>
         <div style="position:absolute;top:30px;left:280px;background:#fff;border-radius:50px;width:70px;height:22px;opacity:0.9"></div>
@@ -379,7 +385,7 @@
         <div style="position:absolute;bottom:50px;left:700px;text-align:center"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #2d7a1b;margin:0 auto"></div><div style="width:8px;height:12px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:1020px;text-align:center"><div style="width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid #2d7a1b;margin:0 auto"></div><div style="width:10px;height:18px;background:#8b4513;margin:0 auto"></div></div>
         <!-- 점선 연결 SVG -->
-        <svg style="position:absolute;inset:0;width:3200px;height:280px;pointer-events:none" xmlns="http://www.w3.org/2000/svg">
+        <svg style="position:absolute;inset:0;width:3400px;height:280px;pointer-events:none" xmlns="http://www.w3.org/2000/svg">
           <line x1="172" y1="130" x2="338" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="408" y1="130" x2="578" y2="130" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="648" y1="130" x2="808" y2="130" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
@@ -401,6 +407,24 @@
           <line x1="2318" y1="130" x2="2448" y2="130" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <!-- 강화3 → Boss -->
           <line x1="2518" y1="130" x2="2648" y2="130" stroke="rgba(255,50,50,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- Boss → 고급강화 -->
+          <line x1="2748" y1="130" x2="2828" y2="130" stroke="rgba(192,132,252,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 고급강화 → 2-1 -->
+          <line x1="2892" y1="130" x2="3048" y2="130" stroke="rgba(100,180,255,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 2-1 → 2-2 -->
+          <line x1="3148" y1="130" x2="3248" y2="130" stroke="rgba(100,180,255,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 2-2 → 2-3 -->
+          <line x1="3348" y1="130" x2="3448" y2="130" stroke="rgba(100,180,255,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
+          <!-- 2-3 → 교회 (위) -->
+          <line x1="3548" y1="115" x2="3648" y2="70" stroke="rgba(200,168,64,0.8)" stroke-width="2" stroke-dasharray="8,5"/>
+          <!-- 2-3 → 화장실 (아래) -->
+          <line x1="3548" y1="145" x2="3648" y2="190" stroke="rgba(100,180,180,0.8)" stroke-width="2" stroke-dasharray="8,5"/>
+          <!-- 교회 → 2-4 -->
+          <line x1="3748" y1="70" x2="3848" y2="115" stroke="rgba(100,180,255,0.7)" stroke-width="2" stroke-dasharray="8,5"/>
+          <!-- 화장실 → 2-4 -->
+          <line x1="3748" y1="190" x2="3848" y2="145" stroke="rgba(100,180,255,0.7)" stroke-width="2" stroke-dasharray="8,5"/>
+          <!-- 2-4 → 2-5 -->
+          <line x1="3948" y1="130" x2="4048" y2="130" stroke="rgba(100,180,255,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
         </svg>
         <!-- 1-1 (항상 열림) -->
         <div id="stage-1-1" onclick="startCampaignStage('1-1')" style="position:absolute;left:100px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:80px">
@@ -513,7 +537,84 @@
         </div>
         <div id="stage-boss1" onclick="startCampaignStage('boss1')" style="display:none;position:absolute;left:2680px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
           <div style="width:62px;height:62px;border-radius:50%;background:#8b0000;border:4px solid #ff2222;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#ffcccc;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">BOSS</div>
-          <div style="font-size:9px;font-weight:700;color:#ff6666;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">황금비율의 첫경험</div>
+          <div style="font-size:9px;font-weight:700;color:#ff6666;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">거짓된 산성 확산자</div>
+        </div>
+        <!-- 보스 → 고급강화 → 2-1 연결선 -->
+        <!-- 고급 강화 잠김 -->
+        <div id="stage-forge-adv-locked" style="display:none;position:absolute;left:2860px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:70px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px">고급강화</div>
+        </div>
+        <!-- 고급 강화 열림 -->
+        <div id="stage-forge-adv" onclick="openForgeAdv()" style="display:none;position:absolute;left:2860px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:70px">
+          <div class="forge-adv-circle" style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#7b2fff,#c084fc);border:4px solid #5a00cc;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(123,47,255,0.6);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">💎</div>
+          <div style="font-size:9px;font-weight:700;color:#c084fc;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">고급강화</div>
+        </div>
+        <!-- 2-1 잠김 -->
+        <div id="stage-2-1-locked" style="display:none;position:absolute;left:3080px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#7090bb;border:3px solid #4a6a9f;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#aaddff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">2-1</div>
+        </div>
+        <!-- 2-1 열림 -->
+        <div id="stage-2-1" onclick="startCampaignStage('2-1')" style="display:none;position:absolute;left:3080px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4a7abf;border:4px solid #2a5a9f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-1</div>
+          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">느껴지는 시선</div>
+        </div>
+        <!-- 2-2 잠김 -->
+        <div id="stage-2-2-locked" style="display:none;position:absolute;left:3280px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#7090bb;border:3px solid #4a6a9f;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#aaddff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">2-2</div>
+        </div>
+        <!-- 2-2 열림 -->
+        <div id="stage-2-2" onclick="startCampaignStage('2-2')" style="display:none;position:absolute;left:3280px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4a7abf;border:4px solid #2a5a9f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-2</div>
+          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">비트가 흐르는 비상구</div>
+        </div>
+        <!-- 2-3 잠김 -->
+        <div id="stage-2-3-locked" style="display:none;position:absolute;left:3480px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#7090bb;border:3px solid #4a6a9f;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#aaddff;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,0.5)">2-3</div>
+        </div>
+        <!-- 2-3 열림 -->
+        <div id="stage-2-3" onclick="startCampaignStage('2-3')" style="display:none;position:absolute;left:3480px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4a7abf;border:4px solid #2a5a9f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-3</div>
+          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">어딘가 축축한 농구장</div>
+        </div>
+        <!-- 갈림길: 교회 (위) -->
+        <div id="stage-church-locked" style="display:none;position:absolute;left:3680px;top:60px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:52px;height:52px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px">교회</div>
+        </div>
+        <div id="stage-church" onclick="enterChurch()" style="display:none;position:absolute;left:3680px;top:60px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:80px">
+          <div style="width:56px;height:56px;border-radius:50%;background:#f5e6c8;border:4px solid #c8a840;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">⛪</div>
+          <div style="font-size:9px;font-weight:700;color:#c8a840;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">교회</div>
+        </div>
+        <!-- 2-5 황금비의 첫경험 -->
+        <div id="stage-2-5-locked" style="display:none;position:absolute;left:4080px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#7090bb;border:3px solid #4a6a9f;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#aaddff;margin-top:3px">2-5</div>
+        </div>
+        <div id="stage-2-5" onclick="startCampaignStage('2-5')" style="display:none;position:absolute;left:4080px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4a7abf;border:4px solid #2a5a9f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-5</div>
+          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">황금비의 첫경험</div>
+        </div>
+        <!-- 2-4 소음의 정점 -->
+        <div id="stage-2-4-locked" style="display:none;position:absolute;left:3880px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#7090bb;border:3px solid #4a6a9f;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#aaddff;margin-top:3px">2-4</div>
+        </div>
+        <div id="stage-2-4" onclick="startCampaignStage('2-4')" style="display:none;position:absolute;left:3880px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#4a7abf;border:4px solid #2a5a9f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-4</div>
+          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">소음의 정점</div>
+        </div>
+        <!-- 갈림길: 화장실 (아래) -->
+        <div id="stage-toilet-locked" style="display:none;position:absolute;left:3680px;top:200px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+          <div style="width:52px;height:52px;border-radius:50%;background:#aaa;border:3px solid #888;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto">🔒</div>
+          <div style="font-size:9px;color:#fff;margin-top:3px">화장실</div>
+        </div>
+        <div id="stage-toilet" onclick="enterToilet()" style="display:none;position:absolute;left:3680px;top:200px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:80px">
+          <div style="width:56px;height:56px;border-radius:50%;background:#e0eeee;border:4px solid #7ab;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">🚽</div>
+          <div style="font-size:9px;font-weight:700;color:#5aa;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">화장실</div>
         </div>
       </div>
     </div>
@@ -615,7 +716,7 @@ const CHARACTER_DEFS = [
     group: 'STUDENTS',
     name: '한수민',
     color: '#2e8b3a',
-    hp: 140,
+    hp: 70,
     radius: 28,
     touchDmg: 0,
     skill: {
@@ -627,13 +728,15 @@ const CHARACTER_DEFS = [
       label: '쳐웃기',
       barColor: '#ff6b00',
       used: false,
-      triggerRange: 90,    // 상대가 이 거리 이내면 발동
+      triggerRange: 90,
       waveDmg: 4.8,
       waveCount: 12,
       waveSpeed: 8.4,
-      knockback: 19.98,  // BASE_SPEED * 6
-      wallDmgTimer: 300,   // 0.3초간 벽 데미지
+      knockback: 19.98,
+      wallDmgTimer: 300,
       wallDmg: 1,
+      transformThreshold: 30,
+      cheoCooldown: 5000,
     }
   },
   {
@@ -776,12 +879,12 @@ const CHARACTER_DEFS = [
     name: '정영훈',
     group: 'STUDENTS',
     color: '#d45c00',
-    hp: 180,
+    hp: 160,
     radius: 28,
     touchDmg: 0,
     bounceKnock: true,   // 근접 시 아래로 튕기기
     skill: {
-      cooldown: 10000,
+      cooldown: 12000,
       label: '걸레질',
       barColor: '#4a90d9',
     }
@@ -838,6 +941,13 @@ const CHARACTER_DEFS = [
       cooldown: 999999,
       label: '수면 유도',
       barColor: '#9b70d0',
+    },
+    skill2: {
+      label: '급발진',
+      barColor: '#cc0000',
+      waveDmg: 4.8 * 1.5,   // 쳐웃기 1.5배
+      waveSpeed: 8.4 * 1.5,
+      waveCount: 5,
     }
   }
 ,
@@ -1177,7 +1287,7 @@ function openCampaign() {
   const row = document.getElementById('campaignCharRow');
   if (!row) return;
   row.innerHTML = '';
-  CHARACTER_DEFS.filter(d => d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && !d.isDummy).forEach(def => {
+  CHARACTER_DEFS.filter(d => d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'CAMPAIGN_NPC' && !d.isDummy || (d.group === 'CAMPAIGN_NPC' && unlockedHidden.has(d.id))).forEach(def => {
     const card = document.createElement('div');
     card.className = 'char-card';
     card.style.cursor = 'pointer';
@@ -1221,6 +1331,7 @@ function startCampaignStage(stageId) {
     const enemyDef = CHARACTER_DEFS.find(d => d.id === 'taeyoung');
     if (!enemyDef) return;
     selectedChars = [campaignChar.id, enemyDef.id];
+    window._campaignEnemyBuff = { id: 'taeyoung', hpBonus: -32 }; // 기본 160의 20% 감소
     startBattle();
   } else if (stageId === '1-2') {
     window._campaignMode = true;
@@ -1228,6 +1339,7 @@ function startCampaignStage(stageId) {
     const enemyDef = CHARACTER_DEFS.find(d => d.id === 'chaewan');
     if (!enemyDef) return;
     selectedChars = [campaignChar.id, enemyDef.id];
+    window._campaignEnemyBuff = { id: 'chaewan', hpBonus: -36 }; // 기본 180의 20% 감소
     startBattle();
   } else if (stageId === '1-3') {
     window._campaignMode = true;
@@ -1235,6 +1347,7 @@ function startCampaignStage(stageId) {
     const enemyDef = CHARACTER_DEFS.find(d => d.id === 'sumin');
     if (!enemyDef) return;
     selectedChars = [campaignChar.id, enemyDef.id];
+    window._campaignEnemyBuff = { id: 'sumin', hpBonus: -14 }; // 기본 70의 20% 감소
     startBattle();
   } else if (stageId === '1-4') {
     window._campaignMode = true;
@@ -1271,7 +1384,30 @@ function startCampaignStage(stageId) {
     selectedChars = [campaignChar.id, 'youngouk']; startBattle();
   } else if (stageId === 'boss1') {
     window._campaignMode = true; window._campaignStage = 'boss1';
-    window._campaignEnemyBuff = { id: 'eunju', hpBonus: 210 };
+    window._campaignEnemyBuff = { id: 'jumi', hpBonus: 100 };
+    selectedChars = [campaignChar.id, 'jumi']; startBattle();
+  } else if (stageId === '2-1') {
+    window._campaignMode = true; window._campaignStage = '2-1';
+    window._campaignEnemyBuff = { id: 'hyekyung', hpBonus: 30, cdMult: 0.8 };
+    selectedChars = [campaignChar.id, 'hyekyung']; startBattle();
+  } else if (stageId === '2-2') {
+    window._campaignMode = true; window._campaignStage = '2-2';
+    window._campaignEnemyBuff = { id: 'taeyeon', startAwakened: true };
+    selectedChars = [campaignChar.id, 'taeyeon']; startBattle();
+  } else if (stageId === '2-3') {
+    window._campaignMode = true; window._campaignStage = '2-3';
+    window._campaignEnemyBuff = { id: 'younghoon', hpBonus: 20, cdMult: 0.4 };
+    selectedChars = [campaignChar.id, 'younghoon']; startBattle();
+  } else if (stageId === '2-4') {
+    window._campaignMode = true; window._campaignStage = '2-4';
+    window._campaignEnemyBuffs = [
+      { id: 'taeyoung', hpBonus: 20 },
+      { id: 'sumin',    hpBonus: 20 },
+    ];
+    selectedChars = [campaignChar.id, 'taeyoung', 'sumin']; startBattle();
+  } else if (stageId === '2-5') {
+    window._campaignMode = true; window._campaignStage = '2-5';
+    window._campaignEnemyBuff = { id: 'eunju', startTriangle: true, touchDmgSet: 5 };
     selectedChars = [campaignChar.id, 'eunju']; startBattle();
   }
 }
@@ -1283,6 +1419,7 @@ async function saveCampaignProgress() {
     charId: campaignChar ? campaignChar.id : null,
     clearedStages: window._clearedStages || [],
     buffs: campaignBuffs || [],
+    stage2Unlocked: window._stage2Unlocked || false,
   };
   try {
     await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
@@ -1302,6 +1439,69 @@ function loadCampaignProgress() {
       campaignChar = CHARACTER_DEFS.find(d => d.id === progress.charId) || null;
     }
     window._clearedStages = progress.clearedStages || [];
+    window._stage2Unlocked = progress.stage2Unlocked || false;
+    // 2스테이지 노드 복원
+    if (window._stage2Unlocked) {
+      const lockedAdv = document.getElementById('stage-forge-adv-locked');
+      const openAdv = document.getElementById('stage-forge-adv');
+      if (lockedAdv) lockedAdv.style.display = 'none';
+      if (openAdv) openAdv.style.display = 'block';
+      // 고급강화 클리어됐으면 2-1도 해금
+      if ((window._clearedStages||[]).includes('forge-adv')) {
+        const locked21 = document.getElementById('stage-2-1-locked');
+        const open21 = document.getElementById('stage-2-1');
+        if (locked21) locked21.style.display = 'none';
+        if (open21) open21.style.display = 'block';
+        // 클리어 표시
+        const advNode = document.getElementById('stage-forge-adv');
+        if (advNode) {
+          const circle = advNode.querySelector('.forge-adv-circle');
+          if (circle) { circle.style.background = 'linear-gradient(135deg,#444,#888)'; circle.textContent = '✅'; }
+        }
+      }
+      // 2-1 클리어됐으면 2-2 해금
+      if ((window._clearedStages||[]).includes('2-1')) {
+        const locked22 = document.getElementById('stage-2-2-locked');
+        const open22 = document.getElementById('stage-2-2');
+        if (locked22) locked22.style.display = 'none';
+        if (open22) open22.style.display = 'block';
+      }
+      // 2-2 클리어됐으면 2-3 해금
+      if ((window._clearedStages||[]).includes('2-2')) {
+        const locked23 = document.getElementById('stage-2-3-locked');
+        const open23 = document.getElementById('stage-2-3');
+        if (locked23) locked23.style.display = 'none';
+        if (open23) open23.style.display = 'block';
+      }
+      // 갈림길 방문 후 2-4 해금 복원
+      if ((window._clearedStages||[]).includes('church') || (window._clearedStages||[]).includes('toilet')) {
+        const lk24 = document.getElementById('stage-2-4-locked');
+        const ul24 = document.getElementById('stage-2-4');
+        if (lk24) lk24.style.display = 'none';
+        if (ul24) ul24.style.display = 'block';
+      }
+      // 2-4 클리어됐으면 2-5 해금
+      if ((window._clearedStages||[]).includes('2-4')) {
+        const lk25 = document.getElementById('stage-2-5-locked');
+        const ul25 = document.getElementById('stage-2-5');
+        if (lk25) lk25.style.display = 'none';
+        if (ul25) ul25.style.display = 'block';
+      }
+      // 2-3 클리어됐으면 갈림길 해금
+      if ((window._clearedStages||[]).includes('2-3')) {
+        ['church','toilet'].forEach(id => {
+          const lk = document.getElementById('stage-'+id+'-locked');
+          const ul = document.getElementById('stage-'+id);
+          if (lk) lk.style.display = 'none';
+          if (ul) ul.style.display = 'block';
+          // 이미 방문했으면 클리어 표시
+          if ((window._clearedStages||[]).includes(id)) {
+            const circle = ul ? ul.querySelector('div') : null;
+            if (circle) circle.textContent = '✅';
+          }
+        });
+      }
+    }
     campaignBuffs = progress.buffs || [];
     // 클리어된 스테이지 노드 열기 + 완료 표시
     (window._clearedStages || []).forEach(stageId => {
@@ -1505,36 +1705,153 @@ const FORGE_NORMAL = [
   { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' },
   { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' },
   { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' },
+  { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' },
+  { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' },
+  { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' },
 ];
 // 특수 강화 풀 (각 1회만 등장)
 const FORGE_SPECIAL = [
   { id: 'vampire', label: '흡혈', desc: '접촉 공격에 25% 흡혈 추가', icon: '🧛', type: 'special' },
   { id: 'satellite', label: '위성', desc: '주변 공전하는 별 3개 (+2 데미지)', icon: '⭐', type: 'special' },
   { id: 'poison', label: '독', desc: '피해 +20% 단 3초에 걸쳐 데미지 적용', icon: '☠️', type: 'special' },
+  { id: 'goonmod', label: 'Goonmod Activate', desc: '3초마다 5데미지 회색 공 발사', icon: '🩶', type: 'special' },
+  { id: 'qty_over_quality', label: '질보다 양', desc: '전체 데미지 -20% 대신 스킬 쿨타임 -40%', icon: '⚡⚡', type: 'special' },
+  { id: 'absolute_zero', label: '절대 영도', desc: '오오라 생성 — 적 이동속도 -50%, 4초 노출 시 10데미지', icon: '❄️', type: 'special' },
 ];
 
 function getForgeOptions() {
   // 특수 강화 중 아직 안 나온 것
   const availableSpecial = FORGE_SPECIAL.filter(s => !campaignBuffs.includes(s.id));
+  // 일반 강화 풀 (셔플해서 중복 없이 뽑기)
+  const normalPool = [...FORGE_NORMAL].sort(() => Math.random() - 0.5);
+  const pickedIds = new Set();
   const pool = [];
-  // 3개 뽑기
+
   for (let i = 0; i < 3; i++) {
     const roll = Math.random();
     if (roll < 0.3 && availableSpecial.length > 0) {
-      // 특수 강화
+      // 특수 강화 (이미 중복 없음)
       const pick = availableSpecial.splice(Math.floor(Math.random() * availableSpecial.length), 1)[0];
-      pool.push(pick);
-    } else {
-      // 일반 강화 (중복 가능)
-      pool.push(FORGE_NORMAL[Math.floor(Math.random() * FORGE_NORMAL.length)]);
+      if (!pickedIds.has(pick.id)) {
+        pickedIds.add(pick.id);
+        pool.push(pick);
+        continue;
+      }
     }
+    // 일반 강화: 이미 뽑힌 id 제외하고 선택
+    const available = normalPool.filter(n => !pickedIds.has(n.id));
+    if (available.length === 0) break; // 더 뽑을 게 없으면 종료
+    const pick = available[Math.floor(Math.random() * available.length)];
+    pickedIds.add(pick.id);
+    pool.push(pick);
   }
   return pool;
 }
 
+function unlock24() {
+  const lk = document.getElementById('stage-2-4-locked');
+  const ul = document.getElementById('stage-2-4');
+  if (ul && ul.style.display === 'block') return; // 이미 해금
+  if (lk) lk.style.display = 'none';
+  if (ul) { ul.style.display = 'block'; ul.style.animation = 'starFloat 0.5s ease-out'; }
+  const scroll = document.getElementById('campaignScroll');
+  if (scroll) setTimeout(() => scroll.scrollTo({ left: 9999, behavior: 'smooth' }), 300);
+}
+
+function enterChurch() {
+  if ((window._clearedStages||[]).includes('church')) { alert('이미 방문했습니다!'); return; }
+  if (!window._clearedStages) window._clearedStages = [];
+  window._clearedStages.push('church');
+  // 초코파이: 최대체력 +20
+  campaignBuffs.push('choco_pie');
+  saveCampaignProgress();
+  // 연출
+  const el = document.createElement('div');
+  el.textContent = '🍫 초코파이 획득! 최대체력 +20';
+  el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#c8843a;font-size:24px;font-weight:900;text-align:center;z-index:9999;pointer-events:none;text-shadow:0 0 12px rgba(200,130,58,0.8);animation:broFadeOut 2.5s ease-out forwards';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+  // 교회 노드 클리어 표시
+  const ch = document.getElementById('stage-church');
+  if (ch) ch.querySelector('div').textContent = '✅';
+  // 2-4 해금
+  unlock24();
+}
+
+function enterToilet() {
+  if ((window._clearedStages||[]).includes('toilet')) { alert('이미 방문했습니다!'); return; }
+  if (!window._clearedStages) window._clearedStages = [];
+  window._clearedStages.push('toilet');
+  const hasGoon = campaignBuffs.includes('goonmod');
+  if (hasGoon) {
+    // 이미 있으면 효과 두배: goonmod 하나 더 추가 (발사 쿨타임 절반)
+    campaignBuffs.push('goonmod_boost');
+  } else {
+    campaignBuffs.push('goonmod');
+  }
+  saveCampaignProgress();
+  // 연출
+  const msg = hasGoon ? '🚽 Goonmod 효과 2배!' : '🚽 Goonmod Activate!';
+  const el = document.createElement('div');
+  el.textContent = msg;
+  el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#5aa;font-size:24px;font-weight:900;text-align:center;z-index:9999;pointer-events:none;text-shadow:0 0 12px rgba(80,180,180,0.8);animation:broFadeOut 2.5s ease-out forwards';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+  const tl = document.getElementById('stage-toilet');
+  if (tl) tl.querySelector('div').textContent = '✅';
+  // 2-4 해금
+  unlock24();
+}
+
+function openForgeAdv() {
+  if ((window._clearedStages||[]).includes('forge-adv')) {
+    alert('이미 고급 강화를 완료했습니다!');
+    return;
+  }
+  window._currentForgeId = 'forge-adv';
+  const modal = document.getElementById('forgeModal');
+  const optionsEl = document.getElementById('forgeOptions');
+  const titleEl = document.getElementById('forgeTitle');
+  if (!modal || !optionsEl) return;
+  if (titleEl) titleEl.textContent = '💎 고급 강화';
+  optionsEl.innerHTML = '';
+  // 특수강화만 제시 (아직 안 선택한 것 3개 or 전체)
+  const available = FORGE_SPECIAL.filter(s => !campaignBuffs.includes(s.id));
+  const pool = available.length > 0
+    ? available.sort(() => Math.random()-0.5).slice(0, Math.min(3, available.length))
+    : FORGE_SPECIAL.slice().sort(() => Math.random()-0.5).slice(0, 3);
+  pool.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.style.cssText = 'display:flex;align-items:center;gap:10px;text-align:left;padding:12px 16px;border:2px solid #7b2fff;background:rgba(123,47,255,0.1)';
+    btn.innerHTML = `<span style="font-size:24px">${opt.icon}</span><span><b style="color:#c084fc">${opt.label}</b><br><span style="font-size:11px;color:#aaa">${opt.desc}</span></span>`;
+    btn.onclick = () => {
+      campaignBuffs.push(opt.id);
+      if (!(window._clearedStages||[]).includes('forge-adv')) {
+        window._clearedStages = window._clearedStages || [];
+        window._clearedStages.push('forge-adv');
+      }
+      saveCampaignProgress();
+      // 2-1 해금
+      const locked21 = document.getElementById('stage-2-1-locked');
+      const open21 = document.getElementById('stage-2-1');
+      if (locked21) locked21.style.display = 'none';
+      if (open21) { open21.style.display = 'block'; open21.style.animation = 'starFloat 0.5s ease-out'; }
+      // 고급강화 노드 클리어 표시
+      const advNode = document.getElementById('stage-forge-adv');
+      if (advNode) {
+        const circle = advNode.querySelector('.forge-adv-circle');
+        if (circle) { circle.style.background = 'linear-gradient(135deg,#444,#888)'; circle.textContent = '✅'; }
+      }
+      modal.style.display = 'none';
+    };
+    optionsEl.appendChild(btn);
+  });
+  modal.style.display = 'flex';
+}
+
 function openForge(forgeId) {
   forgeId = forgeId || 'forge';
-  console.log('openForge called:', forgeId, 'clearedStages:', window._clearedStages);
   window._currentForgeId = forgeId;
   if ((window._clearedStages||[]).includes(forgeId)) {
     alert('이미 강화를 완료했습니다!');
@@ -1607,13 +1924,44 @@ function applyCampaignBuffs(fighter) {
     if (buffId === 'dmg_5') { fighter.def = { ...fighter.def, touchDmg: fighter.def.touchDmg + 5 }; }
     if (buffId === 'dmg_7') { fighter.def = { ...fighter.def, touchDmg: fighter.def.touchDmg + 7 }; }
     if (buffId === 'dmg_9') { fighter.def = { ...fighter.def, touchDmg: fighter.def.touchDmg + 9 }; }
+    // 회피 강화 (중첩: dodgeChance에 누적)
+    if (buffId === 'dodge_3') { fighter._dodgeChance = (fighter._dodgeChance || 0) + 0.03; }
+    if (buffId === 'dodge_5') { fighter._dodgeChance = (fighter._dodgeChance || 0) + 0.05; }
+    if (buffId === 'dodge_7') { fighter._dodgeChance = (fighter._dodgeChance || 0) + 0.07; }
     // 특수: 흡혈
     if (buffId === 'vampire') { fighter._campaignVampire = true; }
     // 특수: 위성
     if (buffId === 'satellite') { fighter._campaignSatellite = true; fighter._satAngle = 0; }
     // 특수: 독
     if (buffId === 'poison') { fighter._campaignPoison = true; }
+    // 특수: Goonmod
+    if (buffId === 'goonmod') { fighter._campaignGoonmod = true; fighter._goonmodTimer = 3000; }
+    // 특수: 질보다 양
+    if (buffId === 'qty_over_quality') { fighter._qtyOverQuality = true; }
+    // 특수: 절대 영도
+    if (buffId === 'absolute_zero') { fighter._absoluteZero = true; }
+    // 교회: 초코파이 (최대체력 +20)
+    if (buffId === 'choco_pie') { fighter.hp += 20; fighter.maxHp += 20; }
+    // 화장실: Goonmod 두배 (쿨타임 절반)
+    if (buffId === 'goonmod_boost') { fighter._goonmodTimer = Math.min(fighter._goonmodTimer || 3000, 1500); fighter._goonmodHalfCd = true; }
   });
+  // 질보다 양: 모든 스킬 쿨타임 40% 감소
+  if (fighter._qtyOverQuality) {
+    fighter.skillCooldown         *= 0.6;
+    fighter.skill2Cooldown        *= 0.6;
+    fighter.seungohSkill2Cooldown *= 0.6;
+    fighter.hyekyungSkill2Cooldown *= 0.6;
+    fighter.hyekyungSkill3Cooldown *= 0.6;
+    fighter.sehwanSkillCooldown   *= 0.6;
+    fighter._hyungjunSkillCooldown *= 0.6;
+    fighter.jumiSkill2Cooldown    *= 0.6;
+    fighter.tiananmenCooldown     *= 0.6;
+    fighter.geumBulletCooldown    *= 0.6;
+    // def.skill.cooldown도 감소 (이후 쿨타임 리셋 기준값)
+    if (fighter.def.skill)  fighter.def = { ...fighter.def, skill:  { ...fighter.def.skill,  cooldown: Math.round(fighter.def.skill.cooldown  * 0.6) } };
+    if (fighter.def.skill2) fighter.def = { ...fighter.def, skill2: { ...fighter.def.skill2, cooldown: Math.round(fighter.def.skill2.cooldown * 0.6) } };
+    if (fighter.def.skill3) fighter.def = { ...fighter.def, skill3: { ...fighter.def.skill3, cooldown: Math.round(fighter.def.skill3.cooldown * 0.6) } };
+  }
 }
 
 // ── 예측 순위표 ──
@@ -1950,8 +2298,8 @@ function buildCharSelect() {
     row.appendChild(groupRow);
   });
 
-  // CAMPAIGN_NPC 섹션 (이주미T 등)
-  const campaignNpcDefs = CHARACTER_DEFS.filter(d => d.group === 'CAMPAIGN_NPC' && !d.isDummy);
+  // CAMPAIGN_NPC 섹션 (이주미T 등) — 해금된 경우만
+  const campaignNpcDefs = CHARACTER_DEFS.filter(d => d.group === 'CAMPAIGN_NPC' && unlockedHidden.has(d.id) && !d.isDummy);
   if (campaignNpcDefs.length > 0) {
     const cnSep = document.createElement('div');
     cnSep.style.cssText = 'width:100%;border-top:1px dashed #5b8c5a;margin:12px 0 6px;';
@@ -2692,6 +3040,60 @@ function showGeumCutscene(def) {
   }, 6500);
 }
 
+function showJumiUnlockOverlay(def) {
+  const overlay = document.getElementById('unlockOverlay');
+  const box = document.getElementById('unlockBox');
+  const name = document.getElementById('unlockName');
+  const icon = document.getElementById('unlockIcon');
+  if (!overlay || !box) return;
+
+  name.textContent = def.name + ' 해금!!';
+  icon.style.background = def.color;
+  icon.textContent = def.name;
+
+  // 특별 서브텍스트
+  let sub = document.getElementById('unlockSub');
+  if (!sub) {
+    sub = document.createElement('div');
+    sub.id = 'unlockSub';
+    sub.style.cssText = 'color:#7abf00;font-size:13px;margin-top:8px;font-style:italic;';
+    box.appendChild(sub);
+  }
+  sub.textContent = '📖 캠페인 보스 격파 보상 — 화학 선생님 등장!';
+
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => {
+    overlay.style.background = 'rgba(0,20,0,0.92)';
+    requestAnimationFrame(() => {
+      box.style.borderColor = '#7abf00';
+      box.style.boxShadow = '0 0 32px rgba(122,191,0,0.6)';
+      box.style.transform = 'scale(1)';
+      box.style.opacity = '1';
+    });
+  });
+
+  // 화학 파티클
+  const chems = ['⚗️','🧪','🧫','💚','H₂SO₄','NaCl','NH₃'];
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.textContent = chems[i % chems.length];
+      el.style.cssText = `position:fixed;font-size:${14+Math.random()*18}px;
+        left:${5+Math.random()*90}%;top:${5+Math.random()*90}%;
+        z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none;color:#7abf00;`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1800);
+    }, i * 120);
+  }
+
+  // 오버레이 닫힐 때 원래 스타일 복원
+  const origClose = window._jumiOverlayCloseFn;
+  window._jumiOverlayCloseFn = () => {
+    if (box) { box.style.borderColor = ''; box.style.boxShadow = ''; }
+    if (sub) sub.textContent = '';
+  };
+}
+
 function showUnlockOverlay(def) {
   const overlay = document.getElementById('unlockOverlay');
   const box = document.getElementById('unlockBox');
@@ -2732,6 +3134,7 @@ function closeUnlockOverlay() {
   const overlay = document.getElementById('unlockOverlay');
   const box = document.getElementById('unlockBox');
   if (!overlay || !box) return;
+  if (window._jumiOverlayCloseFn) { window._jumiOverlayCloseFn(); window._jumiOverlayCloseFn = null; }
   box.style.transform = 'scale(0.8)';
   box.style.opacity = '0';
   overlay.style.background = 'rgba(0,0,0,0)';
@@ -2911,16 +3314,18 @@ function fireAbsorbedSkill(f, abs, enemies, fighters, particles, gs) {
   if (sk2 === 'skill2' && targetCharDef.skill2) f.def = { ...f.def, skill: targetCharDef.skill2 };
   if (sk2 === 'skill3' && targetCharDef.skill3) f.def = { ...f.def, skill: targetCharDef.skill3 };
 
-  activateSkill(f, fIdx2, null);
-
-  // 복원
-  f.def = origDef;
-  f.skillUseCount = origSkillUseCount;
+  try {
+    activateSkill(f, fIdx2, null);
+  } finally {
+    // 예외 발생해도 반드시 복원
+    f.def = origDef;
+    f.skillUseCount = origSkillUseCount;
+  }
 }
 
 const _gundamPartNames = ['머리','가슴','왼팔','오른팔','왼다리','오른다리','검'];
 function _spawnNextGundamPart(collectedCount) {
-  if (!gameState || collectedCount >= _gundamPartNames.length) return;
+  if (!gameState || !gameState.gundamParts || collectedCount >= _gundamPartNames.length) return;
   const name = _gundamPartNames[collectedCount];
   const canvas = document.getElementById('gameCanvas');
   const W = canvas ? canvas.width : 800;
@@ -3061,8 +3466,6 @@ function startBattle() {
       // 한수민 전용
       sayQueue: [],          // 지연 발사 큐: [{delay, word}]
       skill2Used: false,     // 쳐웃기 사용 여부
-      ngActive: false,       // NG 스킬 활성화 여부
-      ngFireTimer: 0,        // NG 발사 쿨타임
       skill2Cooldown: 10000, // 트름/기타 스킬2 쿨타임
       poisonTimer: 0,        // 중독 남은 시간
       poisonDmgTimer: 0,     // 중독 틱 타이머
@@ -3085,6 +3488,7 @@ function startBattle() {
       seungohSkill2Cooldown: 13000,
       seungohAction: null,     // 현재 행동 {type, phase, timer, target, count}
       // 김혜경T
+      incheonSpeedTimer: 0,
       hyekyungSkill2Cooldown: 10000,
       hyekyungSkill3Cooldown: 60000,
       hyekyungStaring: false,   // 염탐 중
@@ -3099,6 +3503,7 @@ function startBattle() {
       youngoukChargeTimer: 0,  // 돌진 대기 타이머
       youngoukChargeTarget: null,
       youngoukCharging: false,
+      youngouk급발진Timer: 10000 + Math.random() * 20000, // 10~30초
       // 수면
       sleepTimer: -1,          // -1=깨어있음, >0=수면 남은 시간
       sleepNextTimer: 5000 + Math.random() * 10000, // 5~15초 (시작부터 여유)
@@ -3140,7 +3545,7 @@ function startBattle() {
       // 홍은주T
       eunjuFibA: 1,          // 피보나치 이전 값
       eunjuFibB: 1,          // 피보나치 현재 값 (현재 데미지)
-      eunjuFirstHit: new Set(), // 처음 데미지 입힌 캐릭터 id 집합
+      eunjuFirstHit: [], // 처음 데미지 입힌 캐릭터 id 집합
       eunjuCharmTargets: [], // 경직 중인 캐릭터 [{ref, timer, dmgTimer}]
       eunjuTriangleDone: false, // 삼각비 발동 여부
       // 서연후 아이템
@@ -3165,13 +3570,7 @@ function startBattle() {
       gundamLeapTarget: null,
       bleedTimer: 0,
       bleedDmgTimer: 0,
-      // 김혜경
-      hyeSkill2Cooldown: 20000,
-      hyeSkill3Timer: 60000,   // 1분 후 주사기
-      hyeGazeActive: false,
-      hyeGazeTimer: 0,
-      hyeGazeTarget: null,
-      hyeGazeDmgTimer: 0,
+      // 김혜경 (hyekyungSkill2/3Cooldown이 실제 사용 변수)
       hyeStealthTimer: 0,      // 거무잡잡 타이머
       hyeSyringes: [],         // 날아가는 주사기들
       // 정준우 분노
@@ -3192,12 +3591,30 @@ function startBattle() {
       hyunCornerMoving: false,    // 구석으로 이동 중
       hyunCornerPos: null,        // 목표 구석 위치
       hyunCornerTimer: 0,         // 구석 도달 타이머
-      hyunTriedCorners: new Set(), // 시도한 구석 인덱스
+      hyunTriedCorners: [], // 시도한 구석 인덱스
       hyunFreezeTimer: 0,         // 발사 후 1초 정지
-      hyunSkill1Paused: false,    // 기지개 쿨타임 정지
       // 유채완
       hairDropTimer: 0,      // 머리카락 드롭 쿨타임 (데미지 받을 때)
       hairAutoTimer: 2000,   // 자동 드롭 2초마다
+      // 한수민 변신 후
+      _cheoCooldown: 0,
+      _suminRevived: false,
+      _suminDead: false,
+      _sumin67Timer: 0,      // 부활 후 2초 대기
+      _sumin67Active: false, // 67 스킬 발동 중
+      _waving67: false,      // 67에 걸린 상태
+      _waving67Timer: 0,     // 남은 시간
+      _waving67Hand: 0,      // 손 흔들기 애니 타이머
+      _waving67DmgTimer: 500, // 0.5초마다 데미지
+      _waving67DmgPhase: 0,  // 0=6데미지, 1=7데미지 교대
+      // 이주미
+      jumiQuizFired: false,
+      // 서연후
+      rushTrail: [],
+      // 독 DoT
+      _poisonDots: [],
+      // 이현철 올라가 스킬1 정지
+      hyunSkill1Paused: false,
     };
   }
 
@@ -3234,22 +3651,45 @@ function startBattle() {
   const greenHairs = []; // 유채완 회복용 초록 머리카락
 
   const dmgDealt = new Array(fighters.length).fill(0);
-  gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], shake: 0, over: false, winner: null };
+  gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], shake: 0, over: false, winner: null };
 
   // 캠페인 버프 적용
   if (window._campaignMode && campaignChar) {
     const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
     if (playerFighter) applyCampaignBuffs(playerFighter);
     // 적 캠페인 버프
-    if (window._campaignEnemyBuff) {
-      const eb = window._campaignEnemyBuff;
+    // 단일/다중 적 버프 통합 처리
+    const _enemyBuffList = window._campaignEnemyBuffs || (window._campaignEnemyBuff ? [window._campaignEnemyBuff] : []);
+    _enemyBuffList.forEach(eb => {
       const enemyFighter = fighters.find(f => f.def.id === eb.id && f.def.id !== campaignChar.id);
-      if (enemyFighter) {
-        if (eb.hpBonus) { enemyFighter.hp += eb.hpBonus; enemyFighter.maxHp += eb.hpBonus; }
-        if (eb.dmgMult) { enemyFighter.def = { ...enemyFighter.def, touchDmg: enemyFighter.def.touchDmg * eb.dmgMult }; }
+      if (!enemyFighter) return;
+      if (eb.hpBonus) { enemyFighter.hp = Math.max(1, enemyFighter.hp + eb.hpBonus); enemyFighter.maxHp = Math.max(1, enemyFighter.maxHp + eb.hpBonus); }
+      if (eb.dmgMult) { enemyFighter.def = { ...enemyFighter.def, touchDmg: enemyFighter.def.touchDmg * eb.dmgMult }; }
+      if (eb.startAwakened) {
+        enemyFighter.awakened = true;
+        enemyFighter.awakeningActive = false;
+        enemyFighter.speedMult = 1.4;
+        enemyFighter.skillCooldown = 4000;
+        enemyFighter.wingProgress = 1;
       }
-      window._campaignEnemyBuff = null;
-    }
+      if (eb.startTriangle) {
+        enemyFighter.eunjuTriangleDone = true;
+        if (gameState) gameState.eunjuTriangle = true;
+      }
+      if (eb.touchDmgSet !== undefined) {
+        enemyFighter.def = { ...enemyFighter.def, touchDmg: eb.touchDmgSet };
+      }
+      if (eb.cdMult) {
+        enemyFighter.skillCooldown         *= eb.cdMult;
+        enemyFighter.hyekyungSkill2Cooldown *= eb.cdMult;
+        enemyFighter.hyekyungSkill3Cooldown *= eb.cdMult;
+        if (enemyFighter.def.skill)  enemyFighter.def = { ...enemyFighter.def, skill:  { ...enemyFighter.def.skill,  cooldown: Math.round(enemyFighter.def.skill.cooldown  * eb.cdMult) } };
+        if (enemyFighter.def.skill2) enemyFighter.def = { ...enemyFighter.def, skill2: { ...enemyFighter.def.skill2, cooldown: Math.round(enemyFighter.def.skill2.cooldown * eb.cdMult) } };
+        if (enemyFighter.def.skill3) enemyFighter.def = { ...enemyFighter.def, skill3: { ...enemyFighter.def.skill3, cooldown: Math.round(enemyFighter.def.skill3.cooldown * eb.cdMult) } };
+      }
+    });
+    window._campaignEnemyBuff = null;
+    window._campaignEnemyBuffs = null;
   }
 
   // 차형준T 랜덤 스텟 결정
@@ -3366,7 +3806,8 @@ function update(dt) {
     if (!f.awakeningActive && !(f.def.id === 'giwon' && f.tidalActive) && !f.def.isDummy && !(f.def.id === 'yeonhoo' && f.yeonhooItem === '광속질주')) {
       const hairMult = f.hairSlow || 1.0;
       const tidalMult = (f.def && f.def.id === 'giwon' && f.tidalActive) ? 3.0 : 1.0;
-      const targetSpd = BASE_SPEED * (f.speedMult || 1) * (f.inGear ? 0.8 : 1.0) * hairMult * tidalMult;
+      const azMult = f._azSlow ? 0.5 : 1.0;
+      const targetSpd = BASE_SPEED * (f.speedMult || 1) * (f.inGear ? 0.8 : 1.0) * hairMult * tidalMult * azMult;
       const curSpd = Math.hypot(f.vx, f.vy);
       if (curSpd > 0.05) {
         const diff = curSpd - targetSpd;
@@ -3952,12 +4393,12 @@ function update(dt) {
     if (f.def.id === 'junjoo' || f.nojunwoo) {
       if (f.dodgeFlicker > 0) f.dodgeFlicker -= dt;
       if (f.nojunwooAnim > 0) f.nojunwooAnim -= dt;
-      // 매초 분노 2 자동 생성
+      // 매초 분노 3 자동 생성
       if (!f.nojunwoo) {
         if (!f.isHyunLifted) f.rageAutoTimer = (f.rageAutoTimer || 0) + dt;
         if (f.rageAutoTimer >= 1000) {
           f.rageAutoTimer -= 1000;
-          f.rage = Math.min(100, (f.rage || 0) + 1);
+          f.rage = Math.min(100, (f.rage || 0) + 3);
           if (f.rage >= 100 && !f.nojunwoo) {
             f.nojunwoo = true;
             f.ragePhase = 2;
@@ -4295,13 +4736,39 @@ function update(dt) {
         // 잠든 캐릭터 없음: 타이머 리셋, 자연스럽게 이동
         f.youngoukChargeTimer = 0;
       }
+
+      // 급발진 스킬 (10~30초마다)
+      if (!f.isHyunLifted) f['youngouk급발진Timer'] = Math.max(0, (f['youngouk급발진Timer'] || 15000) - dt);
+      if (f['youngouk급발진Timer'] <= 0) {
+        f['youngouk급발진Timer'] = 10000 + Math.random() * 20000;
+        const sk2 = f.def.skill2;
+        // 쳐웃기 1.5배 음파 5개
+        for (let w = 0; w < 5; w++) {
+          soundwaves.push({
+            x: f.x, y: f.y, r: f.r,
+            speed: (sk2 ? sk2.waveSpeed : 12.6) + w * 1.8,
+            life: 800,
+            dmg: sk2 ? sk2.waveDmg : 7.2,
+            knockback: BASE_SPEED * 9,
+            wallDmgTimer: 300,
+            owner: idx,
+            hit: new Set(),
+          });
+        }
+        spawnParticle(particles, f.x, f.y, '#cc0000', 20);
+        if (gameState.dmgTexts) gameState.dmgTexts.push({
+          x: f.x, y: f.y - f.r - 18,
+          text: '급발진!!!', life: 1200, maxLife: 1200,
+          vy: -0.5, color: '#cc0000', fontSize: 18,
+        });
+      }
     }
 
     // 캠페인 특수 버프 처리
     if (f._campaignSatellite) {
       f._satAngle = (f._satAngle || 0) + dt * 0.003;
       // 위성 충돌 체크 (렌더는 아래서)
-      const satR = 55;
+      const satR = 85;
       enemies.forEach(en => {
         for (let si = 0; si < 3; si++) {
           const ang = f._satAngle + (si * Math.PI * 2 / 3);
@@ -4311,10 +4778,63 @@ function update(dt) {
           f._satHitCooldown[si] = Math.max(0, (f._satHitCooldown[si]||0) - dt);
           if (f._satHitCooldown[si] <= 0 && Math.hypot(en.x - sx, en.y - sy) < en.r + 8) {
             en.lastDmgFrom = idx;
-            applyDmg(en, 2);
+            applyDmg(en, 4);
             f._satHitCooldown[si] = 400;
             spawnParticle(particles, sx, sy, '#ffff00', 4);
           }
+        }
+      });
+    }
+
+    // Goonmod: 3초마다 회색 공 발사
+    if (f._campaignGoonmod && f.hp > 0) {
+      f._goonmodTimer = Math.max(0, (f._goonmodTimer || 3000) - dt);
+      if (f._goonmodTimer <= 0) {
+        f._goonmodTimer = f._goonmodHalfCd ? 1500 : 3000;
+        const aliveGoon = enemies.filter(e => e.hp > 0);
+        if (aliveGoon.length > 0) {
+          const tgt = aliveGoon.reduce((a,b) => Math.hypot(a.x-f.x,a.y-f.y)<Math.hypot(b.x-f.x,b.y-f.y)?a:b);
+          const ang = Math.atan2(tgt.y - f.y, tgt.x - f.x);
+          if (!gameState.goonBalls) gameState.goonBalls = [];
+          gameState.goonBalls.push({
+            x: f.x, y: f.y,
+            vx: Math.cos(ang) * 5, vy: Math.sin(ang) * 5,
+            r: 10, ownerId: idx, dmg: 5, life: 3000,
+          });
+          spawnParticle(particles, f.x, f.y, '#888', 6);
+        }
+      }
+    }
+
+    // 절대 영도 오오라
+    if (f._absoluteZero && f.hp > 0) {
+      const auraR = (f.r || 28) * 3.5;
+      if (!f._azExposed) f._azExposed = {}; // { fi: 누적시간(ms) }
+      enemies.forEach((en, ei) => {
+        if (en.hp <= 0) return;
+        const dist = Math.hypot(en.x - f.x, en.y - f.y);
+        const inside = dist < auraR + en.r;
+        if (inside) {
+          // 이동속도 50% 감소
+          en._azSlow = true;
+          // 노출 시간 누적
+          f._azExposed[ei] = (f._azExposed[ei] || 0) + dt;
+          if (f._azExposed[ei] >= 4000) {
+            // 4초 누적 → 10 데미지 + 타이머 리셋
+            en.lastDmgFrom = idx;
+            applyDmg(en, 10, f);
+            f._azExposed[ei] = 0;
+            spawnParticle(particles, en.x, en.y, '#aaddff', 10);
+            if (gameState.dmgTexts) gameState.dmgTexts.push({
+              x: en.x, y: en.y - en.r - 12,
+              text: '❄️ -10', life: 800, maxLife: 800,
+              vy: -0.4, color: '#aaddff', fontSize: 13,
+            });
+          }
+        } else {
+          // 오오라 밖이면 누적 리셋 및 슬로우 해제
+          f._azExposed[ei] = 0;
+          en._azSlow = false;
         }
       });
     }
@@ -4565,10 +5085,23 @@ function update(dt) {
             f.jumiBindTimer = 0;
             f.jumiQuizActive = false;
             f.jumiQuizFired = false;
+            // 이주미 이동 재개 (랜덤 방향)
+            const jra = Math.random() * Math.PI * 2;
+            f.vx = Math.cos(jra) * BASE_SPEED * (f.speedMult || 1);
+            f.vy = Math.sin(jra) * BASE_SPEED * (f.speedMult || 1);
+            // 오답이 아닐 때 타겟도 재개
+            if (!wrong) {
+              const bra = Math.random() * Math.PI * 2;
+              bt.vx = Math.cos(bra) * BASE_SPEED * (bt.speedMult || 1);
+              bt.vy = Math.sin(bra) * BASE_SPEED * (bt.speedMult || 1);
+            }
           }
         } else {
           // 비정상 상태 정리
           f.jumiBindTarget = null;
+          const jra2 = Math.random() * Math.PI * 2;
+          f.vx = Math.cos(jra2) * BASE_SPEED * (f.speedMult || 1);
+          f.vy = Math.sin(jra2) * BASE_SPEED * (f.speedMult || 1);
         }
       }
 
@@ -4576,26 +5109,34 @@ function update(dt) {
       const jumiIsBusy = !!(f.jumiBindTarget && (f.jumiBindApproaching || f.jumiBindTimer > 0));
 
       // 스킬1: 염산 플라스크 투척
-      if (f.skillCooldown <= 0 && !jumiIsBusy && enemies.length > 0) {
+      const aliveEn4Jumi = enemies.filter(e => e.hp > 0);
+      if (f.skillCooldown <= 0 && !jumiIsBusy && aliveEn4Jumi.length > 0) {
         f.skillCooldown = f.def.skill.cooldown;
-        const tgt = enemies.filter(e => e.hp > 0).reduce((a, b) =>
+        const tgt = aliveEn4Jumi.reduce((a, b) =>
           Math.hypot(a.x-f.x,a.y-f.y) < Math.hypot(b.x-f.x,b.y-f.y) ? a : b);
-        if (tgt) {
-          // 포물선 투척: 속도 계산
-          const dx = tgt.x - f.x, dy = tgt.y - f.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const spd = 5;
-          if (!gameState.jumiFlasks) gameState.jumiFlasks = [];
-          gameState.jumiFlasks.push({
-            x: f.x, y: f.y,
-            vx: (dx / dist) * spd,
-            vy: (dy / dist) * spd - 2, // 약간 위로 던짐
-            gravity: 0.08,
-            ownerId: fighters.indexOf(f),
-            r: 8, life: 2000, broken: false,
-          });
-          spawnParticle(particles, f.x, f.y, '#7abf00', 6);
-        }
+        const dx = tgt.x - f.x, dy = tgt.y - f.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        // 거리에 따라 속도 조정 (항상 닿도록)
+        const travelTime = Math.max(600, dist * 5); // ms
+        const spd = dist / (travelTime / 16); // 프레임당 픽셀
+        const spdCapped = Math.min(Math.max(spd, 3), 10);
+        if (!gameState.jumiFlasks) gameState.jumiFlasks = [];
+        gameState.jumiFlasks.push({
+          x: f.x, y: f.y,
+          vx: (dx / dist) * spdCapped,
+          vy: (dy / dist) * spdCapped - 1.5,
+          gravity: 0.06,
+          ownerId: fighters.indexOf(f),
+          r: 8,
+          life: travelTime * 1.5, // 충분히 긴 수명
+          maxLife: travelTime * 1.5,
+        });
+        spawnParticle(particles, f.x, f.y, '#7abf00', 6);
+        if (gameState.dmgTexts) gameState.dmgTexts.push({
+          x: f.x, y: f.y - f.r - 12,
+          text: '⚗️ 염산!', life: 700, maxLife: 700,
+          vy: -0.3, color: '#7abf00', fontSize: 11,
+        });
       }
 
       // 스킬2: 화학식 속박
@@ -5868,73 +6409,106 @@ function update(dt) {
     }
   });
 
-  // 한수민 쳐웃기 자동 발동 체크
+  // 한수민 67 스킬 (부활 후 2초 뒤)
   fighters.forEach((f, idx) => {
-    if (f.def.id !== 'sumin') return;
-    if (f.skill2Used) return;
-    if (f.hp > f.maxHp * 0.5) return;
-    const aliveEn2 = fighters.filter((_, i) => i !== idx && fighters[i].hp > 0);
-    if (aliveEn2.length === 0) return;
-    const nearEn = aliveEn2.reduce((a,b) => Math.hypot(a.x-f.x,a.y-f.y)<Math.hypot(b.x-f.x,b.y-f.y)?a:b);
-    const dist2 = Math.hypot(nearEn.x - f.x, nearEn.y - f.y);
-    if (dist2 < (f.def.skill2 ? f.def.skill2.triggerRange : 90)) {
-      // 발동!
-      f.skill2Used = true;
-      f.ngActive = true;
-      f.ngFireTimer = 0;
-      f.laughText = { timer: 1200 }; // 텍스트 표시 시간
-      const sk2 = f.def.skill2;
-      const waveCount = 5;
-      for (let w = 0; w < waveCount; w++) {
-        soundwaves.push({
-          x: f.x, y: f.y,
-          r: f.r,
-          speed: (sk2 ? sk2.waveSpeed : 7) + w * 1.2,
-          life: 800,
-          dmg: sk2 ? sk2.waveDmg : 4,
-          knockback: BASE_SPEED * 6,
-          wallDmgTimer: 300,
-          owner: idx,
-          hit: new Set(),
+    if (f.def.id !== 'sumin' || !f._suminRevived || f.hp <= 0) return;
+
+    // 67 대기 타이머
+    if ((f._sumin67Timer || 0) > 0) {
+      f._sumin67Timer = Math.max(0, f._sumin67Timer - dt);
+      if (f._sumin67Timer <= 0 && !f._sumin67Active && !f._sumin67Done) {
+        // 67 스킬 발동!
+        f._sumin67Active = true;
+        f._sumin67ActiveTimer = 3000; // 3초간 효과
+        // 모든 적에게 67 적용
+        fighters.forEach((ft, fi) => {
+          if (fi === idx || ft.hp <= 0) return;
+          ft._waving67 = true;
+          ft._waving67Timer = 3000;
+          ft._waving67Hand = 0;
         });
+        // "67~" 텍스트 이펙트
+        fighters.forEach((ft, fi) => {
+          if (fi === idx || ft.hp <= 0) return;
+          if (gameState.dmgTexts) gameState.dmgTexts.push({
+            x: ft.x, y: ft.y - ft.r - 20,
+            text: '67~', life: 2000, maxLife: 2000,
+            vy: -0.15, color: '#ff6b00', fontSize: 18,
+          });
+        });
+        spawnParticle(particles, f.x, f.y, '#ff6b00', 20);
       }
-      spawnParticle(particles, f.x, f.y, '#ff6b00', 20);
     }
+
+    // 67 발동 중 타이머 감소
+    if (f._sumin67Active) {
+      f._sumin67ActiveTimer = Math.max(0, (f._sumin67ActiveTimer || 0) - dt);
+      if (f._sumin67ActiveTimer <= 0) {
+        f._sumin67Active = false;
+        f._sumin67Done = true;
+        f._cheoCooldown = 0; // 67 끝나면 쳐웃기 즉시 사용
+      }
+    }
+  });
+
+  // 67에 걸린 캐릭터 처리
+  fighters.forEach((f, fi) => {
+    if (!f._waving67 || f._waving67Timer <= 0) return;
+    f._waving67Timer = Math.max(0, f._waving67Timer - dt);
+    f._waving67Hand = (f._waving67Hand || 0) + dt;
+    f.vx = 0; f.vy = 0; // 이동 불가
+
+    // 0.5초마다 6, 7 데미지 번갈아
+    if (!f._waving67DmgTimer) f._waving67DmgTimer = 500;
+    if (!f._waving67DmgPhase) f._waving67DmgPhase = 0;
+    f._waving67DmgTimer -= dt;
+    if (f._waving67DmgTimer <= 0) {
+      f._waving67DmgTimer = 500;
+      const dmg = f._waving67DmgPhase % 2 === 0 ? 6 : 7;
+      f._waving67DmgPhase++;
+      // 한수민 인덱스 찾기
+      const suminIdx = fighters.findIndex(ft => ft.def.id === 'sumin' && ft._suminRevived);
+      f.lastDmgFrom = suminIdx >= 0 ? suminIdx : fi;
+      applyDmg(f, dmg, suminIdx >= 0 ? fighters[suminIdx] : null);
+      if (gameState.dmgTexts) gameState.dmgTexts.push({
+        x: f.x + (Math.random()-0.5)*20, y: f.y - f.r - 10,
+        text: String(dmg), life: 600, maxLife: 600,
+        vy: -0.5, color: '#ff6b00', fontSize: 15,
+      });
+    }
+
+    if (f._waving67Timer <= 0) {
+      f._waving67 = false;
+      f._waving67DmgTimer = 0;
+      f._waving67DmgPhase = 0;
+    }
+  });
+
+  // 한수민 쳐웃기 5초 쿨타임 주기 발동 (부활 후에만)
+  fighters.forEach((f, idx) => {
+    if (f.def.id !== 'sumin' || f.hp <= 0 || !f._suminRevived) return;
+    if (!f._cheoCooldown) f._cheoCooldown = 0;
+    f._cheoCooldown = Math.max(0, f._cheoCooldown - dt);
+    if (f._cheoCooldown > 0) return;
+    f._cheoCooldown = 5000;
+    // 변신 후(부활 후) 위력 30% 감소
+    const isRevived = !!f._suminRevived;
+    const sk2 = f.def.skill2;
+    const dmgMult = isRevived ? 0.7 : 1.0;
+    f.laughText = { timer: 1200 };
+    for (let w = 0; w < 5; w++) {
+      soundwaves.push({ x: f.x, y: f.y, r: f.r,
+        speed: (sk2 ? sk2.waveSpeed : 7) + w * 1.2, life: 800,
+        dmg: (sk2 ? sk2.waveDmg : 4) * dmgMult,
+        knockback: BASE_SPEED * 6,
+        wallDmgTimer: 300, owner: idx, hit: new Set() });
+    }
+    spawnParticle(particles, f.x, f.y, '#ff6b00', 20);
   });
 
   // laughText 타이머
   fighters.forEach(f => {
     if (f.laughText) f.laughText.timer -= dt;
-  });
-
-  // NG 스킬: 쳐웃기 후 활성화, 근접 시 0.3초마다 발사
-  fighters.forEach((f, idx) => {
-    if (f.def.id !== 'sumin' || !f.ngActive) return;
-    if ((f.sleepTimer || 0) >= 0) return; // 수면 중 발사 금지
-    if (f.hp <= 0) return; // 사망 시 NG 발사 안 함
-    if (!f.isHyunLifted) f.ngFireTimer = Math.max(0, f.ngFireTimer - dt);
-    const aliveEnemies = fighters.filter((_, i) => i !== idx && fighters[i].hp > 0);
-    if (aliveEnemies.length === 0) return;
-    const ngEnemy = aliveEnemies.reduce((a,b) => Math.hypot(a.x-f.x,a.y-f.y)<Math.hypot(b.x-f.x,b.y-f.y)?a:b);
-    const dist = Math.hypot(ngEnemy.x - f.x, ngEnemy.y - f.y);
-    const triggerRange = 140;
-    if (dist < triggerRange && f.ngFireTimer <= 0) {
-      const speed = 7.5;
-      const angle = Math.atan2(ngEnemy.y - f.y, ngEnemy.x - f.x);
-      gameState.saywords.push({
-        x: f.x, y: f.y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        owner: idx,
-        r: 11,
-        dmg: 1,
-        label: '하핚!!',
-        fontSize: 13,
-        isBro: false,
-        isNG: true,
-      });
-      f.ngFireTimer = 100; // 0.1초마다
-    }
   });
 
   // 정영훈 물자국 블랙홀 효과
@@ -5952,16 +6526,11 @@ function update(dt) {
       if (!gameState.mopWaterIn) gameState.mopWaterIn = {};
       if (inside) {
         if (!gameState.mopWaterIn[key]) {
-          // 최초 입장: 물 튀김 3데미지
+          // 최초 입장: 파티클만 (데미지 없음)
           gameState.mopWaterIn[key] = true;
-          ft.lastDmgFrom = mop.ownerId;
-          applyDmg(ft, 3);
-          spawnParticle(particles, ft.x, ft.y, '#4a90d9', 8);
-          if (gameState.dmgTexts) gameState.dmgTexts.push({
-            x: ft.x, y: ft.y - ft.r - 8, text: '💧', life: 700, maxLife: 700, vy: -0.4, fontSize: 14, color: '#4a90d9'
-          });
+          spawnParticle(particles, ft.x, ft.y, '#4a90d9', 6);
         }
-        // 끌어들임: 힘 줄임 (0.5 → 0.18)
+        // 끌어들임
         const pullStr = BASE_SPEED * 0.03;
         ft.vx += (dx / dist) * pullStr;
         ft.vy += (dy / dist) * pullStr;
@@ -6399,12 +6968,16 @@ function update(dt) {
     for (let i = gameState.jumiFlasks.length - 1; i >= 0; i--) {
       const fl = gameState.jumiFlasks[i];
       fl.life -= dt;
-      fl.vy += fl.gravity;
-      fl.x += fl.vx;
-      fl.y += fl.vy;
+      // timeScale 적용한 물리
+      fl.vy += fl.gravity * timeScale;
+      fl.x += fl.vx * timeScale;
+      fl.y += fl.vy * timeScale;
+      // 화면 경계 클램프 (튀어나가지 않게)
+      fl.x = Math.max(fl.r, Math.min(W - fl.r, fl.x));
+      fl.y = Math.max(fl.r, Math.min(H - fl.r, fl.y));
       let broken = false;
       // 벽 충돌
-      if (fl.x < fl.r || fl.x > W - fl.r || fl.y < fl.r || fl.y > H - fl.r) broken = true;
+      if (fl.x <= fl.r || fl.x >= W - fl.r || fl.y <= fl.r || fl.y >= H - fl.r) broken = true;
       // 캐릭터 충돌 (소유자 제외)
       if (!broken) {
         fighters.forEach((ft, fi) => {
@@ -6414,17 +6987,46 @@ function update(dt) {
       }
       if (broken || fl.life <= 0) {
         // 깨짐 → 독 장판 생성
+        const gx = Math.max(55, Math.min(W - 55, fl.x));
+        const gy = Math.max(55, Math.min(H - 55, fl.y));
         gameState.gases.push({
-          x: fl.x, y: fl.y,
-          r: 55,
-          life: 5000, maxLife: 5000,
+          x: gx, y: gy,
+          r: 55, life: 5000, maxLife: 5000,
           ownerId: fl.ownerId,
           hitCooldown: 0,
-          isJumiAcid: true, // 이주미 전용: 즉시 데미지
+          isJumiAcid: true,
         });
         spawnParticle(gameState.particles, fl.x, fl.y, '#7abf00', 10);
         gameState.jumiFlasks.splice(i, 1);
       }
+    }
+  }
+
+  // Goonmod 회색 공 업데이트
+  if (gameState.goonBalls) {
+    for (let i = gameState.goonBalls.length - 1; i >= 0; i--) {
+      const gb = gameState.goonBalls[i];
+      gb.life -= dt;
+      gb.x += gb.vx * timeScale;
+      gb.y += gb.vy * timeScale;
+      // 벽 충돌 시 소멸
+      if (gb.x - gb.r < 0 || gb.x + gb.r > W || gb.y - gb.r < 0 || gb.y + gb.r > H) {
+        spawnParticle(gameState.particles, gb.x, gb.y, '#888', 5);
+        gameState.goonBalls.splice(i, 1);
+        continue;
+      }
+      // 충돌 체크
+      let hit = false;
+      fighters.forEach((ft, fi) => {
+        if (fi === gb.ownerId || ft.hp <= 0) return;
+        if (Math.hypot(ft.x - gb.x, ft.y - gb.y) < ft.r + gb.r) {
+          ft.lastDmgFrom = gb.ownerId;
+          applyDmg(ft, gb.dmg, fighters[gb.ownerId]);
+          spawnParticle(gameState.particles, gb.x, gb.y, '#888', 8);
+          hit = true;
+        }
+      });
+      if (hit || gb.life <= 0) gameState.goonBalls.splice(i, 1);
     }
   }
 
@@ -6439,12 +7041,23 @@ function update(dt) {
       if (fidx === g.ownerId) return; // 김태양 본인 면역
       if (f.hp <= 0) return;
       const dist = Math.hypot(f.x - g.x, f.y - g.y);
+      // isJumiAcid 캐릭터별 쿨타임 감소
+      if (g.isJumiAcid && g._charHitCooldowns) {
+        Object.keys(g._charHitCooldowns).forEach(k => {
+          g._charHitCooldowns[k] = Math.max(0, g._charHitCooldowns[k] - dt);
+        });
+      }
       if (dist < g.r + f.r && g.hitCooldown <= 0) {
         if (g.isJumiAcid) {
           // 이주미 염산: 15 데미지를 5초에 걸쳐 DoT (1초마다 3씩)
-          if (!f._poisonDots) f._poisonDots = [];
-          f._poisonDots.push({ total: 15, elapsed: 0, duration: 5000, dmgInterval: 1000, dmgTimer: 0, ownerId: g.ownerId });
-          g.hitCooldown = 6000; // 중복 적용 방지
+          // 캐릭터별 개별 쿨타임으로 중복 적용 방지
+          if (!g._charHitCooldowns) g._charHitCooldowns = {};
+          const fidxKey = String(fidx);
+          if (!(g._charHitCooldowns[fidxKey] > 0)) {
+            if (!f._poisonDots) f._poisonDots = [];
+            f._poisonDots.push({ total: 15, elapsed: 0, duration: 5000, dmgInterval: 1000, dmgTimer: 0, ownerId: g.ownerId });
+            g._charHitCooldowns[fidxKey] = 6000;
+          }
         } else {
           f.poisonTimer = 3000;
           f.poisonDmgTimer = 0;
@@ -6628,6 +7241,32 @@ function update(dt) {
     }
   });
 
+  // 한수민 최초 1회 부활
+  fighters.forEach(f => {
+    if (f.def.id !== 'sumin' || f.hp > 0 || f._suminDead) return;
+    if (f._suminRevived) { f._suminDead = true; return; } // 두 번째 사망 → 정상 처리
+    f._suminRevived = true;
+    f._suminDead = false;
+    f.hp = 100;
+    f.maxHp = Math.max(f.maxHp, 100);
+    f._sumin67Timer = 2000; // 2초 후 67 스킬 발동
+    f._cheoCooldown = 9999; // 67 끝날 때까지 쳐웃기 대기
+    // 화면 중앙 빨간 텍스트
+    const bro = document.createElement('div');
+    bro.textContent = 'Bro think he is main charactor';
+    bro.style.cssText = [
+      'position:fixed','top:50%','left:50%',
+      'transform:translate(-50%,-50%)',
+      'color:#ff2222','font-size:28px','font-weight:900',
+      'text-align:center','z-index:9999',
+      'pointer-events:none','text-shadow:0 0 16px #ff0000',
+      'animation:broFadeOut 2.5s ease-out forwards',
+    ].join(';');
+    document.body.appendChild(bro);
+    setTimeout(() => bro.remove(), 2500);
+    spawnParticle(gameState.particles, f.x, f.y, '#ff2222', 20);
+  });
+
   // 사망 판정
   fighters.forEach(f => {
     // 3인 모드에서 죽은 캐릭터를 맵 밖으로 이동 (sehwanInRoom 캐릭터 제외)
@@ -6680,6 +7319,21 @@ function update(dt) {
     f.jumiSkill2Cooldown   = Math.max(f.jumiSkill2Cooldown || 0, kBIG);
   });
 
+  // 67에 걸린 캐릭터 스킬 쿨 진행 차단
+  gameState.fighters.forEach(f => {
+    if (!f._waving67 || f._waving67Timer <= 0) return;
+    f.vx = 0; f.vy = 0;
+    const W67 = 9999999;
+    f.skillCooldown        = Math.max(f.skillCooldown || 0, W67);
+    f.skill2Cooldown       = Math.max(f.skill2Cooldown || 0, W67);
+    f.seungohSkill2Cooldown = Math.max(f.seungohSkill2Cooldown || 0, W67);
+    f.hyekyungSkill2Cooldown = Math.max(f.hyekyungSkill2Cooldown || 0, W67);
+    f.sehwanSkillCooldown  = Math.max(f.sehwanSkillCooldown || 0, W67);
+    f._hyungjunSkillCooldown = Math.max(f._hyungjunSkillCooldown || 0, W67);
+    f.jumiSkill2Cooldown   = Math.max(f.jumiSkill2Cooldown || 0, W67);
+    f._cheoCooldown        = Math.max(f._cheoCooldown || 0, W67);
+  });
+
   // 봉인된 스킬 쿨타임 강제 유지 (매 프레임 끝에 덮어씌움)
   gameState.fighters.forEach(f => {
     if (!f._sealedSkills) return;
@@ -6702,7 +7356,7 @@ function update(dt) {
     }
     // 금일철 교장말씀(skill) / 철갑탄(skill2) 명시 처리
     if (f.def && f.def.id === 'geumilcheol') {
-      if (f._sealedSkills.skill)  { f.skillCooldown = BIG; f.geumSpeechActive = false; }
+      if (f._sealedSkills.skill)  f.skillCooldown = BIG; // geumSpeechActive는 강제 중단 안 함
       if (f._sealedSkills.skill2) f.geumBulletCooldown = BIG;
     }
   });
@@ -6714,6 +7368,15 @@ function applyDmg(f, dmg, attacker) {
   if (f.awakeningActive) return; // 무적 중
   if (f.tidalTransforming) return; // TIDAL WAVE 변신 중 무적
   if (f.goldenActive) return; // 골든 상태 무적
+  // 캠페인 회피 강화
+  if (f._dodgeChance && f._dodgeChance > 0 && Math.random() < f._dodgeChance) {
+    if (gameState && gameState.dmgTexts) gameState.dmgTexts.push({
+      x: f.x + (Math.random()-0.5)*20, y: f.y - f.r - 10,
+      text: '회피!', life: 600, maxLife: 600,
+      vy: -0.5, color: '#aaffee', fontSize: 12,
+    });
+    return; // 데미지 무시
+  }
   // 류병헌 계열 간 데미지 완전 차단 (루트 본체 기준)
   if (attacker) {
     function byungheonRoot(fighter) {
@@ -6726,6 +7389,7 @@ function applyDmg(f, dmg, attacker) {
     if (rootF && rootA && rootF === rootA) return;
   }
   if (f.def && f.def.id === 'giwon' && f.tidalActive) dmg *= 0.7; // TIDAL WAVE 모든 피해 50% 감소
+  if (attacker && attacker._qtyOverQuality) dmg *= 0.8; // 질보다 양: 데미지 20% 감소
   // 전체 데미지 보정 없음
   // 각성 후 받는 데미지 20% 증가
   if (f.def.id === 'taeyeon' && f.awakened) dmg *= 1.2;
@@ -6734,8 +7398,8 @@ function applyDmg(f, dmg, attacker) {
     const atkIdx = f.lastDmgFrom;
     if (atkIdx !== undefined && gameState) {
       const atk = gameState.fighters[atkIdx];
-      if (atk && atk.def && !f.eunjuFirstHit.has(atk.def.id)) {
-        f.eunjuFirstHit.add(atk.def.id);
+      if (atk && atk.def && !f.eunjuFirstHit.includes(atk.def.id)) {
+        f.eunjuFirstHit.push(atk.def.id);
         // 경직 추가
         f.eunjuCharmTargets = f.eunjuCharmTargets || [];
         // 이미 경직 중이면 패스
@@ -6921,7 +7585,7 @@ function applyDmg(f, dmg, attacker) {
     if (dealerIdx2 !== undefined && dealerIdx2 >= 0 && gameState) {
       const dealer2 = gameState.fighters[dealerIdx2];
       if (dealer2 && dealer2.nojunwoo && dealer2.hp > 0) {
-        dealer2.hp = Math.min(dealer2.maxHp, dealer2.hp + actualDmg * 0.1);
+        dealer2.hp = Math.min(dealer2.maxHp, dealer2.hp + actualDmg * 0.2);
       }
     }
   }
@@ -7072,7 +7736,7 @@ function activateSkill(fighter, idx, _enemyIgnored) {
       wingProgress: 0, wingParticles: [],
       tiananmenReady: false, tiananmenCooldown: 20000, tiananmenText: null,
       tiananmenCaged: false, tiananmenCageTimer: 0, tiananmenBox: null,
-      sayQueue: [], skill2Used: false, ngActive: false, ngFireTimer: 0,
+      sayQueue: [], skill2Used: false,
       skill2Cooldown: 10000, poisonTimer: 0, poisonDmgTimer: 0,
       wallDmgTimer: 0, wallDmgHits: 0,
       hairDropTimer: 0, hairAutoTimer: 2000,
@@ -7096,7 +7760,8 @@ function activateSkill(fighter, idx, _enemyIgnored) {
     spawnParticle(gameState.particles, spawnX, spawnY, cloneColor, 10);
 
   } else if (fighter.def.id === 'sumin') {
-    // say → wallahi → bro → say → wallahi 순서로 간격을 두고 발사
+    if (fighter._suminRevived) return; // 부활 후엔 쳐웃기만 사용
+    // 부활 전: say → wallahi → bro → say → wallahi
     fighter.sayQueue = [
       { word: 'say',     delay: 0   },
       { word: 'wallahi', delay: 350 },
@@ -7865,6 +8530,50 @@ function render(ctx) {
     }
   });
 
+  // 절대 영도 오오라 렌더
+  gameState.fighters.forEach(f => {
+    if (!f._absoluteZero || f.hp <= 0) return;
+    const auraR = (f.r || 28) * 3.5;
+    const pulse = 0.18 + 0.07 * Math.sin(Date.now() / 400);
+    ctx.save();
+    const grad = ctx.createRadialGradient(f.x, f.y, auraR * 0.4, f.x, f.y, auraR);
+    grad.addColorStop(0, `rgba(160,220,255,${pulse * 1.2})`);
+    grad.addColorStop(0.6, `rgba(100,180,255,${pulse})`);
+    grad.addColorStop(1, 'rgba(80,140,255,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, auraR, 0, Math.PI * 2);
+    ctx.fill();
+    // 테두리
+    ctx.strokeStyle = `rgba(180,230,255,${pulse * 2})`;
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.lineDashOffset = -(Date.now() / 80) % 9;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, auraR, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  });
+
+  // Goonmod 회색 공 렌더
+  (gameState.goonBalls || []).forEach(gb => {
+    const alpha = Math.min(1, gb.life / 500);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const grad = ctx.createRadialGradient(gb.x - 3, gb.y - 3, 0, gb.x, gb.y, gb.r);
+    grad.addColorStop(0, '#cccccc');
+    grad.addColorStop(1, '#555555');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(gb.x, gb.y, gb.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+  });
+
   // Gears (김기원 톱니바퀴)
   gameState.gears.forEach(gear => {
     ctx.save();
@@ -8513,7 +9222,7 @@ function render(ctx) {
 
     // 캠페인 위성 렌더
     if (f._campaignSatellite) {
-      const satR = 55;
+      const satR = 85;
       for (let si = 0; si < 3; si++) {
         const ang = (f._satAngle||0) + (si * Math.PI * 2 / 3);
         const sx = f.x + Math.cos(ang) * satR;
@@ -8825,6 +9534,48 @@ function render(ctx) {
       ctx.textBaseline = 'alphabetic';
     }
 
+    // 67 스킬: 손 번갈아 흔드는 모션
+    if (f._waving67 && f._waving67Timer > 0) {
+      ctx.save();
+      const waveProg = (f._waving67Hand || 0);
+      const handFreq = 300; // ms per cycle
+      const phase = (waveProg % handFreq) / handFreq; // 0~1
+      const isLeft = Math.floor(waveProg / handFreq) % 2 === 0;
+      // 손 위치
+      const handAngle = isLeft
+        ? -Math.PI * 0.45 + Math.sin(phase * Math.PI * 2) * 0.3
+        :  Math.PI * 0.45 + Math.sin(phase * Math.PI * 2) * 0.3;
+      const handDist = f.r + 12;
+      const hx = f.x + Math.cos(handAngle - Math.PI/2) * handDist;
+      const hy = f.y + Math.sin(handAngle - Math.PI/2) * handDist;
+      // 손 그리기
+      ctx.globalAlpha = 0.9;
+      ctx.font = `${14 + Math.sin(phase * Math.PI) * 4}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#ffcc00';
+      ctx.shadowColor = '#ff6b00';
+      ctx.shadowBlur = 6;
+      ctx.fillText(isLeft ? '🤚' : '🤚', hx, hy);
+      // "67~" 텍스트
+      const pulse = 0.7 + 0.3 * Math.sin(waveProg / 200);
+      ctx.font = `bold ${Math.round(14 * pulse)}px sans-serif`;
+      ctx.fillStyle = '#ff6b00';
+      ctx.shadowColor = '#ff4400';
+      ctx.shadowBlur = 8;
+      ctx.fillText('67~', f.x, f.y - f.r - 16);
+      // 남은 시간 바
+      const remPct = f._waving67Timer / 3000;
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = '#ff6b00';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r + 5, -Math.PI/2, -Math.PI/2 + Math.PI*2*remPct);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    }
+
     // TIDAL WAVE 텍스트 애니메이션
     if (def.id === 'giwon' && f.tidalTextAnim && f.tidalTextAnim.timer > 0) {
       const elapsed = 1200 - f.tidalTextAnim.timer;
@@ -8991,6 +9742,8 @@ function buildBattleUI(fighters) {
       html += lbl('eunju-dmg', '#888', '접촉 데미지: 1');
     } else if (id === 'youngouk') {
       html += lbl('youngouk', '#9b70d0', '수면 유도 — 준비 중', '4px');
+      html += bar('yukjin', '#cc0000', '0%', '4px');
+      html += lbl('yukjinlbl', '#cc0000', '급발진 (10~30s)');
     } else if (id === 'seungoh') {
       html += lbl('goldenlbl', '#aaa', '골든 — 대기 중', '4px');
       html += bar('so1', '#1a3a8f', '50%', '4px');
@@ -9002,6 +9755,8 @@ function buildBattleUI(fighters) {
       html += bar('turret', '#1a7a1a', '100%', '6px');
       html += lbl('turretlbl', '#1a7a1a', '터렛 — 준비완료');
     } else if (id === 'giwon') {
+      html += bar('sk', f.def.skill.barColor || '#1a6b8a', '0%', '4px');
+      html += lbl('sklbl', '#1a6b8a', `${f.def.skill.label || '벽'} (${((f.def.skill.cooldown||8000)/1000).toFixed(0)}s)`);
       html += bar('tidal', '#00aacc', '0%', '6px');
       html += lbl('tidallbl', '#999', 'TIDAL WAVE — HP 50 미만 시 발동');
     } else if (id === 'hyuncheol') {
@@ -9021,11 +9776,9 @@ function buildBattleUI(fighters) {
       html += lbl('sk2tylbl', '#c47a00', '트름 — 준비 중');
     } else if (id === 'sumin') {
       html += bar('sk', f.def.skill.barColor, '50%', '4px');
-      html += lbl('sklbl', '#888', `스킬: ${f.def.skill.label}`);
-      html += bar('sk2', '#ff6b00', '0%', '6px');
-      html += lbl('sk2lbl', '#ff6b00', '쳐웃기 — HP 50% 이하 + 근접 시 자동발동');
-      html += bar('ng', '#cc0000', '0%', '4px');
-      html += lbl('nglbl', '#999', '하핚!! — 쳐웃기 사용 후 활성화');
+      html += lbl('sklbl', '#2e8b3a', 'say wallahi');
+      html += bar('cheoba', '#ff6b00', '0%', '5px');
+      html += lbl('cheobalbl', '#999', '쳐웃기 — 부활 후 활성화');
     } else if (id === 'jumi') {
       html += bar('sk', '#7abf00', '50%', '4px');
       html += lbl('sklbl', '#7abf00', '염산 (5s)');
@@ -9077,26 +9830,6 @@ function updateBattleUI(fighters) {
     }
     // 쳐웃기 바 (한수민 전용)
     if (f.def.id === 'sumin') {
-      const sk2El = document.getElementById('sk2-' + pid);
-      const sk2Lbl = document.getElementById('sk2lbl-' + pid);
-      if (sk2El && sk2Lbl) {
-        if (f.skill2Used) {
-          sk2El.style.width = '100%';
-          sk2El.style.background = '#aaa';
-          sk2Lbl.textContent = '쳐웃기 — 사용 완료';
-          sk2Lbl.style.color = '#aaa';
-        } else if (f.hp <= f.maxHp * 0.5) {
-          sk2El.style.width = '100%';
-          sk2El.style.background = '#ff6b00';
-          sk2Lbl.textContent = '쳐웃기 ✦ 준비! (근접 시 자동발동)';
-          sk2Lbl.style.color = '#ff6b00';
-        } else {
-          const pct = Math.max(0, 100 - (f.hp / f.maxHp * 100) * 2);
-          sk2El.style.width = pct + '%';
-          sk2Lbl.textContent = `쳐웃기 — HP ${Math.ceil(f.hp - f.maxHp*0.5)} 더 감소 시 준비`;
-          sk2Lbl.style.color = '#ff6b00';
-        }
-      }
     }
 
     // 이현철T UI
@@ -9220,8 +9953,8 @@ function updateBattleUI(fighters) {
       const lbJ = document.getElementById('sklbl-' + pid);
       const j2 = document.getElementById('jumi2-' + pid);
       const j2lbl = document.getElementById('jumi2lbl-' + pid);
-      if (skJ) skJ.style.width = (1 - (f.skillCooldown||0) / 5000) * 100 + '%';
-      if (lbJ) lbJ.textContent = (f.skillCooldown||0) <= 0 ? '염산 ✦' : `염산 (${((f.skillCooldown||0)/1000).toFixed(1)}s)`;
+      if (skJ) skJ.style.width = (1 - (f.skillCooldown||0) / (f.def.skill.cooldown||5000)) * 100 + '%';
+      if (lbJ) lbJ.textContent = (f.skillCooldown||0) <= 0 ? '염산 ✦' : `염산 (${((f.skillCooldown||0)/1000).toFixed(1)}s)`;  // skill1
       if (j2) j2.style.width = (1 - (f.jumiSkill2Cooldown||0) / 12000) * 100 + '%';
       if (j2lbl) {
         if (f.jumiBindTarget && f.jumiBindApproaching) {
@@ -9331,6 +10064,16 @@ function updateBattleUI(fighters) {
           yoLbl.textContent = '수면 유도 — 활성'; yoLbl.style.color = '#9b70d0';
         }
       }
+      // 급발진 쿨타임 바
+      const yjEl = document.getElementById('yukjin-' + pid);
+      const yjLbl = document.getElementById('yukjinlbl-' + pid);
+      if (yjEl && yjLbl) {
+        const cd = f['youngouk급발진Timer'] || 0;
+        const maxCd = 30000;
+        yjEl.style.width = Math.max(0, (1 - cd / maxCd) * 100) + '%';
+        yjLbl.textContent = cd <= 0 ? '급발진 ✦' : `급발진 (${(cd/1000).toFixed(1)}s)`;
+        yjLbl.style.color = cd <= 0 ? '#cc0000' : '#994444';
+      }
     }
 
     // 도경윤 건담 파츠 게이지
@@ -9437,6 +10180,17 @@ function updateBattleUI(fighters) {
 
     // TIDAL WAVE 바 (김기원 전용)
     if (f.def.id === 'giwon') {
+      const skGw = document.getElementById('sk-' + pid);
+      const lbGw = document.getElementById('sklbl-' + pid);
+      if (skGw) {
+        const cd = f.skillCooldown || 0;
+        const maxCd = f.def.skill.cooldown || 8000;
+        skGw.style.width = (1 - cd/maxCd)*100 + '%';
+        skGw.style.background = cd <= 0 ? (f.def.skill.barColor || '#1a6b8a') : '#555';
+        if (lbGw) lbGw.textContent = cd <= 0
+          ? `${f.def.skill.label} ✦`
+          : `${f.def.skill.label} (${(cd/1000).toFixed(1)}s)`;
+      }
       const tidalEl = document.getElementById('tidal-' + pid);
       const tidalLbl = document.getElementById('tidallbl-' + pid);
       if (tidalEl && tidalLbl) {
@@ -9480,25 +10234,36 @@ function updateBattleUI(fighters) {
 
     // NG 바 (한수민 전용)
     if (f.def.id === 'sumin') {
-      const ngEl = document.getElementById('ng-' + pid);
-      const ngLbl = document.getElementById('nglbl-' + pid);
-      if (ngEl && ngLbl) {
-        if (f.ngActive) {
-          const pct = Math.min(100, 100 - (f.ngFireTimer / 300) * 100);
-          ngEl.style.width = pct + '%';
-          ngEl.style.background = '#cc0000';
-          ngLbl.textContent = f.ngFireTimer > 0
-            ? `하핚!! ✦ 활성화 (${(f.ngFireTimer/200*100).toFixed(0)}%)`
-            : 'NG ✦ 발사 준비 (근접 시 자동)';
-          ngLbl.style.color = '#cc0000';
-        } else if (f.skill2Used) {
-          ngEl.style.width = '0%';
-          ngLbl.textContent = 'NG — 대기 중...';
-          ngLbl.style.color = '#999';
+      // say wallahi 바 (부활 전)
+      const skSm = document.getElementById('sk-' + pid);
+      const lbSm = document.getElementById('sklbl-' + pid);
+      if (skSm && lbSm) {
+        if (!f._suminRevived) {
+          const cd = f.skillCooldown || 0;
+          skSm.style.width = (1 - cd/6000)*100 + '%';
+          skSm.style.background = '#2e8b3a';
+          lbSm.textContent = cd <= 0 ? 'say wallahi ✦' : `say wallahi (${(cd/1000).toFixed(1)}s)`;
+          lbSm.style.color = cd <= 0 ? '#2e8b3a' : '#999';
         } else {
-          ngEl.style.width = '0%';
-          ngLbl.textContent = '하핚!! — 쳐웃기 사용 후 활성화';
-          ngLbl.style.color = '#999';
+          skSm.style.width = '0%';
+          lbSm.textContent = '— 변신 완료 —';
+          lbSm.style.color = '#555';
+        }
+      }
+      // 쳐웃기 바 (부활 후)
+      const chEl = document.getElementById('cheoba-' + pid);
+      const chLbl = document.getElementById('cheobalbl-' + pid);
+      if (chEl && chLbl) {
+        if (!f._suminRevived) {
+          chEl.style.width = '0%';
+          chLbl.textContent = '쳐웃기 — 부활 후 활성화';
+          chLbl.style.color = '#555';
+        } else {
+          const cd = f._cheoCooldown || 0;
+          chEl.style.width = (1 - cd/5000)*100 + '%';
+          chEl.style.background = '#ff6b00';
+          chLbl.textContent = cd <= 0 ? '쳐웃기 ✦ [변신]' : `쳐웃기 (${(cd/1000).toFixed(1)}s) [변신]`;
+          chLbl.style.color = cd <= 0 ? '#ff6b00' : '#999';
         }
       }
     }
@@ -9648,7 +10413,7 @@ function endGame() {
         });
         saveCampaignProgress();
       } else {
-        const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '황금비율의 첫경험' };
+        const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험' };
         const isBossClear = window._campaignStage === 'boss1';
         if (isBossClear) {
           document.getElementById('winnerName').textContent = '🏆 캠페인 완수!';
@@ -9657,6 +10422,49 @@ function endGame() {
           document.getElementById('btn-campaign-back').textContent = '메인으로';
           // 금 뱃지 저장
           if (campaignChar) addCampaignClearChar(campaignChar.id);
+          // 2스테이지 해금 (최초 보스 클리어 시)
+          if (!window._stage2Unlocked) {
+            window._stage2Unlocked = true;
+            // 화면 흔들림
+            const mapEl = document.getElementById('campaignMap');
+            if (mapEl) {
+              mapEl.style.animation = 'none';
+              let shakeCount = 0;
+              const shakeInt = setInterval(() => {
+                const dx = (Math.random()-0.5)*16;
+                const dy = (Math.random()-0.5)*16;
+                mapEl.style.transform = `translate(${dx}px,${dy}px)`;
+                shakeCount++;
+                if (shakeCount > 18) { clearInterval(shakeInt); mapEl.style.transform = ''; }
+              }, 50);
+            }
+            // 고급 강화 노드 해금 (1.5초 후), 2-1은 고급강화 완료 후 해금
+            setTimeout(() => {
+              const lockedAdv = document.getElementById('stage-forge-adv-locked');
+              const openAdv = document.getElementById('stage-forge-adv');
+              if (lockedAdv) lockedAdv.style.display = 'none';
+              if (openAdv) {
+                openAdv.style.display = 'block';
+                openAdv.style.animation = 'starFloat 0.6s ease-out';
+              }
+              // 스크롤을 오른쪽으로
+              const scroll = document.getElementById('campaignScroll');
+              if (scroll) scroll.scrollTo({ left: 9999, behavior: 'smooth' });
+            }, 1500);
+          }
+          // 이주미T 최초 해금
+          if (!unlockedHidden.has('jumi')) {
+            unlockedHidden.add('jumi');
+            saveUnlockedHidden();
+            setTimeout(() => {
+              const jumiDef = CHARACTER_DEFS.find(d => d.id === 'jumi');
+              if (jumiDef) {
+                // 커스텀 이주미 해금 이펙트
+                showJumiUnlockOverlay(jumiDef);
+              }
+              buildCharSelect();
+            }, 1200);
+          }
           // 자동 초기화
           campaignBuffs = [];
           window._clearedStages = [];
@@ -9704,9 +10512,22 @@ function endGame() {
             markStageCleared(window._campaignStage);
           }
           // 다음 스테이지 즉시 언락
-          const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3' };
+          const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5' };
           const _nextStage = _nextMap[window._campaignStage];
           if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
+          // 2-3 클리어 시 갈림길(교회/화장실) 해금
+          if (window._campaignStage === '2-3') {
+            setTimeout(() => {
+              ['church','toilet'].forEach(id => {
+                const lk = document.getElementById('stage-'+id+'-locked');
+                const ul = document.getElementById('stage-'+id);
+                if (lk) lk.style.display = 'none';
+                if (ul) ul.style.display = 'block';
+              });
+              const scroll = document.getElementById('campaignScroll');
+              if (scroll) scroll.scrollTo({ left: 9999, behavior: 'smooth' });
+            }, 400);
+          }
         }
         saveCampaignProgress();
       }
