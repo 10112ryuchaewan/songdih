@@ -208,7 +208,8 @@
   <button class="btn btn-secondary drop-item" id="btn-predict" style="margin-top:8px;animation-delay:1.3s">🔮 예측 모드</button>
   <div id="main-streak-display" style="font-size:12px;color:#f5c518;font-weight:700;margin-top:4px;height:18px;animation-delay:1.4s" class="drop-item"></div>
   <button class="btn btn-secondary drop-item" id="btn-campaign" style="margin-top:8px;animation-delay:1.5s">📖 캠페인</button>
-  <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🏟️ 아레나</button>
+  <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
+  <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
 </div>
 
 <div id="geumCutscene" style="display:none;position:fixed;inset:0;background:#000;z-index:2000;flex-direction:column;align-items:center;justify-content:center;overflow:hidden">
@@ -446,7 +447,34 @@
   </div>
   </div>
 </div>
+<div id="onlineScreen" class="screen" style="flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px">
+  <div style="font-size:22px;font-weight:900;color:#111;margin-bottom:4px">🌐 온라인 PvP</div>
 
+  <div id="onlineLobby" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:320px">
+    <button class="btn" id="btn-create-room" style="width:100%">🏠 방 만들기</button>
+    <div style="display:flex;gap:8px;width:100%">
+      <input id="roomCodeInput" placeholder="방 코드 6자리" maxlength="6"
+        style="flex:1;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:15px;text-transform:uppercase"
+        autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+      <button class="btn" id="btn-join-room" style="padding:10px 20px">입장</button>
+    </div>
+    <div id="onlineError" style="color:#cc0000;font-size:12px;min-height:16px"></div>
+    <button class="btn btn-secondary" onclick="showScreen('mainMenu')" style="width:100%">← 메인 메뉴</button>
+  </div>
+
+  <div id="onlineWaiting" style="display:none;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:320px">
+    <div id="onlineRoomCode" style="font-size:32px;font-weight:900;letter-spacing:8px;color:#111;background:#f5f5f5;padding:16px 28px;border-radius:12px;border:2px solid #ddd"></div>
+    <div style="font-size:13px;color:#888">이 코드를 상대방에게 알려주세요</div>
+    <div id="onlineWaitStatus" style="font-size:14px;color:#555;font-weight:700">상대방 대기 중...</div>
+    <button class="btn btn-secondary" id="btn-cancel-room" style="width:100%">취소</button>
+  </div>
+
+  <div id="onlineSelecting" style="display:none;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:500px">
+    <div style="font-size:15px;font-weight:700;color:#111">캐릭터를 선택하세요</div>
+    <div id="onlineCharRow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
+    <div id="onlineSelectStatus" style="font-size:13px;color:#888;min-height:18px"></div>
+  </div>
+</div>
 <div id="result" class="screen">
   <div class="winner-text" id="winnerName"></div>
   <div class="victory-text" id="resultText">승리!</div>
@@ -511,7 +539,7 @@ function _initTouchBindings() {
  _bindBtn('btn-retry-predict', startPredictMode);
  _bindBtn('loginBtn', loginUser);
  _bindBtn('btn-campaign', openCampaign);
- _bindBtn('btn-arena', openArena);
+ _bindBtn('btn-arena', () => alert('🔒 개발 중입니다!'));
  _bindBtn('signupBtn', signupUser);
  _bindBtn('guestBtn', guestStart);
  _bindBtn('btn-result-retry', () => {
@@ -544,6 +572,10 @@ function _initTouchBindings() {
  pb.addEventListener('touchstart', (e) => { e.preventDefault(); choosePrediction('B'); }, {passive:false});
  pb.addEventListener('click', () => choosePrediction('B'));
  }
+ _bindBtn('btn-online', openOnline);
+ _bindBtn('btn-create-room', createRoom);
+ _bindBtn('btn-join-room', joinRoom);
+ _bindBtn('btn-cancel-room', cancelRoom);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2955,9 +2987,9 @@ function startBattle() {
  const dt = _mn(now - lastTime, 50) * timeScale;
  lastTime = now;
  try {
-  update(dt);
-  render(canvas.getContext('2d'));
-  renderRoom();
+  if (!window._onlineMode || window._onlineIsHost) update(dt);
+  if (!window._onlineMode || window._onlineIsHost) { render(canvas.getContext('2d')); renderRoom(); }
+  if (window._onlineMode && window._onlineIsHost) _sendOnlineState();
  } catch(e) {
   cancelAnimationFrame(gameLoop);
   const ctx = canvas.getContext('2d');
@@ -6510,10 +6542,12 @@ function activateSkill(fighter, idx, _enemyIgnored) {
 }
 
 function _sp(x, y, color, count = 6) {
+ const _arr = (typeof particles !== 'undefined' && particles) || (gameState && gameState.particles);
+ if (!_arr) return;
  for (let i = 0; i < count; i++) {
  const angle = _r() * _PI2;
  const spd = _r() * 1.8 + 0.4;
- particles.push({ x, y, vx: _co(angle)*spd, vy: _si(angle)*spd, life: 350, maxLife: 350, color, r: _r()*2.5+1 });
+ _arr.push({ x, y, vx: _co(angle)*spd, vy: _si(angle)*spd, life: 350, maxLife: 350, color, r: _r()*2.5+1 });
  }
 }
 
@@ -9220,7 +9254,282 @@ function _buildCampaignNodes() {
  });
 
 }
+// ── 온라인 PvP ──
+let _onlineRole = null;   // 'host' | 'guest'
+let _onlineRoom = null;   // 방 코드
+let _onlineChannel = null;
+let _onlineMyChar = null;
+let _onlineOpponentChar = null;
+let _onlineSubscription = null;
 
+function _genRoomCode() {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+function openOnline() {
+  document.getElementById('onlineLobby').style.display = 'flex';
+  document.getElementById('onlineWaiting').style.display = 'none';
+  document.getElementById('onlineSelecting').style.display = 'none';
+  document.getElementById('onlineError').textContent = '';
+  showScreen('onlineScreen');
+}
+
+async function createRoom() {
+  if (!currentUser) { document.getElementById('onlineError').textContent = '로그인이 필요합니다.'; return; }
+  const code = _genRoomCode();
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/rooms`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'return=representation' },
+      body: JSON.stringify({ code, host_id: currentUser.nickname, status: 'waiting' })
+    });
+    if (!r.ok) throw new Error('방 생성 실패');
+    _onlineRole = 'host';
+    _onlineRoom = code;
+    document.getElementById('onlineRoomCode').textContent = code;
+    document.getElementById('onlineLobby').style.display = 'none';
+    document.getElementById('onlineWaiting').style.display = 'flex';
+    _subscribeRoom(code);
+  } catch(e) {
+    document.getElementById('onlineError').textContent = e.message;
+  }
+}
+
+async function joinRoom() {
+  if (!currentUser) { document.getElementById('onlineError').textContent = '로그인이 필요합니다.'; return; }
+  const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
+  if (code.length !== 6) { document.getElementById('onlineError').textContent = '6자리 코드를 입력하세요.'; return; }
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/rooms?code=eq.${code}&select=*`, { headers: SB_HEADERS });
+    const rows = await r.json();
+    if (!rows.length) { document.getElementById('onlineError').textContent = '방을 찾을 수 없습니다.'; return; }
+    if (rows[0].status !== 'waiting') { document.getElementById('onlineError').textContent = '이미 시작된 방입니다.'; return; }
+    // 게스트로 입장
+    await fetch(`${SB_URL}/rest/v1/rooms?code=eq.${code}`, {
+      method: 'PATCH',
+      headers: SB_HEADERS,
+      body: JSON.stringify({ guest_id: currentUser.nickname, status: 'selecting', updated_at: new Date().toISOString() })
+    });
+    _onlineRole = 'guest';
+    _onlineRoom = code;
+    document.getElementById('onlineLobby').style.display = 'none';
+    _startOnlineSelecting();
+    _subscribeRoom(code);
+  } catch(e) {
+    document.getElementById('onlineError').textContent = e.message;
+  }
+}
+
+function _subscribeRoom(code) {
+  if (_onlineChannel) _onlineChannel.unsubscribe();
+  _onlineChannel = window._supabaseClient
+    ? window._supabaseClient.channel('room:' + code)
+    : null;
+
+  // Supabase JS SDK 없으면 polling으로 대체
+  if (!_onlineChannel) {
+    _onlineSubscription = setInterval(() => _pollRoom(code), 800);
+    return;
+  }
+  _onlineChannel
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'rooms', filter: `code=eq.${code}` }, _onRoomUpdate)
+    .subscribe();
+}
+
+async function _pollRoom(code) {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/rooms?code=eq.${code}&select=*`, { headers: SB_HEADERS });
+    const rows = await r.json();
+    if (rows.length) _onRoomUpdate({ new: rows[0] });
+  } catch(e) {}
+}
+
+function _onRoomUpdate(payload) {
+  const room = payload.new;
+  if (!room) return;
+
+  if (room.status === 'selecting' && _onlineRole === 'host') {
+    document.getElementById('onlineWaitStatus').textContent = `${room.guest_id} 입장! 캐릭터 선택 중...`;
+    _startOnlineSelecting();
+  }
+
+  if (room.host_char && room.guest_char && room.status === 'selecting') {
+    _onlineOpponentChar = _onlineRole === 'host' ? room.guest_char : room.host_char;
+    _startOnlineBattle(room);
+  }
+
+  if (room.status === 'playing' && room.game_state && _onlineRole === 'guest') {
+    _applyRemoteState(room.game_state);
+  }
+}
+
+function _startOnlineSelecting() {
+  document.getElementById('onlineWaiting').style.display = 'none';
+  document.getElementById('onlineSelecting').style.display = 'flex';
+  const row = document.getElementById('onlineCharRow');
+  row.innerHTML = '';
+
+  // 일반 + 언락된 히든/슈퍼히든 포함
+  const avail = CHARACTER_DEFS.filter(d =>
+    !d.isDummy && (
+      (d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN') ||
+      unlockedHidden.has(d.id)
+    )
+  );
+
+  // 그룹별로 구분선 추가
+  const groups = [
+    { ids: avail.filter(d => d.group === 'STUDENTS' || d.group === 'TEACHER'), label: null },
+    { ids: avail.filter(d => d.group === 'HIDDEN' && unlockedHidden.has(d.id)), label: '✨ HIDDEN', borderColor: '#f5c518' },
+    { ids: avail.filter(d => d.group === 'SUPER_HIDDEN' && unlockedHidden.has(d.id)), label: '👑 SUPER HIDDEN', borderColor: '#c8a800' },
+  ];
+
+  groups.forEach(({ ids, label, borderColor }) => {
+    if (!ids.length) return;
+    if (label) {
+      const sep = document.createElement('div');
+      sep.style.cssText = `width:100%;border-top:1.5px dashed ${borderColor};margin:8px 0 4px;`;
+      row.appendChild(sep);
+      const lbl = document.createElement('div');
+      lbl.style.cssText = `width:100%;font-size:11px;font-weight:800;color:${borderColor};letter-spacing:2px;margin-bottom:6px;text-align:center`;
+      lbl.textContent = label;
+      row.appendChild(lbl);
+    }
+    ids.forEach(def => {
+      const card = document.createElement('div');
+      card.className = 'char-card';
+      card.style.width = '100px';
+      if (def.group === 'HIDDEN') card.style.cssText += 'border-color:#f5c518;box-shadow:0 0 6px rgba(245,197,24,0.4)';
+      if (def.group === 'SUPER_HIDDEN') card.style.cssText += 'border-color:#c8a800;box-shadow:0 0 10px rgba(200,168,0,0.5)';
+      card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats" style="font-size:10px">HP: ${def._randomStats ? '??' : def.hp}</div>`;
+      card.onclick = () => _selectOnlineChar(def, card);
+      row.appendChild(card);
+    });
+  });
+}
+
+async function _selectOnlineChar(def, card) {
+  if (_onlineMyChar) return;
+  _onlineMyChar = def;
+  card.classList.add('selected');
+  document.getElementById('onlineSelectStatus').textContent = '선택 완료! 상대방 대기 중...';
+  const field = _onlineRole === 'host' ? 'host_char' : 'guest_char';
+  await fetch(`${SB_URL}/rest/v1/rooms?code=eq.${_onlineRoom}`, {
+    method: 'PATCH',
+    headers: SB_HEADERS,
+    body: JSON.stringify({ [field]: def.id, updated_at: new Date().toISOString() })
+  });
+}
+
+function _startOnlineBattle(room) {
+  if (_onlineSubscription) { clearInterval(_onlineSubscription); _onlineSubscription = null; }
+  document.getElementById('onlineSelecting').style.display = 'none';
+  const hostChar = room.host_char;
+  const guestChar = room.guest_char;
+  selectedChars = _onlineRole === 'host'
+    ? [hostChar, guestChar]
+    : [guestChar, hostChar];
+  window._onlineMode = true;
+  window._onlineIsHost = (_onlineRole === 'host');
+  startBattle();
+}
+
+// Host: 매 프레임 상태 전송
+let _onlineSendTimer = 0;
+function _sendOnlineState() {
+  if (!window._onlineMode || !window._onlineIsHost || !gameState) return;
+  _onlineSendTimer++;
+  if (_onlineSendTimer % 2 !== 0) return; // 매 2프레임마다 전송 (30fps)
+  const slim = {
+    fighters: gameState.fighters.map(f => ({
+      x: _rnd(f.x), y: _rnd(f.y),
+      vx: _rnd(f.vx*10)/10, vy: _rnd(f.vy*10)/10,
+      hp: _rnd(f.hp*10)/10, maxHp: f.maxHp,
+      skillCooldown: _rnd(f.skillCooldown),
+      name: f.def.name, color: f.def.color, r: f.r,
+      skillActive: f.skillActive, awakened: f.awakened,
+    })),
+    particles: gameState.particles.slice(0, 30).map(p => ({
+      x: _rnd(p.x), y: _rnd(p.y), r: p.r, color: p.color, alpha: _rnd(p.alpha*100)/100
+    })),
+    dmgTexts: (gameState.dmgTexts || []).slice(0, 10),
+    over: gameState.over,
+    winner: gameState.winner ? gameState.winner.def.name : null,
+    shake: gameState.shake || 0,
+    W, H,
+  };
+  fetch(`${SB_URL}/rest/v1/rooms?code=eq.${_onlineRoom}`, {
+    method: 'PATCH',
+    headers: SB_HEADERS,
+    body: JSON.stringify({ game_state: slim, updated_at: new Date().toISOString() })
+  }).catch(() => {});
+}
+
+// Guest: 받은 상태로 렌더링
+function _applyRemoteState(state) {
+  if (!state || !state.fighters) return;
+  W = state.W || W;
+  H = state.H || H;
+  if (!gameState) {
+    // 첫 수신 시 gameState 초기화
+    const canvas = document.getElementById('gameCanvas');
+    canvas.width = W; canvas.height = H;
+    canvas.style.width = canvas.style.height = '';
+    showScreen('battle');
+    gameState = {
+      fighters: state.fighters.map(f => ({
+        x: f.x, y: f.y, vx: f.vx, vy: f.vy,
+        hp: f.hp, maxHp: f.maxHp, r: f.r || 28,
+        skillCooldown: f.skillCooldown || 0,
+        skillActive: f.skillActive || false,
+        awakened: f.awakened || false,
+        def: { name: f.name, color: f.color, touchDmg: 0, skill: { label: '', barColor: f.color, cooldown: 10000 } },
+      })),
+      particles: [], dmgTexts: [], notes: [], walls: [], gears: [],
+      soundwaves: [], saywords: [], gases: [], turrets: [], sunflowers: [],
+      bombs: [], mopWaters: [], syringes: [], gundamParts: [],
+      hairs: [], greenHairs: [], geumBullets: [], geumFireZones: [],
+      robots: [], robotBullets: [], netWaves: [], jumiFlasks: [],
+      goonBalls: [], woojinBalls: [], healBullets: [],
+      over: false, winner: null, shake: 0,
+    };
+    buildBattleUI(gameState.fighters);
+    const ctx = document.getElementById('gameCanvas').getContext('2d');
+    function guestLoop() {
+      if (!window._onlineMode) return;
+      render(ctx);
+      requestAnimationFrame(guestLoop);
+    }
+    requestAnimationFrame(guestLoop);
+  }
+  // 상태 업데이트
+  state.fighters.forEach((sf, i) => {
+    if (!gameState.fighters[i]) return;
+    const f = gameState.fighters[i];
+    f.x = sf.x; f.y = sf.y;
+    f.hp = sf.hp; f.maxHp = sf.maxHp;
+    f.skillActive = sf.skillActive;
+    f.awakened = sf.awakened;
+    f.skillCooldown = sf.skillCooldown;
+  });
+  gameState.particles = (state.particles || []).map(p => ({ ...p, life: 200, maxLife: 200 }));
+  gameState.dmgTexts = state.dmgTexts || [];
+  gameState.shake = state.shake || 0;
+  if (state.over) { gameState.over = true; endGame(); }
+}
+
+async function cancelRoom() {
+  if (_onlineRoom) {
+    await fetch(`${SB_URL}/rest/v1/rooms?code=eq.${_onlineRoom}`, {
+      method: 'DELETE', headers: SB_HEADERS
+    }).catch(() => {});
+  }
+  if (_onlineSubscription) { clearInterval(_onlineSubscription); _onlineSubscription = null; }
+  if (_onlineChannel) { _onlineChannel.unsubscribe(); _onlineChannel = null; }
+  _onlineRoom = null; _onlineRole = null; _onlineMyChar = null;
+  window._onlineMode = false;
+  openOnline();
+}
 </script>
 </body>
 </html>
