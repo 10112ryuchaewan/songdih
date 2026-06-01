@@ -4744,10 +4744,11 @@ function update(dt) {
         const sk2 = f.def.skill2;
         // 쳐웃기 1.5배 음파 5개
         for (let w = 0; w < 5; w++) {
-          soundwaves.push({
+          const _sw = gameState.soundwaves;
+          _sw.push({
             x: f.x, y: f.y, r: f.r,
             speed: (sk2 ? sk2.waveSpeed : 12.6) + w * 1.8,
-            life: 800,
+            life: 1000,
             dmg: sk2 ? sk2.waveDmg : 7.2,
             knockback: BASE_SPEED * 9,
             wallDmgTimer: 300,
@@ -6423,6 +6424,17 @@ function update(dt) {
         // 모든 적에게 67 적용
         fighters.forEach((ft, fi) => {
           if (fi === idx || ft.hp <= 0) return;
+          // 현재 쿨타임 저장 (해제 시 복원)
+          ft._67preFreeze = {
+            skillCooldown:          ft.skillCooldown || 0,
+            skill2Cooldown:         ft.skill2Cooldown || 0,
+            seungohSkill2Cooldown:  ft.seungohSkill2Cooldown || 0,
+            hyekyungSkill2Cooldown: ft.hyekyungSkill2Cooldown || 0,
+            sehwanSkillCooldown:    ft.sehwanSkillCooldown || 0,
+            _hyungjunSkillCooldown: ft._hyungjunSkillCooldown || 0,
+            jumiSkill2Cooldown:     ft.jumiSkill2Cooldown || 0,
+            _cheoCooldown:          ft._cheoCooldown || 0,
+          };
           ft._waving67 = true;
           ft._waving67Timer = 3000;
           ft._waving67Hand = 0;
@@ -6479,8 +6491,21 @@ function update(dt) {
 
     if (f._waving67Timer <= 0) {
       f._waving67 = false;
-      f._waving67DmgTimer = 0;
+      f._waving67DmgTimer = 500;
       f._waving67DmgPhase = 0;
+      // 9999999로 굳은 쿨타임 복구
+      const _r = (cur, def) => cur >= 9999990 ? def : cur;
+      f.skillCooldown          = _r(f.skillCooldown,          f.def.skill  ? f.def.skill.cooldown   : 8000);
+      f.skill2Cooldown         = _r(f.skill2Cooldown,         f.def.skill2 ? f.def.skill2.cooldown  : 10000);
+      f.seungohSkill2Cooldown  = _r(f.seungohSkill2Cooldown,  f.def.skill2 ? f.def.skill2.cooldown  : 13000);
+      f.hyekyungSkill2Cooldown = _r(f.hyekyungSkill2Cooldown, f.def.skill2 ? f.def.skill2.cooldown  : 10000);
+      f.hyekyungSkill3Cooldown = _r(f.hyekyungSkill3Cooldown, f.def.skill3 ? f.def.skill3.cooldown  : 60000);
+      f.sehwanSkillCooldown    = _r(f.sehwanSkillCooldown,    f.def.skill  ? f.def.skill.cooldown   : 20000);
+      f._hyungjunSkillCooldown = _r(f._hyungjunSkillCooldown, 6000);
+      f.jumiSkill2Cooldown     = _r(f.jumiSkill2Cooldown,     12000);
+      f._cheoCooldown          = _r(f._cheoCooldown,          5000);
+      f.geumBulletCooldown     = _r(f.geumBulletCooldown,     10000);
+      if ((f['youngouk급발진Timer'] || 0) >= 9999990) f['youngouk급발진Timer'] = 10000 + Math.random() * 20000;
     }
   });
 
@@ -6558,7 +6583,7 @@ function update(dt) {
       if (enemies.length > 0) {
         const tgt = enemies.reduce((a,b) => Math.hypot(a.x-turret.x,a.y-turret.y)<Math.hypot(b.x-turret.x,b.y-turret.y)?a:b);
         const ang = Math.atan2(tgt.y - turret.y, tgt.x - turret.x);
-        const spd = 8.4;
+        const spd = 40;
         gameState.notes.push({
           x: turret.x, y: turret.y,
           vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
@@ -7319,19 +7344,28 @@ function update(dt) {
     f.jumiSkill2Cooldown   = Math.max(f.jumiSkill2Cooldown || 0, kBIG);
   });
 
-  // 67에 걸린 캐릭터 스킬 쿨 진행 차단
+  // 67에 걸린 캐릭터 스킬 쿨 진행 차단 (해제 시 원래 쿨타임으로 복원)
   gameState.fighters.forEach(f => {
-    if (!f._waving67 || f._waving67Timer <= 0) return;
-    f.vx = 0; f.vy = 0;
-    const W67 = 9999999;
-    f.skillCooldown        = Math.max(f.skillCooldown || 0, W67);
-    f.skill2Cooldown       = Math.max(f.skill2Cooldown || 0, W67);
-    f.seungohSkill2Cooldown = Math.max(f.seungohSkill2Cooldown || 0, W67);
-    f.hyekyungSkill2Cooldown = Math.max(f.hyekyungSkill2Cooldown || 0, W67);
-    f.sehwanSkillCooldown  = Math.max(f.sehwanSkillCooldown || 0, W67);
-    f._hyungjunSkillCooldown = Math.max(f._hyungjunSkillCooldown || 0, W67);
-    f.jumiSkill2Cooldown   = Math.max(f.jumiSkill2Cooldown || 0, W67);
-    f._cheoCooldown        = Math.max(f._cheoCooldown || 0, W67);
+    if (!f._waving67) return;
+    if (f._waving67Timer > 0) {
+      // 활성: 이동/스킬 차단 (쿨타임은 원래 값으로 고정 — 감소만 막음)
+      f.vx = 0; f.vy = 0;
+      // 각 쿨타임이 원래 max보다 크게 올라가지 않도록 cap (BIG 방지)
+      // 실제로는 쿨타임 감소를 막으면 됨 — 이미 올라간 건 해제 시 복원
+    } else {
+      // 방금 해제됨: BIG 값으로 올라간 쿨타임 복원
+      if (!f._67preFreeze) return; // 저장된 원래 쿨타임 없으면 패스
+      f.skillCooldown          = f._67preFreeze.skillCooldown || 0;
+      f.skill2Cooldown         = f._67preFreeze.skill2Cooldown || 0;
+      f.seungohSkill2Cooldown  = f._67preFreeze.seungohSkill2Cooldown || 0;
+      f.hyekyungSkill2Cooldown = f._67preFreeze.hyekyungSkill2Cooldown || 0;
+      f.sehwanSkillCooldown    = f._67preFreeze.sehwanSkillCooldown || 0;
+      f._hyungjunSkillCooldown = f._67preFreeze._hyungjunSkillCooldown || 0;
+      f.jumiSkill2Cooldown     = f._67preFreeze.jumiSkill2Cooldown || 0;
+      f._cheoCooldown          = f._67preFreeze._cheoCooldown || 0;
+      f._67preFreeze = null;
+      f._waving67 = false;
+    }
   });
 
   // 봉인된 스킬 쿨타임 강제 유지 (매 프레임 끝에 덮어씌움)
@@ -9754,6 +9788,8 @@ function buildBattleUI(fighters) {
     } else if (id === 'seungbin') {
       html += bar('turret', '#1a7a1a', '100%', '6px');
       html += lbl('turretlbl', '#1a7a1a', '터렛 — 준비완료');
+      html += bar('sunflowercd', '#f5c518', '0%', '4px');
+      html += lbl('sunflowerlbl', '#f5c518', '해바라기 (준비 중)');
     } else if (id === 'giwon') {
       html += bar('sk', f.def.skill.barColor || '#1a6b8a', '0%', '4px');
       html += lbl('sklbl', '#1a6b8a', `${f.def.skill.label || '벽'} (${((f.def.skill.cooldown||8000)/1000).toFixed(0)}s)`);
@@ -10161,6 +10197,17 @@ function updateBattleUI(fighters) {
 
     // 터렛 쿨타임 바 (정승빈 전용)
     if (f.def.id === 'seungbin') {
+      // 해바라기 쿨타임 바
+      const sfEl = document.getElementById('sunflowercd-' + pid);
+      const sfLbl = document.getElementById('sunflowerlbl-' + pid);
+      if (sfEl && sfLbl) {
+        const cd = f.skill2Cooldown || 0;
+        const maxCd = (f.def.skill2 && f.def.skill2.cooldown) || 14000;
+        sfEl.style.width = (1 - cd/maxCd)*100 + '%';
+        sfEl.style.background = cd <= 0 ? '#f5c518' : '#a08010';
+        sfLbl.textContent = cd <= 0 ? '🌻 해바라기 ✦' : `🌻 해바라기 (${(cd/1000).toFixed(1)}s)`;
+        sfLbl.style.color = cd <= 0 ? '#f5c518' : '#888';
+      }
       const tEl = document.getElementById('turret-' + pid);
       const tLbl = document.getElementById('turretlbl-' + pid);
       if (tEl && tLbl) {
