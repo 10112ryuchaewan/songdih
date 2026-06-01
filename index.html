@@ -423,7 +423,7 @@
           <line x1="3748" y1="70" x2="3848" y2="115" stroke="rgba(100,180,255,0.7)" stroke-width="2" stroke-dasharray="8,5"/>
           <!-- 화장실 → 2-4 -->
           <line x1="3748" y1="190" x2="3848" y2="145" stroke="rgba(100,180,255,0.7)" stroke-width="2" stroke-dasharray="8,5"/>
-          <!-- 2-4 → 2-5 -->
+          <!-- 2-4 → 2-6 -->
           <line x1="3948" y1="130" x2="4048" y2="130" stroke="rgba(100,180,255,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
         </svg>
         <!-- 1-1 (항상 열림) -->
@@ -590,13 +590,13 @@
           <div style="font-size:9px;font-weight:700;color:#c8a840;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7)">교회</div>
         </div>
         <!-- 2-5 황금비의 첫경험 -->
-        <div id="stage-2-5-locked" style="display:none;position:absolute;left:4080px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
+        <div id="stage-2-6-locked" style="display:none;position:absolute;left:4080px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
           <div style="width:58px;height:58px;border-radius:50%;background:#7090bb;border:3px solid #4a6a9f;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto">🔒</div>
-          <div style="font-size:9px;color:#aaddff;margin-top:3px">2-5</div>
+          <div style="font-size:9px;color:#aaddff;margin-top:3px">2-6</div>
         </div>
-        <div id="stage-2-5" onclick="startCampaignStage('2-5')" style="display:none;position:absolute;left:4080px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
-          <div style="width:62px;height:62px;border-radius:50%;background:#4a7abf;border:4px solid #2a5a9f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-5</div>
-          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">황금비의 첫경험</div>
+        <div id="stage-2-6" onclick="startCampaignStage('2-6')" style="display:none;position:absolute;left:4080px;top:130px;transform:translate(-50%,-50%);cursor:pointer;text-align:center;width:90px">
+          <div style="width:62px;height:62px;border-radius:50%;background:#1a6b8a;border:4px solid #0a4a6a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);margin:0 auto;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'">2-6</div>
+          <div style="font-size:9px;font-weight:700;color:#aaddff;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.7);white-space:nowrap">기하학적 변화</div>
         </div>
         <!-- 2-4 소음의 정점 -->
         <div id="stage-2-4-locked" style="display:none;position:absolute;left:3880px;top:130px;transform:translate(-50%,-50%);text-align:center;opacity:0.5;width:80px">
@@ -1320,7 +1320,14 @@ function selectCampaignChar(def) {
 }
 
 function startCampaignStage(stageId) {
-  if (!campaignChar) return;
+  if (!campaignChar) {
+    // 2스테이지 이상은 캐릭터 재선택 화면으로
+    if (stageId.startsWith('2-')) {
+      showScreen('campaignCharSelect');
+      return;
+    }
+    return;
+  }
   if ((window._clearedStages || []).includes(stageId)) {
     alert('이미 클리어한 스테이지입니다!');
     return;
@@ -1405,10 +1412,10 @@ function startCampaignStage(stageId) {
       { id: 'sumin',    hpBonus: 20 },
     ];
     selectedChars = [campaignChar.id, 'taeyoung', 'sumin']; startBattle();
-  } else if (stageId === '2-5') {
-    window._campaignMode = true; window._campaignStage = '2-5';
-    window._campaignEnemyBuff = { id: 'eunju', startTriangle: true, touchDmgSet: 5 };
-    selectedChars = [campaignChar.id, 'eunju']; startBattle();
+  } else if (stageId === '2-6') {
+    window._campaignMode = true; window._campaignStage = '2-6';
+    window._campaignEnemyBuff = { id: 'giwon', hpBonus: 50, startWall: true };
+    selectedChars = [campaignChar.id, 'giwon']; startBattle();
   }
 }
 
@@ -1482,10 +1489,10 @@ function loadCampaignProgress() {
       }
       // 2-4 클리어됐으면 2-5 해금
       if ((window._clearedStages||[]).includes('2-4')) {
-        const lk25 = document.getElementById('stage-2-5-locked');
-        const ul25 = document.getElementById('stage-2-5');
-        if (lk25) lk25.style.display = 'none';
-        if (ul25) ul25.style.display = 'block';
+        const lk26 = document.getElementById('stage-2-6-locked');
+        const ul26 = document.getElementById('stage-2-6');
+        if (lk26) lk26.style.display = 'none';
+        if (ul26) ul26.style.display = 'block';
       }
       // 2-3 클리어됐으면 갈림길 해금
       if ((window._clearedStages||[]).includes('2-3')) {
@@ -1774,6 +1781,11 @@ function enterChurch() {
   // 교회 노드 클리어 표시
   const ch = document.getElementById('stage-church');
   if (ch) ch.querySelector('div').textContent = '✅';
+  // 화장실 잠금
+  const tl = document.getElementById('stage-toilet');
+  const tll = document.getElementById('stage-toilet-locked');
+  if (tl) { tl.style.display = 'none'; }
+  if (tll) { tll.style.display = 'none'; }
   // 2-4 해금
   unlock24();
 }
@@ -1797,8 +1809,13 @@ function enterToilet() {
   el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#5aa;font-size:24px;font-weight:900;text-align:center;z-index:9999;pointer-events:none;text-shadow:0 0 12px rgba(80,180,180,0.8);animation:broFadeOut 2.5s ease-out forwards';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 2500);
-  const tl = document.getElementById('stage-toilet');
-  if (tl) tl.querySelector('div').textContent = '✅';
+  const tl2 = document.getElementById('stage-toilet');
+  if (tl2) tl2.querySelector('div').textContent = '✅';
+  // 교회 잠금
+  const ch2 = document.getElementById('stage-church');
+  const chl = document.getElementById('stage-church-locked');
+  if (ch2) { ch2.style.display = 'none'; }
+  if (chl) { chl.style.display = 'none'; }
   // 2-4 해금
   unlock24();
 }
@@ -3671,6 +3688,19 @@ function startBattle() {
         enemyFighter.speedMult = 1.4;
         enemyFighter.skillCooldown = 4000;
         enemyFighter.wingProgress = 1;
+      }
+      if (eb.startWall) {
+        const sk = enemyFighter.def.skill;
+        const eIdx = fighters.indexOf(enemyFighter);
+        gameState.walls.push({
+          x: enemyFighter.x + (Math.random()-0.5)*60,
+          y: enemyFighter.y + (Math.random()-0.5)*60,
+          half: sk.wallSize || 22,
+          spikeLen: sk.spikeLen || 18,
+          ownerId: eIdx,
+          spikeCooldowns: [0,0,0,0],
+          spikeD: sk.wallDmg || 10.7,
+        });
       }
       if (eb.startTriangle) {
         enemyFighter.eunjuTriangleDone = true;
@@ -10430,11 +10460,13 @@ function endGame() {
         document.getElementById('btn-campaign-next').style.display = 'none';
         document.getElementById('btn-campaign-back').textContent = '돌아가기';
         window._campaignJustWon = false;
-        // 초기화 (resetCampaign과 동일)
+        // 전체 초기화
         campaignChar = null;
         campaignBuffs = [];
         window._clearedStages = [];
         window._lastClearedStage = null;
+        window._stage2Unlocked = false;
+        // 1스테이지 노드 초기화
         ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
           const locked = document.getElementById('stage-' + sid + '-locked');
           const unlocked = document.getElementById('stage-' + sid);
@@ -10458,14 +10490,27 @@ function endGame() {
             else unlocked.onclick = () => startCampaignStage(sid);
           }
         });
+        // 2스테이지 노드 전체 초기화
+        ['forge-adv','2-1','2-2','2-3','2-4','2-6','church','toilet'].forEach(sid => {
+          const locked = document.getElementById('stage-' + sid + '-locked');
+          const unlocked = document.getElementById('stage-' + sid);
+          if (locked) locked.style.display = 'none';
+          if (unlocked) unlocked.style.display = 'none';
+          // forge-adv 클리어 표시 초기화
+          if (sid === 'forge-adv' && unlocked) {
+            const circle = unlocked.querySelector('.forge-adv-circle');
+            if (circle) { circle.style.background = 'linear-gradient(135deg,#7b2fff,#c084fc)'; circle.textContent = '💎'; }
+          }
+        });
         saveCampaignProgress();
       } else {
-        const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험' };
+        const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-6': '기하학적 변화' };
         const isBossClear = window._campaignStage === 'boss1';
         if (isBossClear) {
-          document.getElementById('winnerName').textContent = '🏆 캠페인 완수!';
-          document.getElementById('resultText').textContent = campaignChar ? campaignChar.name + '(으)로 클리어!' : '';
-          document.getElementById('btn-campaign-next').style.display = 'none';
+          document.getElementById('winnerName').textContent = '🏆 보스 격파!';
+          document.getElementById('resultText').textContent = (campaignChar ? campaignChar.name + '(으)로 클리어! ' : '') + '2스테이지 개방!';
+          document.getElementById('btn-campaign-next').style.display = 'block';
+          document.getElementById('btn-campaign-next').textContent = '맵으로 →';
           document.getElementById('btn-campaign-back').textContent = '메인으로';
           // 금 뱃지 저장
           if (campaignChar) addCampaignClearChar(campaignChar.id);
@@ -10512,12 +10557,10 @@ function endGame() {
               buildCharSelect();
             }, 1200);
           }
-          // 자동 초기화
+          // 1스테이지 버프/진행 리셋 (캐릭터와 2스테이지 해금 상태는 유지)
           campaignBuffs = [];
-          window._clearedStages = [];
-          window._lastClearedStage = null;
-          const charToReset = campaignChar;
-          campaignChar = null;
+          window._clearedStages = ['boss1']; // boss1 클리어 기록 유지
+          window._lastClearedStage = 'boss1';
           saveCampaignProgress();
           // 노드 초기화 (1-1 제외)
           ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
@@ -10559,7 +10602,7 @@ function endGame() {
             markStageCleared(window._campaignStage);
           }
           // 다음 스테이지 즉시 언락
-          const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5' };
+          const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-6' };
           const _nextStage = _nextMap[window._campaignStage];
           if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
           // 2-3 클리어 시 갈림길(교회/화장실) 해금
