@@ -304,7 +304,6 @@
   <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
   <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 선생 뽑기</button>
-  <div id="toiletPaperDisplay" style="position:absolute;bottom:12px;right:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-end;pointer-events:none"></div>
 </div>
 
 <div id="gachaOverlay">
@@ -650,8 +649,7 @@
 <script>const _r=Math.random.bind(Math),_hp=Math.hypot.bind(Math),_a2=Math.atan2.bind(Math),_co=Math.cos.bind(Math),_si=Math.sin.bind(Math),_mn=Math.min.bind(Math),_mx=Math.max.bind(Math),_fl=Math.floor.bind(Math),_abs=Math.abs.bind(Math),_rnd=Math.round.bind(Math),_PI2=Math.PI*2;
 function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.push({x,y,text:t,life:l,maxLife:l,vy:v,color:c,fontSize:s});}
 
-const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 170, radius: 28, touchDmg: 12, skill: { cooldown: 9000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { label: '자율주행자동차', barColor: '#e87020', triggerHp: 0.5 } } ,
- { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } } ];
+const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } } ];
 
 let selectedChars = [];
 let gameLoop = null;
@@ -854,7 +852,7 @@ async function loginUser() {
  if (!nick || !pw) { errEl.textContent = '닉네임과 비밀번호를 입력하세요.'; return; }
 
  try {
- const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=nickname,pw,unlocked_hidden,gacha_coins,toilet_paper,campaign_progress,campaign_cleared`, { headers: SB_HEADERS });
+ const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=nickname,pw,unlocked_hidden,gacha_coins,campaign_progress,campaign_cleared`, { headers: SB_HEADERS });
  const rows = await r.json();
  if (!rows.length) { errEl.textContent = '존재하지 않는 닉네임입니다.'; return; }
  if (rows[0].pw !== pw) { errEl.textContent = '비밀번호가 틀렸습니다.'; return; }
@@ -896,9 +894,7 @@ function onLoginSuccess() {
  });
  }
  gachaCoins = parseInt(currentUser.gacha_coins || 0);
- toiletPaperCount = parseInt(currentUser.toilet_paper || 0);
  updateGachaCoinDisplay();
- updateToiletPaperDisplay();
  const badge = document.getElementById('userBadge');
  const nickEl = document.getElementById('userBadgeNick');
  if (badge) { badge.style.display = 'block'; nickEl.textContent = '👤 ' + currentUser.nickname; }
@@ -973,31 +969,8 @@ function openCampaign() {
 
 function selectCampaignChar(def) {
  campaignChar = def;
- // 완전 초기화 (버프, 클리어 기록 모두 리셋)
- campaignBuffs = [];
- window._clearedStages = [];
- window._lastClearedStage = null;
- window._stage2Unlocked = false;
- window._campaignJustWon = false;
  setTimeout(updateCampaignStats, 100);
- // forge0, 1-1 항상 열기 / 나머지 잠금
- ['forge0','1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
-  const lk = document.getElementById('stage-' + sid + '-locked');
-  const ul = document.getElementById('stage-' + sid);
-  if (sid === 'forge0' || sid === '1-1') {
-   if (lk) lk.style.display = 'none';
-   if (ul) { ul.style.display = 'block'; ul.querySelectorAll('.cleared-mark').forEach(m => m.remove()); }
-  } else {
-   if (lk) lk.style.display = 'block';
-   if (ul) { ul.style.display = 'none'; ul.querySelectorAll('.cleared-mark').forEach(m => m.remove()); }
-  }
- });
- ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet'].forEach(sid => {
-  const lk = document.getElementById('stage-' + sid + '-locked');
-  const ul = document.getElementById('stage-' + sid);
-  if (lk) lk.style.display = 'none';
-  if (ul) ul.style.display = 'none';
- });
+ window._clearedStages = [];
  const badge = document.getElementById('campaignCharBadge');
  if (badge) badge.textContent = '캐릭터: ' + def.name;
  saveCampaignProgress();
@@ -1754,17 +1727,13 @@ function _initPredictBet() {
 }
 
 function startPredictMode() {
- // 아직 선택 안 했으면 기존 조합 유지, 새 판이면 새로 뽑기
- const needNew = !predictState.defA || !predictState.defB || predictState.userPick !== null;
- if (needNew) {
  const pool = CHARACTER_DEFS.filter(d =>
-  !d.isDummy && d.group !== 'CAMPAIGN_NPC' &&
-  ((d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') || unlockedHidden.has(d.id))
+ !d.isDummy && d.group !== 'CAMPAIGN_NPC' &&
+ ((d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') || unlockedHidden.has(d.id))
  );
  const shuffled = pool.sort(() => _r() - 0.5);
- predictState = { defA: shuffled[0], defB: shuffled[1], userPick: null };
- }
- const { defA, defB } = predictState;
+ const defA = shuffled[0], defB = shuffled[1];
+ predictState = { defA, defB, userPick: null };
  updateStreakDisplay();
  loadLeaderboard();
 
@@ -2175,8 +2144,7 @@ function buildCharSelect() {
 
 const unlockedHidden = new Set();
 let gachaCoins = 0;
-let toiletPaperCount = 0;
-const TEACHER_IDS = ['hyuncheol','seungoh','hyekyung','youngouk','eunju','sangjin'];
+const TEACHER_IDS = ['hyuncheol','seungoh','hyekyung','youngouk','eunju'];
 
 
 const HYUNGJUN_SKILL_POOL = [ { id: 'hack', label: '해킹', cooldown: 6000, barColor: '#00ff88', desc: '적 스킬 봉인' }, { id: 'aiSteam', label: 'AI Steam', cooldown: 14000, barColor: '#4488ff', desc: '로봇 소환' }, { id: 'netControl', label: '네트워크 통제', cooldown: 3000, barColor: '#cc44ff', desc: '전자파 발사' }, ];
@@ -3159,7 +3127,6 @@ function startBattle() {
   hairDropTimer: 0,
   hairAutoTimer: 2000,
   woojinSkill2Cooldown: 0,
-  _sangjinCarActive: false,
   woojinNaijja: 0,
   woojinFieldActive: false,
   woojinFieldTimer: 0,
@@ -3214,7 +3181,7 @@ function startBattle() {
  const greenHairs = [];
 
  const dmgDealt = new Array(fighters.length).fill(0);
- gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], shake: 0, over: false, winner: null };
+ gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], shake: 0, over: false, winner: null };
 
  if (window._campaignMode && campaignChar) {
  const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
@@ -3417,19 +3384,6 @@ function update(dt) {
  const enemy = enemies[0];
 
  if (f.def.isDummy && !f._dummyCanMove) { f.vx = 0; f.vy = 0; }
- // 박상진T 자율주행 유도
- if (f._sangjinHoming && f.hp > 0) {
-  const tgts = fighters.filter((ft, fi) => fi !== idx && ft.hp > 0);
-  if (tgts.length > 0) {
-   const tgt = tgts.reduce((a, b) => _hp(a.x-f.x,a.y-f.y) < _hp(b.x-f.x,b.y-f.y) ? a : b);
-   const da = _a2(tgt.y - f.y, tgt.x - f.x);
-   const spd = BASE_SPEED * (f.speedMult || 1);
-   f.vx = _co(da) * spd;
-   f.vy = _si(da) * spd;
-   f.x = _mx(f.r, _mn(W - f.r, f.x + f.vx * timeScale));
-   f.y = _mx(f.r, _mn(H - f.r, f.y + f.vy * timeScale));
-  }
- }
  if (!f.awakeningActive && !(f.def.id === 'giwon' && f.tidalActive) && !f.def.isDummy && !(f.def.id === 'yeonhoo' && f.yeonhooItem === '광속질주')) {
   const hairMult = f.hairSlow || 1.0;
   const tidalMult = (f.def && f.def.id === 'giwon' && f.tidalActive) ? 3.0 : 1.0;
@@ -6201,66 +6155,6 @@ function update(dt) {
  }
  }
 
- // ── 박상진T 강꼬치고기 ──
- if (gameState.fishBullets) {
-  for (let i = gameState.fishBullets.length - 1; i >= 0; i--) {
-   const fb = gameState.fishBullets[i];
-   fb.life -= dt;
-   fb.x += fb.vx * timeScale;
-   fb.y += fb.vy * timeScale;
-   let bounced = false;
-   if (fb.x - fb.r < 0) { fb.x = fb.r; fb.vx = _abs(fb.vx); bounced = true; }
-   else if (fb.x + fb.r > W) { fb.x = W - fb.r; fb.vx = -_abs(fb.vx); bounced = true; }
-   if (fb.y - fb.r < 0) { fb.y = fb.r; fb.vy = _abs(fb.vy); bounced = true; }
-   else if (fb.y + fb.r > H) { fb.y = H - fb.r; fb.vy = -_abs(fb.vy); bounced = true; }
-   if (bounced) {
-    fb.bounces++;
-    // 튕길 때 물방울 6개 사방으로
-    for (let w = 0; w < 6; w++) {
-     const wa = (w / 6) * _PI2;
-     const wx = fb.x + _co(wa) * 18;
-     const wy = fb.y + _si(wa) * 18;
-     fighters.forEach((ft, fi) => {
-      if (fi === fb.ownerId || ft.hp <= 0) return;
-      if (_hp(ft.x - wx, ft.y - wy) < ft.r + 12) {
-       ft.lastDmgFrom = fb.ownerId;
-       applyDmg(ft, 10, fighters[fb.ownerId]);
-       _dt(ft.x, ft.y - ft.r - 10, '💧 10', 700, -0.4, '#4a90d9', 11);
-      }
-     });
-    }
-    _sp(fb.x, fb.y, '#4a90d9', 8);
-   }
-   // 관통 히트
-   fighters.forEach((ft, fi) => {
-    if (fi === fb.ownerId || ft.hp <= 0 || fb.hitIds.has(fi)) return;
-    if (_hp(ft.x - fb.x, ft.y - fb.y) < ft.r + fb.r) {
-     ft.lastDmgFrom = fb.ownerId;
-     applyDmg(ft, 18, fighters[fb.ownerId]);
-     fb.hitIds.add(fi);
-     _dt(ft.x, ft.y - ft.r - 10, '🐟 18', 800, -0.5, '#1a6b8a', 12);
-    }
-   });
-   if (fb.bounces >= fb.maxBounces || fb.life <= 0) {
-    _sp(fb.x, fb.y, '#4a90d9', 5);
-    gameState.fishBullets.splice(i, 1);
-   }
-  }
- }
-
- // ── 박상진T 자율주행자동차 스킬2 체크 ──
- fighters.forEach((f, fi) => {
-  if (f.def.id !== 'sangjin' || f.hp <= 0 || f._sangjinCarActive) return;
-  if (f.hp / f.maxHp <= 0.5) {
-   f._sangjinCarActive = true;
-   f.speedMult = (f.speedMult || 1) * 2.0;
-   f.def = { ...f.def, touchDmg: _rnd(f.def.touchDmg * 1.5) };
-   f._sangjinHoming = true;
-   _sp(f.x, f.y, '#e87020', 14);
-   _dt(f.x, f.y - f.r - 14, '🚗 자율주행 발동!', 1500, -0.4, '#e87020', 13);
-  }
- });
-
  const { gases } = gameState;
  for (let i = gases.length - 1; i >= 0; i--) {
  const g = gases[i];
@@ -6758,27 +6652,7 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  const aliveTargets = gameState.fighters.filter((_,i)=>i!==idx&&gameState.fighters[i].hp>0);
  if (aliveTargets.length === 0) return;
  const enemy = aliveTargets.reduce((a,b)=>_hp(a.x-fighter.x,a.y-fighter.y)<_hp(b.x-fighter.x,b.y-fighter.y)?a:b);
- if (fighter.def.id === 'woojin') {
-  // 투구 발사
-  const tgt = enemy;
-  const ang = _a2(tgt.y - fighter.y, tgt.x - fighter.x);
-  const isField = fighter.woojinFieldActive;
-  if (!gameState.woojinBalls) gameState.woojinBalls = [];
-  gameState.woojinBalls.push({
-   x: fighter.x, y: fighter.y,
-   vx: _co(ang) * (isField ? 18 : 22),
-   vy: _si(ang) * (isField ? 18 : 22),
-   r: isField ? 20 : 16,
-   bounces: 0, maxBounces: isField ? 5 : 3,
-   dmg: isField ? 15 : 10,
-   ownerId: idx,
-   isSoccer: isField,
-   life: 5000,
-   hitCooldowns: {},
-  });
-  _sp(fighter.x, fighter.y, isField ? '#c8a800' : '#4a90d9', 5);
-  return;
- } else if (fighter.def.id === 'taeyoung') {
+ if (fighter.def.id === 'taeyoung') {
  fighter.skillActive = true;
  fighter.auraTimer = fighter.def.skill.duration;
  fighter.auraDmgTimer = 0;
@@ -6939,21 +6813,7 @@ function activateSkill(fighter, idx, _enemyIgnored) {
   spawnParticle(gameState.particles, fighter.x, fighter.y, '#3a3a8c', 10);
  }
  }
- }
- if (fighter.def.id === 'sangjin') {
-  // 강꼬치고기: 물고기 발사 (관통, 벽 튕김)
-  if (!gameState.fishBullets) gameState.fishBullets = [];
-  const ang = _a2(enemy.y - fighter.y, enemy.x - fighter.x);
-  gameState.fishBullets.push({
-  x: fighter.x, y: fighter.y,
-  vx: _co(ang) * 14, vy: _si(ang) * 14,
-  r: 10, bounces: 0, maxBounces: 4,
-  ownerId: idx, life: 8000,
-  hitIds: new Set(),
-  });
-  _sp(fighter.x, fighter.y, '#4a90d9', 6);
-  _dt(fighter.x, fighter.y - fighter.r - 10, '🐟 강꼬치고기!', 900, -0.4, '#4a90d9', 12);
- }
+}
 
 function spawnParticle(arr, x, y, color, n) {
  const _arr = arr || (gameState && gameState.particles);
@@ -7636,33 +7496,6 @@ function render(ctx) {
   ctx.stroke();
  }
  ctx.restore();
- });
-
- // 강꼬치고기 렌더링
- (gameState.fishBullets || []).forEach(fb => {
-  ctx.save();
-  ctx.translate(fb.x, fb.y);
-  const ang = _a2(fb.vy, fb.vx);
-  ctx.rotate(ang);
-  // 물고기 몸통
-  ctx.beginPath();
-  ctx.ellipse(0, 0, fb.r, fb.r * 0.5, 0, 0, _PI2);
-  ctx.fillStyle='#4a90d9';
-  ctx.fill();
-  // 꼬리
-  ctx.beginPath();
-  ctx.moveTo(-fb.r, 0);
-  ctx.lineTo(-fb.r - 7, -5);
-  ctx.lineTo(-fb.r - 7, 5);
-  ctx.closePath();
-  ctx.fillStyle='#1a6b8a';
-  ctx.fill();
-  // 눈
-  ctx.beginPath();
-  ctx.arc(fb.r * 0.4, -fb.r * 0.15, 2, 0, _PI2);
-  ctx.fillStyle='#fff';
-  ctx.fill();
-  ctx.restore();
  });
 
  gameState.fighters.forEach(f => {
@@ -8788,14 +8621,7 @@ function buildBattleUI(fighters) {
   html += lbl('sklbl', '#2e8b3a', 'say wallahi');
   html += bar('cheoba', '#ff6b00', '0%', '5px');
   html += lbl('cheobalbl', '#999', '쳐웃기 — 부활 후 활성화');
- } else if (id === 'sangjin') {
-  const carLbl = document.getElementById('sangjin-car-' + pid);
-  if (carLbl) carLbl.textContent = f._sangjinCarActive ? '🚗 자율주행 중!' : '대기 중';
- } else if (id === 'sangjin') {
-  html += bar('sk', '#1a6b8a', '100%', '4px');
-  html += lbl('sklbl', '#1a6b8a', '🐟 강꼬치고기');
-  html += lbl('sangjin-car-' + pid, '#e87020', '대기 중');
-} else if (id === 'woojin') {
+ } else if (id === 'woojin') {
   html += bar('sk', '#4a90d9', '100%', '4px');
   html += lbl('sklbl', '#4a90d9', '⚾ 투구 ✦');
   html += bar('naijja', '#f5c518', '0%', '4px');
@@ -8968,16 +8794,6 @@ function updateBattleUI(fighters) {
   if (lbWJ) lbWJ.textContent = (f.skillCooldown||0) <= 0
   ? (f.woojinFieldActive ? '⚽ 슛 ✦' : '⚾ 투구 ✦')
   : (f.woojinFieldActive ? '⚽ 슛' : '⚾ 투구') + ` (${((f.skillCooldown||0)/1000).toFixed(1)}s)`;
- } else if (f.def.id === 'sangjin') {
-  const carEl = document.getElementById('sangjin-car-' + pid);
-  if (carEl) carEl.textContent = f._sangjinCarActive ? '🚗 자율주행 중!' : '대기 중';
-  const skEl2 = document.getElementById('sk-' + pid);
-  if (skEl2) {
-   const pct = f.skillCooldown <= 0 ? 100 : _mx(0, 100 - (f.skillCooldown / f.def.skill.cooldown) * 100);
-   skEl2.style.width = pct + '%';
-  }
-  const skLbl2 = document.getElementById('sklbl-' + pid);
-  if (skLbl2) skLbl2.textContent = f.skillCooldown <= 0 ? '🐟 강꼬치고기 ✦' : `🐟 강꼬치고기 (${((f.skillCooldown||0)/1000).toFixed(1)}s)`;
   if (njEl) njEl.style.width = _mn(100, ((f.woojinNaijja||0)/10)*100) + '%';
   if (njLbl) njLbl.textContent = `나이짜! (${f.woojinNaijja||0}/10)${f.woojinFieldActive ? ' ✦ 회복 활성' : ''}`;
   if (flLbl) {
@@ -9486,47 +9302,41 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss2')) window._clearedStages.push('boss2');
    markStageCleared('boss2');
-   gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
+   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
 
-   if (!unlockedHidden.has('woojin')) {
-    unlockedHidden.add('woojin');
-    saveUnlockedHidden();
-    setTimeout(() => {
-     const woojinDef = CHARACTER_DEFS.find(d => d.id === 'woojin');
-     if (woojinDef) {
-      const overlay = document.getElementById('unlockOverlay');
-      const box = document.getElementById('unlockBox');
-      const name = document.getElementById('unlockName');
-      const icon = document.getElementById('unlockIcon');
-      if (overlay && box && name && icon) {
-       name.textContent = '원우진 해금!!';
-       icon.style.background = woojinDef.color;
-       icon.textContent = woojinDef.name;
-       let sub = document.getElementById('unlockSub');
-       if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#4a90d9;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
-       sub.textContent = '⚾ Boss-2 격파 보상 — 야구소년 등장!';
-       box.style.borderColor = '#4a90d9';
-       box.style.boxShadow = '0 0 32px rgba(74,144,217,0.6)';
-       overlay.style.display = 'flex';
-       for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-         const el = document.createElement('div');
-         el.textContent = ['⚾','⚽','🏆','💨','⚡'][i%5];
-         el.style.cssText = `position:fixed;font-size:${16+_r()*16}px;left:${5+_r()*90}%;top:${5+_r()*90}%;z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none`;
-         document.body.appendChild(el);
-         setTimeout(() => el.remove(), 1800);
-        }, i * 120);
-       }
+   unlockedHidden.add('woojin');
+   saveUnlockedHidden();
+   setTimeout(() => {
+    const woojinDef = CHARACTER_DEFS.find(d => d.id === 'woojin');
+    if (woojinDef) {
+     const overlay = document.getElementById('unlockOverlay');
+     const box = document.getElementById('unlockBox');
+     const name = document.getElementById('unlockName');
+     const icon = document.getElementById('unlockIcon');
+     if (overlay && box && name && icon) {
+      name.textContent = '원우진 해금!!';
+      icon.style.background = woojinDef.color;
+      icon.textContent = woojinDef.name;
+      let sub = document.getElementById('unlockSub');
+      if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#4a90d9;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
+      sub.textContent = '⚾ Boss-2 격파 보상 — 야구소년 등장!';
+      box.style.borderColor = '#4a90d9';
+      box.style.boxShadow = '0 0 32px rgba(74,144,217,0.6)';
+      overlay.style.display = 'flex';
+      for (let i = 0; i < 10; i++) {
+       setTimeout(() => {
+        const el = document.createElement('div');
+        el.textContent = ['⚾','⚽','🏆','💨','⚡'][i%5];
+        el.style.cssText = `position:fixed;font-size:${16+_r()*16}px;left:${5+_r()*90}%;top:${5+_r()*90}%;z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1800);
+       }, i * 120);
       }
      }
-     buildCharSelect();
-    }, 800);
-   } else {
-    // 이미 해금된 경우 연출 없이 바로 결과 표시
-    document.getElementById('resultText').textContent = '🏆 Boss-2 격파! +200🪙';
+    }
     buildCharSelect();
-   }
+   }, 800);
   } else if (isBoss2Clear) {
 
    document.getElementById('winnerName').textContent = '패배..';
@@ -9582,7 +9392,7 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss1')) window._clearedStages.push('boss1');
    window._lastClearedStage = 'boss1';
-   gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
+   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
    ['forge0','1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
@@ -9748,29 +9558,6 @@ function _buildCampaignNodes() {
  if (lkf0) lkf0.style.display = 'none';
  if (ulf0) ulf0.style.display = 'block';
 }
-// ── 휴지 표시 ──
-function updateToiletPaperDisplay() {
-  const el = document.getElementById('toiletPaperDisplay');
-  if (!el) return;
-  el.innerHTML = '';
-  // 최대 50개까지 표시 (너무 많으면 숫자로)
-  const show = Math.min(toiletPaperCount, 30);
-  for (let i = 0; i < show; i++) {
-    const t = document.createElement('span');
-    t.textContent = '🧻';
-    t.style.cssText = 'font-size:16px;line-height:1;animation:dropIn 0.3s ease both';
-    t.style.animationDelay = (i * 0.03) + 's';
-    el.appendChild(t);
-  }
-  if (toiletPaperCount > 30) {
-    const more = document.createElement('span');
-    more.textContent = `+${toiletPaperCount - 30}`;
-    more.style.cssText = 'font-size:11px;color:#aaa;font-weight:700;align-self:center';
-    el.appendChild(more);
-  }
-}
-
-
 // ── 선생 뽑기 시스템 (코인 기반) ──
 function updateGachaCoinDisplay() {
   const el = document.getElementById('gachaCoinCount');
@@ -9784,11 +9571,10 @@ async function saveGachaData() {
     await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
       method: 'PATCH',
       headers: SB_HEADERS,
-      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_coins: gachaCoins, toilet_paper: toiletPaperCount })
+      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_coins: gachaCoins })
     });
     currentUser.unlocked_hidden = hiddenStr;
     currentUser.gacha_coins = gachaCoins;
-    currentUser.toilet_paper = toiletPaperCount;
   } catch(e) {}
 }
 
@@ -9823,27 +9609,21 @@ function renderGachaOwned() {
 }
 
 function _doGachaPull(pullCount) {
-  // 캐릭터 20% / 휴지 1% / 꽝 79%
+  // 1회 100코인 / 10+1회 1000코인 (보너스 1회)
   const locked = TEACHER_IDS.filter(id => !unlockedHidden.has(id));
   const results = [];
   for (let i = 0; i < pullCount; i++) {
-    const roll = _r();
-    if (locked.length === 0) {
-      // 모두 보유 → 코인 50 환급
-      gachaCoins += 50;
-      results.push({ type: 'coin', amount: 50 });
-    } else if (roll < 0.20) {
-      // 20% 캐릭터
+    // 20% 확률로 캐릭터, 80% 꽝
+    if (locked.length > 0 && _r() < 0.2) {
       const idx = _fl(_r() * locked.length);
       const pick = locked.splice(idx, 1)[0];
       unlockedHidden.add(pick);
       results.push({ type: 'char', id: pick });
-    } else if (roll < 0.21) {
-      // 1% 휴지
-      toiletPaperCount++;
-      results.push({ type: 'toilet' });
+    } else if (locked.length === 0) {
+      // 모두 보유 → 코인 50 환급
+      gachaCoins += 50;
+      results.push({ type: 'coin', amount: 50 });
     } else {
-      // 79% 꽝
       results.push({ type: 'miss' });
     }
   }
@@ -9862,7 +9642,6 @@ async function doGacha(count) {
   const results = _doGachaPull(pulls);
   await saveGachaData();
   updateGachaCoinDisplay();
-  updateToiletPaperDisplay();
   renderGachaOwned();
   buildCharSelect();
   _playGachaMotion(results);
@@ -9944,9 +9723,6 @@ function _openGachaBoxes(results, boxes, revealArea, revealMsg, hint, closeBtn) 
       } else if (r.type === 'coin') {
         card.style.cssText += ';border-color:#c8a800;background:#fff8e1';
         card.innerHTML = `<div class="char-circle" style="background:#c8a800;font-size:22px">🪙</div><div class="char-name">코인 환급</div><div class="char-stats" style="font-size:10px">+${r.amount}</div>`;
-      } else if (r.type === 'toilet') {
-        card.style.cssText += ';border-color:#ddd;background:#f9f9f9;box-shadow:0 0 8px rgba(0,0,0,0.1)';
-        card.innerHTML = '<div class="char-circle" style="background:#eee;font-size:28px">🧻</div><div class="char-name" style="color:#999">휴지</div><div class="char-stats" style="font-size:10px;color:#bbb">메인에 쌓임</div>';
       } else {
         card.style.cssText += ';opacity:0.55';
         card.innerHTML = '<div class="char-circle" style="background:#888;font-size:22px">💨</div><div class="char-name">꽝</div><div class="char-stats" style="font-size:10px;color:#aaa">아쉽네요</div>';
