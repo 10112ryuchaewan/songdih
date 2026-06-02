@@ -6656,7 +6656,27 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  const aliveTargets = gameState.fighters.filter((_,i)=>i!==idx&&gameState.fighters[i].hp>0);
  if (aliveTargets.length === 0) return;
  const enemy = aliveTargets.reduce((a,b)=>_hp(a.x-fighter.x,a.y-fighter.y)<_hp(b.x-fighter.x,b.y-fighter.y)?a:b);
- if (fighter.def.id === 'taeyoung') {
+ if (fighter.def.id === 'woojin') {
+  // 투구 발사
+  const tgt = enemy;
+  const ang = _a2(tgt.y - fighter.y, tgt.x - fighter.x);
+  const isField = fighter.woojinFieldActive;
+  if (!gameState.woojinBalls) gameState.woojinBalls = [];
+  gameState.woojinBalls.push({
+   x: fighter.x, y: fighter.y,
+   vx: _co(ang) * (isField ? 18 : 22),
+   vy: _si(ang) * (isField ? 18 : 22),
+   r: isField ? 20 : 16,
+   bounces: 0, maxBounces: isField ? 5 : 3,
+   dmg: isField ? 15 : 10,
+   ownerId: idx,
+   isSoccer: isField,
+   life: 5000,
+   hitCooldowns: {},
+  });
+  _sp(fighter.x, fighter.y, isField ? '#c8a800' : '#4a90d9', 5);
+  return;
+ } else if (fighter.def.id === 'taeyoung') {
  fighter.skillActive = true;
  fighter.auraTimer = fighter.def.skill.duration;
  fighter.auraDmgTimer = 0;
@@ -9306,7 +9326,7 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss2')) window._clearedStages.push('boss2');
    markStageCleared('boss2');
-   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
+   gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
 
    unlockedHidden.add('woojin');
@@ -9396,7 +9416,7 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss1')) window._clearedStages.push('boss1');
    window._lastClearedStage = 'boss1';
-   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
+   gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
    ['forge0','1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
