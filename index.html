@@ -9333,38 +9333,44 @@ function endGame() {
    gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
 
-   unlockedHidden.add('woojin');
-   saveUnlockedHidden();
-   setTimeout(() => {
-    const woojinDef = CHARACTER_DEFS.find(d => d.id === 'woojin');
-    if (woojinDef) {
-     const overlay = document.getElementById('unlockOverlay');
-     const box = document.getElementById('unlockBox');
-     const name = document.getElementById('unlockName');
-     const icon = document.getElementById('unlockIcon');
-     if (overlay && box && name && icon) {
-      name.textContent = '원우진 해금!!';
-      icon.style.background = woojinDef.color;
-      icon.textContent = woojinDef.name;
-      let sub = document.getElementById('unlockSub');
-      if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#4a90d9;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
-      sub.textContent = '⚾ Boss-2 격파 보상 — 야구소년 등장!';
-      box.style.borderColor = '#4a90d9';
-      box.style.boxShadow = '0 0 32px rgba(74,144,217,0.6)';
-      overlay.style.display = 'flex';
-      for (let i = 0; i < 10; i++) {
-       setTimeout(() => {
-        const el = document.createElement('div');
-        el.textContent = ['⚾','⚽','🏆','💨','⚡'][i%5];
-        el.style.cssText = `position:fixed;font-size:${16+_r()*16}px;left:${5+_r()*90}%;top:${5+_r()*90}%;z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 1800);
-       }, i * 120);
+   if (!unlockedHidden.has('woojin')) {
+    unlockedHidden.add('woojin');
+    saveUnlockedHidden();
+    setTimeout(() => {
+     const woojinDef = CHARACTER_DEFS.find(d => d.id === 'woojin');
+     if (woojinDef) {
+      const overlay = document.getElementById('unlockOverlay');
+      const box = document.getElementById('unlockBox');
+      const name = document.getElementById('unlockName');
+      const icon = document.getElementById('unlockIcon');
+      if (overlay && box && name && icon) {
+       name.textContent = '원우진 해금!!';
+       icon.style.background = woojinDef.color;
+       icon.textContent = woojinDef.name;
+       let sub = document.getElementById('unlockSub');
+       if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#4a90d9;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
+       sub.textContent = '⚾ Boss-2 격파 보상 — 야구소년 등장!';
+       box.style.borderColor = '#4a90d9';
+       box.style.boxShadow = '0 0 32px rgba(74,144,217,0.6)';
+       overlay.style.display = 'flex';
+       for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+         const el = document.createElement('div');
+         el.textContent = ['⚾','⚽','🏆','💨','⚡'][i%5];
+         el.style.cssText = `position:fixed;font-size:${16+_r()*16}px;left:${5+_r()*90}%;top:${5+_r()*90}%;z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none`;
+         document.body.appendChild(el);
+         setTimeout(() => el.remove(), 1800);
+        }, i * 120);
+       }
       }
      }
-    }
+     buildCharSelect();
+    }, 800);
+   } else {
+    // 이미 해금된 경우 연출 없이 바로 결과 표시
+    document.getElementById('resultText').textContent = '🏆 Boss-2 격파! +200🪙';
     buildCharSelect();
-   }, 800);
+   }
   } else if (isBoss2Clear) {
 
    document.getElementById('winnerName').textContent = '패배..';
