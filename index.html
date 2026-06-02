@@ -1730,13 +1730,17 @@ function _initPredictBet() {
 }
 
 function startPredictMode() {
+ // 아직 선택 안 했으면 기존 조합 유지, 새 판이면 새로 뽑기
+ const needNew = !predictState.defA || !predictState.defB || predictState.userPick !== null;
+ if (needNew) {
  const pool = CHARACTER_DEFS.filter(d =>
- !d.isDummy && d.group !== 'CAMPAIGN_NPC' &&
- ((d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') || unlockedHidden.has(d.id))
+  !d.isDummy && d.group !== 'CAMPAIGN_NPC' &&
+  ((d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') || unlockedHidden.has(d.id))
  );
  const shuffled = pool.sort(() => _r() - 0.5);
- const defA = shuffled[0], defB = shuffled[1];
- predictState = { defA, defB, userPick: null };
+ predictState = { defA: shuffled[0], defB: shuffled[1], userPick: null };
+ }
+ const { defA, defB } = predictState;
  updateStreakDisplay();
  loadLeaderboard();
 
