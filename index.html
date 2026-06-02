@@ -161,99 +161,6 @@
     0% { transform: translateY(0) scale(1); opacity: 1; }
     100% { transform: translateY(-80px) scale(0.3); opacity: 0; }
   }
-
-  /* ── 뽑기 모션 ── */
-  @keyframes gachaBoxDrop {
-    0%   { transform: translateY(-120px) scale(1.1); opacity: 0; }
-    60%  { transform: translateY(10px) scale(0.96); opacity: 1; }
-    75%  { transform: translateY(-6px) scale(1.02); }
-    88%  { transform: translateY(3px) scale(0.99); }
-    100% { transform: translateY(0) scale(1); opacity: 1; }
-  }
-  @keyframes gachaBoxOpen {
-    0%   { transform: scale(1) rotate(0deg); }
-    20%  { transform: scale(1.15) rotate(-4deg); }
-    40%  { transform: scale(1.15) rotate(4deg); }
-    60%  { transform: scale(1.2) rotate(-2deg); }
-    80%  { transform: scale(0.9) rotate(0deg); opacity: 0.5; }
-    100% { transform: scale(0) rotate(0deg); opacity: 0; }
-  }
-  @keyframes gachaReveal {
-    0%   { transform: scale(0) translateY(20px); opacity: 0; }
-    70%  { transform: scale(1.1) translateY(-4px); opacity: 1; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
-  }
-  @keyframes gachaGlow {
-    0%, 100% { box-shadow: 0 0 8px rgba(200,168,0,0.3); }
-    50%       { box-shadow: 0 0 20px rgba(200,168,0,0.8), 0 0 40px rgba(200,168,0,0.3); }
-  }
-  @keyframes gachaShine {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
-  .gacha-box {
-    width: 72px; height: 72px;
-    background: linear-gradient(135deg, #4a3000, #c8a800, #ffd700, #a07000);
-    border-radius: 12px;
-    border: 3px solid #ffd700;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 32px;
-    cursor: pointer;
-    position: relative;
-    flex-shrink: 0;
-    transition: box-shadow 0.3s;
-  }
-  .gacha-box.is-char {
-    animation: gachaGlow 1.5s ease-in-out infinite;
-    border-color: #ffe44d;
-    background: linear-gradient(135deg, #5a3a00, #e8c000, #fff0a0, #b08000);
-  }
-  .gacha-box.opened {
-    animation: gachaBoxOpen 0.4s ease-out forwards;
-  }
-  #gachaOverlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 3000;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  #gachaBoxRow {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: flex-start;
-    max-width: 92vw;
-    overflow-x: auto;
-    padding: 8px 16px;
-    scrollbar-width: none;
-  }
-  #gachaBoxRow::-webkit-scrollbar { display: none; }
-  #gachaRevealArea {
-    display: none;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: flex-start;
-    max-width: 92vw;
-    overflow-x: auto;
-    padding: 8px 16px;
-    scrollbar-width: none;
-  }
-  #gachaRevealArea::-webkit-scrollbar { display: none; }
-  .gacha-revealed {
-    animation: gachaReveal 0.4s cubic-bezier(0.175,0.885,0.32,1.275) both;
-  }
-  #gachaTapHint {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-    opacity: 0;
-    transition: opacity 0.5s;
-    text-align: center;
-  }
   #unlockOkBtn:active { transform: scale(0.95); }
   #unlockOkBtn:hover { background: #ffd700; }
 
@@ -304,14 +211,6 @@
   <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
   <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 선생 뽑기</button>
-</div>
-
-<div id="gachaOverlay">
-  <div id="gachaBoxRow"></div>
-  <div id="gachaTapHint">탭하여 열기</div>
-  <div id="gachaRevealArea"></div>
-  <div id="gachaRevealMsg" style="color:#fff;font-size:14px;font-weight:700;text-align:center;display:none;margin-top:4px"></div>
-  <button class="btn" id="gachaOverlayClose" style="margin-top:8px;display:none;background:#fff;color:#111;padding:10px 32px">확인</button>
 </div>
 
 <div id="geumCutscene" style="display:none;position:fixed;inset:0;background:#000;z-index:2000;flex-direction:column;align-items:center;justify-content:center;overflow:hidden">
@@ -553,19 +452,19 @@
   <div style="font-size:20px;font-weight:900;color:#c8a800;margin-bottom:4px;letter-spacing:2px">🎰 선생 뽑기</div>
   <div style="font-size:12px;color:#888;margin-bottom:16px">선생 캐릭터를 뽑아 언락하세요</div>
 
-  <!-- 코인 표시 -->
+  <!-- 뽑기권 표시 -->
   <div style="display:flex;align-items:center;gap:8px;background:#fff8e1;border:1.5px solid #c8a800;border-radius:10px;padding:10px 20px;margin-bottom:16px">
-    <span style="font-size:18px">🪙</span>
-    <span style="font-size:14px;font-weight:700;color:#c8a800">코인</span>
-    <span id="gachaCoinCount" style="font-size:20px;font-weight:900;color:#111">0</span>
+    <span style="font-size:18px">🎟️</span>
+    <span style="font-size:14px;font-weight:700;color:#c8a800">뽑기권</span>
+    <span id="gachaTicketCount" style="font-size:20px;font-weight:900;color:#111">0</span>
+    <span style="font-size:13px;color:#888">장</span>
   </div>
 
   <!-- 뽑기 버튼 -->
-  <div style="display:flex;gap:10px;margin-bottom:8px">
-    <button class="btn" id="btn-gacha-1" style="background:#c8a800;border-color:#a08000;color:#fff;padding:10px 20px">1회 뽑기<br><span style="font-size:11px;font-weight:400">100코인</span></button>
-    <button class="btn" id="btn-gacha-10" style="background:#a08000;border-color:#806000;color:#fff;padding:10px 20px">10+1회 뽑기<br><span style="font-size:11px;font-weight:400">1000코인</span></button>
+  <div style="display:flex;gap:10px;margin-bottom:20px">
+    <button class="btn" id="btn-gacha-1" style="background:#c8a800;border-color:#a08000;color:#fff;padding:10px 24px">1회 뽑기</button>
+    <button class="btn" id="btn-gacha-10" style="background:#a08000;border-color:#806000;color:#fff;padding:10px 24px">10회 뽑기</button>
   </div>
-  <div style="font-size:11px;color:#aaa;margin-bottom:16px">캐릭터 확률 20% / 꽝 80%</div>
 
   <!-- 뽑기 결과 -->
   <div id="gachaResult" style="display:none;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;width:100%;max-width:400px">
@@ -607,7 +506,7 @@
 
   <div id="onlineSelecting" style="display:none;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:500px">
     <div style="font-size:15px;font-weight:700;color:#111">캐릭터를 선택하세요</div>
-    <div id="onlineCharRow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;overflow-y:auto;max-height:55vh;padding:4px 2px"></div>
+    <div id="onlineCharRow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
     <div id="onlineSelectStatus" style="font-size:13px;color:#888;min-height:18px"></div>
   </div>
 </div>
@@ -627,7 +526,7 @@
 <script>const _r=Math.random.bind(Math),_hp=Math.hypot.bind(Math),_a2=Math.atan2.bind(Math),_co=Math.cos.bind(Math),_si=Math.sin.bind(Math),_mn=Math.min.bind(Math),_mx=Math.max.bind(Math),_fl=Math.floor.bind(Math),_abs=Math.abs.bind(Math),_rnd=Math.round.bind(Math),_PI2=Math.PI*2;
 function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.push({x,y,text:t,life:l,maxLife:l,vy:v,color:c,fontSize:s});}
 
-const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } } ];
+const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 220, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } } ];
 
 let selectedChars = [];
 let gameLoop = null;
@@ -830,7 +729,7 @@ async function loginUser() {
  if (!nick || !pw) { errEl.textContent = '닉네임과 비밀번호를 입력하세요.'; return; }
 
  try {
- const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=nickname,pw,unlocked_hidden,gacha_coins,campaign_progress,campaign_cleared`, { headers: SB_HEADERS });
+ const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=*`, { headers: SB_HEADERS });
  const rows = await r.json();
  if (!rows.length) { errEl.textContent = '존재하지 않는 닉네임입니다.'; return; }
  if (rows[0].pw !== pw) { errEl.textContent = '비밀번호가 틀렸습니다.'; return; }
@@ -855,7 +754,7 @@ async function signupUser() {
  const r = await fetch(`${SB_URL}/rest/v1/users`, {
   method: 'POST',
   headers: { ...SB_HEADERS, 'Prefer': 'return=representation' },
-  body: JSON.stringify({ nickname: nick, pw, unlocked_hidden: '', gacha_coins: 0 })
+  body: JSON.stringify({ nickname: nick, pw, unlocked_hidden: '' })
  });
  if (!r.ok) { errEl.textContent = '회원가입 실패: ' + r.status; return; }
  const rows = await r.json();
@@ -871,8 +770,8 @@ function onLoginSuccess() {
   unlockedHidden.add(id);
  });
  }
- gachaCoins = parseInt(currentUser.gacha_coins || 0);
- updateGachaCoinDisplay();
+ gachaTickets = parseInt(currentUser.gacha_tickets || 0);
+ updateGachaTicketDisplay();
  const badge = document.getElementById('userBadge');
  const nickEl = document.getElementById('userBadgeNick');
  if (badge) { badge.style.display = 'block'; nickEl.textContent = '👤 ' + currentUser.nickname; }
@@ -895,8 +794,16 @@ function logoutUser() {
 }
 
 async function saveUnlockedHidden() {
- // saveGachaData로 통합 (gacha_coins 포함)
- await saveGachaData();
+ if (!currentUser) return;
+ const hiddenStr = Array.from(unlockedHidden).join(',');
+ try {
+ await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
+  method: 'PATCH',
+  headers: SB_HEADERS,
+  body: JSON.stringify({ unlocked_hidden: hiddenStr })
+ });
+ currentUser.unlocked_hidden = hiddenStr;
+ } catch(e) { console.error('save unlocked error', e); }
 }
 
 let campaignChar = null;
@@ -2052,7 +1959,7 @@ function buildCharSelect() {
 }
 
 const unlockedHidden = new Set();
-let gachaCoins = 0;
+let gachaTickets = 0;
 const TEACHER_IDS = ['hyuncheol','seungoh','hyekyung','youngouk','eunju'];
 
 
@@ -9211,7 +9118,6 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss2')) window._clearedStages.push('boss2');
    markStageCleared('boss2');
-   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
 
    unlockedHidden.add('woojin');
@@ -9301,7 +9207,6 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss1')) window._clearedStages.push('boss1');
    window._lastClearedStage = 'boss1';
-   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
    ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
@@ -9329,7 +9234,7 @@ function endGame() {
    });
   } else {
    document.getElementById('winnerName').textContent = '스테이지 클리어!';
-   document.getElementById('resultText').textContent = window._campaignStage + ' ' + (stageNames[window._campaignStage] || '') + '  +50🪙';
+   document.getElementById('resultText').textContent = window._campaignStage + ' ' + (stageNames[window._campaignStage] || '');
    document.getElementById('btn-campaign-next').style.display = 'block';
   }
   window._lastClearedStage = window._campaignStage;
@@ -9340,10 +9245,6 @@ function endGame() {
    window._clearedStages.push(window._campaignStage);
    markStageCleared(window._campaignStage);
    if (campaignChar) addCampaignClearChar(campaignChar.id);
-   // 스테이지 클리어 코인 지급
-   gachaCoins += 50;
-   saveGachaData();
-   updateGachaCoinDisplay();
    }
    const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5','2-5':'2-6','2-6':'forge4','2-7':'2-8','2-8':'2-9','2-9':'boss2' };
    const _nextStage = _nextMap[window._campaignStage];
@@ -9463,10 +9364,10 @@ function _buildCampaignNodes() {
  if (lk11) lk11.style.display = 'none';
  if (ul11) ul11.style.display = 'block';
 }
-// ── 선생 뽑기 시스템 (코인 기반) ──
-function updateGachaCoinDisplay() {
-  const el = document.getElementById('gachaCoinCount');
-  if (el) el.textContent = gachaCoins;
+// ── 선생 뽑기 시스템 ──
+function updateGachaTicketDisplay() {
+  const el = document.getElementById('gachaTicketCount');
+  if (el) el.textContent = gachaTickets;
 }
 
 async function saveGachaData() {
@@ -9476,16 +9377,16 @@ async function saveGachaData() {
     await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
       method: 'PATCH',
       headers: SB_HEADERS,
-      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_coins: gachaCoins })
+      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_tickets: gachaTickets })
     });
     currentUser.unlocked_hidden = hiddenStr;
-    currentUser.gacha_coins = gachaCoins;
+    currentUser.gacha_tickets = gachaTickets;
   } catch(e) {}
 }
 
 function openGacha() {
   if (!currentUser) { alert('로그인이 필요합니다.'); return; }
-  updateGachaCoinDisplay();
+  updateGachaTicketDisplay();
   renderGachaOwned();
   document.getElementById('gachaResult').style.display = 'none';
   showScreen('gachaScreen');
@@ -9513,151 +9414,81 @@ function renderGachaOwned() {
   });
 }
 
-function _doGachaPull(pullCount) {
-  // 1회 100코인 / 10+1회 1000코인 (보너스 1회)
-  const locked = TEACHER_IDS.filter(id => !unlockedHidden.has(id));
-  const results = [];
-  for (let i = 0; i < pullCount; i++) {
-    // 20% 확률로 캐릭터, 80% 꽝
-    if (locked.length > 0 && _r() < 0.2) {
-      const idx = _fl(_r() * locked.length);
-      const pick = locked.splice(idx, 1)[0];
-      unlockedHidden.add(pick);
-      results.push({ type: 'char', id: pick });
-    } else if (locked.length === 0) {
-      // 모두 보유 → 코인 50 환급
-      gachaCoins += 50;
-      results.push({ type: 'coin', amount: 50 });
-    } else {
-      results.push({ type: 'miss' });
-    }
-  }
-  return results;
-}
-
 async function doGacha(count) {
   if (!currentUser) return;
-  const cost = count === 1 ? 100 : 1000;
-  const pulls = count === 1 ? 1 : 11;
-  if (gachaCoins < cost) {
-    alert(`코인이 부족합니다! (보유: ${gachaCoins}코인, 필요: ${cost}코인)\n캠페인 스테이지를 클리어해서 코인을 모으세요!`);
+  if (gachaTickets < count) {
+    alert(`뽑기권이 부족합니다! (보유: ${gachaTickets}장, 필요: ${count}장)`);
     return;
   }
-  gachaCoins -= cost;
-  const results = _doGachaPull(pulls);
-  await saveGachaData();
-  updateGachaCoinDisplay();
-  renderGachaOwned();
-  buildCharSelect();
-  _playGachaMotion(results);
-}
+  gachaTickets -= count;
+  updateGachaTicketDisplay();
 
-function _playGachaMotion(results) {
-  const overlay  = document.getElementById('gachaOverlay');
-  const boxRow   = document.getElementById('gachaBoxRow');
-  const revealArea = document.getElementById('gachaRevealArea');
-  const revealMsg  = document.getElementById('gachaRevealMsg');
-  const hint     = document.getElementById('gachaTapHint');
-  const closeBtn = document.getElementById('gachaOverlayClose');
+  // 미보유 선생 목록
+  const locked = TEACHER_IDS.filter(id => !unlockedHidden.has(id));
+  const results = [];
 
-  overlay.style.display = 'flex';
-  boxRow.style.display  = 'flex';
-  boxRow.innerHTML      = '';
-  revealArea.innerHTML  = '';
-  revealArea.style.display = 'none';
-  revealMsg.style.display  = 'none';
-  hint.style.opacity   = '0';
-  closeBtn.style.display = 'none';
-
-  // 상자 생성
-  const boxes = results.map((r, i) => {
-    const box = document.createElement('div');
-    box.className = 'gacha-box' + (r.type === 'char' ? ' is-char' : '');
-    box.textContent = '?';
-    box.style.cssText = `opacity:0;animation:gachaBoxDrop 0.45s cubic-bezier(0.215,0.61,0.355,1) ${i*0.08}s both`;
-    boxRow.appendChild(box);
-    return box;
-  });
-
-  const lastDelay = (results.length - 1) * 80 + 450 + 16;
-
-  // 2초 뒤 힌트
-  setTimeout(() => { hint.style.opacity = '1'; }, lastDelay + 400);
-
-  let opened = false;
-
-  overlay.onclick = (e) => {
-    if (e.target === closeBtn) return;
-    if (!opened) {
-      opened = true;
-      _openGachaBoxes(results, boxes, revealArea, revealMsg, hint, closeBtn);
-    }
-  };
-  closeBtn.onclick = (e) => {
-    e.stopPropagation();
-    overlay.style.display = 'none';
-    overlay.onclick = null;
-    boxRow.style.display = 'flex';
-    document.getElementById('gachaResult').style.display = 'none';
-  };
-}
-
-function _openGachaBoxes(results, boxes, revealArea, revealMsg, hint, closeBtn) {
-  hint.style.opacity = '0';
-  boxes.forEach((box, i) => {
-    setTimeout(() => { box.style.animation = `gachaBoxOpen 0.38s ease-out ${i*0.06}s forwards`; }, 0);
-  });
-
-  const openEnd = boxes.length * 60 + 380;
-  setTimeout(() => {
-    document.getElementById('gachaBoxRow').style.display = 'none';
-    revealArea.style.display = 'flex';
-
-    const newChars = [];
-    const coinRefund = results.filter(r => r.type === 'coin').reduce((s, r) => s + r.amount, 0);
-
-    results.forEach((r, i) => {
-      const card = document.createElement('div');
-      card.className = 'char-card gacha-revealed';
-      card.style.cssText = `animation-delay:${i*0.07}s;cursor:default`;
-      if (r.type === 'char') {
-        const def = CHARACTER_DEFS.find(d => d.id === r.id);
-        newChars.push(def.name);
-        card.style.cssText += ';border-color:#c8a800;box-shadow:0 0 14px rgba(200,168,0,0.7);background:#fffbe6';
-        card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats" style="font-size:10px;color:#c8a800;font-weight:800">★ NEW!</div>`;
-      } else if (r.type === 'coin') {
-        card.style.cssText += ';border-color:#c8a800;background:#fff8e1';
-        card.innerHTML = `<div class="char-circle" style="background:#c8a800;font-size:22px">🪙</div><div class="char-name">코인 환급</div><div class="char-stats" style="font-size:10px">+${r.amount}</div>`;
-      } else {
-        card.style.cssText += ';opacity:0.55';
-        card.innerHTML = '<div class="char-circle" style="background:#888;font-size:22px">💨</div><div class="char-name">꽝</div><div class="char-stats" style="font-size:10px;color:#aaa">아쉽네요</div>';
-      }
-      revealArea.appendChild(card);
-    });
-
-    revealMsg.style.display = 'block';
-    if (newChars.length > 0) {
-      revealMsg.textContent = '✨ ' + newChars.join(', ') + ' 언락!' + (coinRefund > 0 ? ` +${coinRefund}🪙` : '');
-      revealMsg.style.color = '#ffd700';
-    } else if (coinRefund > 0) {
-      revealMsg.textContent = `모든 선생 보유 중! 코인 ${coinRefund} 환급`;
-      revealMsg.style.color = '#c8a800';
+  for (let i = 0; i < count; i++) {
+    if (locked.length === 0) {
+      // 전부 보유 시 뽑기권 1장 환급
+      gachaTickets += 1;
+      results.push({ type: 'ticket' });
     } else {
-      revealMsg.textContent = '꽝... 다음엔 될 거예요!';
-      revealMsg.style.color = '#aaa';
+      // 랜덤으로 미보유 중 하나 언락
+      const pick = locked.splice(_fl(_r() * locked.length), 1)[0];
+      unlockedHidden.add(pick);
+      results.push({ type: 'char', id: pick });
     }
-    setTimeout(() => { closeBtn.style.display = 'block'; }, results.length * 70 + 300);
-  }, openEnd);
+  }
+
+  await saveGachaData();
+  showGachaResult(results);
+  renderGachaOwned();
+  updateGachaTicketDisplay();
+  // charSelect 갱신
+  buildCharSelect();
 }
 
+function showGachaResult(results) {
+  const resultEl = document.getElementById('gachaResult');
+  const cardsEl = document.getElementById('gachaResultCards');
+  const msgEl = document.getElementById('gachaResultMsg');
+  resultEl.style.display = 'flex';
+  cardsEl.innerHTML = '';
 
-// 관리자용 (콘솔에서 addGachaCoins(N))
-async function addGachaCoins(n) {
+  const newChars = results.filter(r => r.type === 'char').map(r => r.id);
+  const tickets = results.filter(r => r.type === 'ticket').length;
+
+  results.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'char-card';
+    if (r.type === 'ticket') {
+      card.style.cssText = 'border-color:#c8a800;background:#fff8e1';
+      card.innerHTML = '<div class="char-circle" style="background:#c8a800;font-size:22px">🎟️</div><div class="char-name">뽑기권 환급</div><div class="char-stats" style="font-size:10px">+1장</div>';
+    } else {
+      const def = CHARACTER_DEFS.find(d => d.id === r.id);
+      card.style.cssText = 'border-color:#c8a800;box-shadow:0 0 12px rgba(200,168,0,0.6);animation:card-thud 0.4s ease';
+      card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats" style="font-size:10px;color:#c8a800">NEW!</div>`;
+    }
+    cardsEl.appendChild(card);
+  });
+
+  if (newChars.length > 0) {
+    const names = newChars.map(id => CHARACTER_DEFS.find(d => d.id === id)?.name).join(', ');
+    msgEl.textContent = `✨ ${names} 언락!${tickets > 0 ? ` 뽑기권 ${tickets}장 환급` : ''}`;
+    msgEl.style.color = '#c8a800';
+  } else if (tickets > 0) {
+    msgEl.textContent = `모든 선생을 보유 중! 뽑기권 ${tickets}장 환급`;
+    msgEl.style.color = '#888';
+  }
+}
+
+// 관리자용: 뽑기권 지급 함수 (콘솔에서 addGachaTickets(N) 으로 사용)
+async function addGachaTickets(n) {
   if (!currentUser) return;
-  gachaCoins += n;
+  gachaTickets += n;
   await saveGachaData();
-  updateGachaCoinDisplay();
-  console.log(`코인 ${n} 지급. 현재: ${gachaCoins}`);
+  updateGachaTicketDisplay();
+  console.log(`뽑기권 ${n}장 지급 완료. 현재: ${gachaTickets}장`);
 }
 
 
