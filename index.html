@@ -161,6 +161,99 @@
     0% { transform: translateY(0) scale(1); opacity: 1; }
     100% { transform: translateY(-80px) scale(0.3); opacity: 0; }
   }
+
+  /* ── 뽑기 모션 ── */
+  @keyframes gachaBoxDrop {
+    0%   { transform: translateY(-120px) scale(1.1); opacity: 0; }
+    60%  { transform: translateY(10px) scale(0.96); opacity: 1; }
+    75%  { transform: translateY(-6px) scale(1.02); }
+    88%  { transform: translateY(3px) scale(0.99); }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  @keyframes gachaBoxOpen {
+    0%   { transform: scale(1) rotate(0deg); }
+    20%  { transform: scale(1.15) rotate(-4deg); }
+    40%  { transform: scale(1.15) rotate(4deg); }
+    60%  { transform: scale(1.2) rotate(-2deg); }
+    80%  { transform: scale(0.9) rotate(0deg); opacity: 0.5; }
+    100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  }
+  @keyframes gachaReveal {
+    0%   { transform: scale(0) translateY(20px); opacity: 0; }
+    70%  { transform: scale(1.1) translateY(-4px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  @keyframes gachaGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(200,168,0,0.3); }
+    50%       { box-shadow: 0 0 20px rgba(200,168,0,0.8), 0 0 40px rgba(200,168,0,0.3); }
+  }
+  @keyframes gachaShine {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .gacha-box {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #4a3000, #c8a800, #ffd700, #a07000);
+    border-radius: 12px;
+    border: 3px solid #ffd700;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: box-shadow 0.3s;
+  }
+  .gacha-box.is-char {
+    animation: gachaGlow 1.5s ease-in-out infinite;
+    border-color: #ffe44d;
+    background: linear-gradient(135deg, #5a3a00, #e8c000, #fff0a0, #b08000);
+  }
+  .gacha-box.opened {
+    animation: gachaBoxOpen 0.4s ease-out forwards;
+  }
+  #gachaOverlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 3000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  #gachaBoxRow {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-start;
+    max-width: 92vw;
+    overflow-x: auto;
+    padding: 8px 16px;
+    scrollbar-width: none;
+  }
+  #gachaBoxRow::-webkit-scrollbar { display: none; }
+  #gachaRevealArea {
+    display: none;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-start;
+    max-width: 92vw;
+    overflow-x: auto;
+    padding: 8px 16px;
+    scrollbar-width: none;
+  }
+  #gachaRevealArea::-webkit-scrollbar { display: none; }
+  .gacha-revealed {
+    animation: gachaReveal 0.4s cubic-bezier(0.175,0.885,0.32,1.275) both;
+  }
+  #gachaTapHint {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.5s;
+    text-align: center;
+  }
   #unlockOkBtn:active { transform: scale(0.95); }
   #unlockOkBtn:hover { background: #ffd700; }
 
@@ -210,6 +303,15 @@
   <button class="btn btn-secondary drop-item" id="btn-campaign" style="margin-top:8px;animation-delay:1.5s">📖 캠페인</button>
   <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
+  <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 선생 뽑기</button>
+</div>
+
+<div id="gachaOverlay">
+  <div id="gachaBoxRow"></div>
+  <div id="gachaTapHint">탭하여 열기</div>
+  <div id="gachaRevealArea"></div>
+  <div id="gachaRevealMsg" style="color:#fff;font-size:14px;font-weight:700;text-align:center;display:none;margin-top:4px"></div>
+  <button class="btn" id="gachaOverlayClose" style="margin-top:8px;display:none;background:#fff;color:#111;padding:10px 32px">확인</button>
 </div>
 
 <div id="geumCutscene" style="display:none;position:fixed;inset:0;background:#000;z-index:2000;flex-direction:column;align-items:center;justify-content:center;overflow:hidden">
@@ -447,6 +549,40 @@
   </div>
   </div>
 </div>
+<div id="gachaScreen" class="screen" style="flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;overflow-y:auto">
+  <div style="font-size:20px;font-weight:900;color:#c8a800;margin-bottom:4px;letter-spacing:2px">🎰 선생 뽑기</div>
+  <div style="font-size:12px;color:#888;margin-bottom:16px">선생 캐릭터를 뽑아 언락하세요</div>
+
+  <!-- 코인 표시 -->
+  <div style="display:flex;align-items:center;gap:8px;background:#fff8e1;border:1.5px solid #c8a800;border-radius:10px;padding:10px 20px;margin-bottom:16px">
+    <span style="font-size:18px">🪙</span>
+    <span style="font-size:14px;font-weight:700;color:#c8a800">코인</span>
+    <span id="gachaCoinCount" style="font-size:20px;font-weight:900;color:#111">0</span>
+  </div>
+
+  <!-- 뽑기 버튼 -->
+  <div style="display:flex;gap:10px;margin-bottom:8px">
+    <button class="btn" id="btn-gacha-1" style="background:#c8a800;border-color:#a08000;color:#fff;padding:10px 20px">1회 뽑기<br><span style="font-size:11px;font-weight:400">100코인</span></button>
+    <button class="btn" id="btn-gacha-10" style="background:#a08000;border-color:#806000;color:#fff;padding:10px 20px">10+1회 뽑기<br><span style="font-size:11px;font-weight:400">1000코인</span></button>
+  </div>
+  <div style="font-size:11px;color:#aaa;margin-bottom:16px">캐릭터 확률 20% / 꽝 80%</div>
+
+  <!-- 뽑기 결과 -->
+  <div id="gachaResult" style="display:none;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;width:100%;max-width:400px">
+    <div id="gachaResultCards" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
+    <div id="gachaResultMsg" style="font-size:13px;color:#555;text-align:center"></div>
+  </div>
+
+  <!-- 보유 선생 -->
+  <div style="width:100%;max-width:400px">
+    <div style="font-size:12px;font-weight:800;color:#888;letter-spacing:2px;margin-bottom:8px">— 보유 선생 —</div>
+    <div id="gachaOwnedRow" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+    <div style="font-size:12px;color:#aaa;margin-top:6px">미보유 선생은 잠금 상태로 표시됩니다</div>
+  </div>
+
+  <button class="btn btn-secondary" onclick="showScreen('mainMenu')" style="margin-top:24px">← 메인 메뉴</button>
+</div>
+
 <div id="onlineScreen" class="screen" style="flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px">
   <div style="font-size:22px;font-weight:900;color:#111;margin-bottom:4px">🌐 온라인 PvP</div>
 
@@ -471,7 +607,7 @@
 
   <div id="onlineSelecting" style="display:none;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:500px">
     <div style="font-size:15px;font-weight:700;color:#111">캐릭터를 선택하세요</div>
-    <div id="onlineCharRow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
+    <div id="onlineCharRow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;overflow-y:auto;max-height:55vh;padding:4px 2px"></div>
     <div id="onlineSelectStatus" style="font-size:13px;color:#888;min-height:18px"></div>
   </div>
 </div>
@@ -572,6 +708,9 @@ function _initTouchBindings() {
  pb.addEventListener('click', () => choosePrediction('B'));
  }
  _bindBtn('btn-online', openOnline);
+ _bindBtn('btn-gacha', openGacha);
+ _bindBtn('btn-gacha-1', () => doGacha(1));
+ _bindBtn('btn-gacha-10', () => doGacha(10));
  _bindBtn('btn-create-room', createRoom);
  _bindBtn('btn-join-room', joinRoom);
  _bindBtn('btn-cancel-room', cancelRoom);
@@ -691,7 +830,7 @@ async function loginUser() {
  if (!nick || !pw) { errEl.textContent = '닉네임과 비밀번호를 입력하세요.'; return; }
 
  try {
- const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=*`, { headers: SB_HEADERS });
+ const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=nickname,pw,unlocked_hidden,gacha_coins,campaign_progress,campaign_cleared`, { headers: SB_HEADERS });
  const rows = await r.json();
  if (!rows.length) { errEl.textContent = '존재하지 않는 닉네임입니다.'; return; }
  if (rows[0].pw !== pw) { errEl.textContent = '비밀번호가 틀렸습니다.'; return; }
@@ -716,7 +855,7 @@ async function signupUser() {
  const r = await fetch(`${SB_URL}/rest/v1/users`, {
   method: 'POST',
   headers: { ...SB_HEADERS, 'Prefer': 'return=representation' },
-  body: JSON.stringify({ nickname: nick, pw, unlocked_hidden: '' })
+  body: JSON.stringify({ nickname: nick, pw, unlocked_hidden: '', gacha_coins: 0 })
  });
  if (!r.ok) { errEl.textContent = '회원가입 실패: ' + r.status; return; }
  const rows = await r.json();
@@ -732,6 +871,8 @@ function onLoginSuccess() {
   unlockedHidden.add(id);
  });
  }
+ gachaCoins = parseInt(currentUser.gacha_coins || 0);
+ updateGachaCoinDisplay();
  const badge = document.getElementById('userBadge');
  const nickEl = document.getElementById('userBadgeNick');
  if (badge) { badge.style.display = 'block'; nickEl.textContent = '👤 ' + currentUser.nickname; }
@@ -754,16 +895,8 @@ function logoutUser() {
 }
 
 async function saveUnlockedHidden() {
- if (!currentUser) return;
- const hiddenStr = Array.from(unlockedHidden).join(',');
- try {
- await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
-  method: 'PATCH',
-  headers: SB_HEADERS,
-  body: JSON.stringify({ unlocked_hidden: hiddenStr })
- });
- currentUser.unlocked_hidden = hiddenStr;
- } catch(e) { console.error('save unlocked error', e); }
+ // saveGachaData로 통합 (gacha_coins 포함)
+ await saveGachaData();
 }
 
 let campaignChar = null;
@@ -789,7 +922,7 @@ function openCampaign() {
  const row = document.getElementById('campaignCharRow');
  if (!row) return;
  row.innerHTML = '';
- CHARACTER_DEFS.filter(d => d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'CAMPAIGN_NPC' && !d.isDummy || (d.group === 'CAMPAIGN_NPC' && unlockedHidden.has(d.id))).forEach(def => {
+ CHARACTER_DEFS.filter(d => !d.isDummy && d.group !== 'CAMPAIGN_NPC' && d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && (d.group !== 'TEACHER' || unlockedHidden.has(d.id)) || (!d.isDummy && d.group === 'CAMPAIGN_NPC' && unlockedHidden.has(d.id))).forEach(def => {
  const card = document.createElement('div');
  card.className = 'char-card';
  card.style.cursor = 'pointer';
@@ -1536,8 +1669,8 @@ function updateStreakDisplay() {
 
 function startPredictMode() {
  const pool = CHARACTER_DEFS.filter(d =>
- !d.isDummy &&
- (d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' || unlockedHidden.has(d.id))
+ !d.isDummy && d.group !== 'CAMPAIGN_NPC' &&
+ ((d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') || unlockedHidden.has(d.id))
  );
  const shuffled = pool.sort(() => _r() - 0.5);
  const defA = shuffled[0], defB = shuffled[1];
@@ -1674,7 +1807,7 @@ function setSpeed(s) {
 function buildCharSelect() {
  const row = document.getElementById('charsRow');
  row.innerHTML = '';
- const groups = ['STUDENTS', 'TEACHER'];
+ const groups = ['STUDENTS'];
  groups.forEach(grp => {
  const defs = CHARACTER_DEFS.filter(d => d.group === grp && !d.isDummy);
  if (!defs.length) return;
@@ -1746,6 +1879,38 @@ function buildCharSelect() {
  row.appendChild(cnRow);
  }
 
+ // 언락된 TEACHER 섹션
+ const teacherDefs = CHARACTER_DEFS.filter(d => d.group === 'TEACHER' && unlockedHidden.has(d.id) && !d.isDummy);
+ if (teacherDefs.length > 0) {
+  const tSep = document.createElement('div');
+  tSep.style.cssText = 'width:100%;border-top:1.5px dashed #c8a800;margin:12px 0 6px;';
+  row.appendChild(tSep);
+  const tLabel = document.createElement('div');
+  tLabel.style.cssText = 'width:100%;font-size:11px;font-weight:800;color:#c8a800;letter-spacing:3px;margin-bottom:6px;text-align:left;padding-left:4px;';
+  tLabel.textContent = '🎰 TEACHER';
+  row.appendChild(tLabel);
+  const tRow = document.createElement('div');
+  tRow.style.cssText = 'display:flex;gap:16px;flex-wrap:wrap;';
+  teacherDefs.forEach(def => {
+   const card = document.createElement('div');
+   card.className = 'char-card';
+   card.id = 'card-' + def.id;
+   card.style.cssText += 'border-color:#c8a800;box-shadow:0 0 6px rgba(200,168,0,0.3);';
+   if (window._charSelectFirstVisit) card.classList.add('card-slide');
+   card.addEventListener('click', () => toggleChar(def.id));
+   card.addEventListener('touchstart', (e) => { e.preventDefault(); toggleChar(def.id); }, {passive: false});
+   card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats">HP: ${def.hp}<br>접촉 데미지: ${def.touchDmg}<br>스킬: ${def.skill.label}</div>`;
+   if (campaignClearedChars.has(def.id)) {
+    card.style.position = 'relative';
+    const gb = document.createElement('span');
+    gb.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#f5c518;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:2;pointer-events:none';
+    gb.textContent = '🏆';
+    card.appendChild(gb);
+   }
+   tRow.appendChild(card);
+  });
+  row.appendChild(tRow);
+ }
  const hiddenDefs = CHARACTER_DEFS.filter(d => d.group === 'HIDDEN' && unlockedHidden.has(d.id));
  const superHiddenDefs = CHARACTER_DEFS.filter(d => d.group === 'SUPER_HIDDEN' && unlockedHidden.has(d.id));
  if (hiddenDefs.length > 0) {
@@ -1887,6 +2052,9 @@ function buildCharSelect() {
 }
 
 const unlockedHidden = new Set();
+let gachaCoins = 0;
+const TEACHER_IDS = ['hyuncheol','seungoh','hyekyung','youngouk','eunju'];
+
 
 const HYUNGJUN_SKILL_POOL = [ { id: 'hack', label: '해킹', cooldown: 6000, barColor: '#00ff88', desc: '적 스킬 봉인' }, { id: 'aiSteam', label: 'AI Steam', cooldown: 14000, barColor: '#4488ff', desc: '로봇 소환' }, { id: 'netControl', label: '네트워크 통제', cooldown: 3000, barColor: '#cc44ff', desc: '전자파 발사' }, ];
 
@@ -9043,6 +9211,7 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss2')) window._clearedStages.push('boss2');
    markStageCleared('boss2');
+   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
 
    unlockedHidden.add('woojin');
@@ -9132,6 +9301,7 @@ function endGame() {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss1')) window._clearedStages.push('boss1');
    window._lastClearedStage = 'boss1';
+   gachaCoins += 50; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
    ['1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
@@ -9159,7 +9329,7 @@ function endGame() {
    });
   } else {
    document.getElementById('winnerName').textContent = '스테이지 클리어!';
-   document.getElementById('resultText').textContent = window._campaignStage + ' ' + (stageNames[window._campaignStage] || '');
+   document.getElementById('resultText').textContent = window._campaignStage + ' ' + (stageNames[window._campaignStage] || '') + '  +50🪙';
    document.getElementById('btn-campaign-next').style.display = 'block';
   }
   window._lastClearedStage = window._campaignStage;
@@ -9170,6 +9340,10 @@ function endGame() {
    window._clearedStages.push(window._campaignStage);
    markStageCleared(window._campaignStage);
    if (campaignChar) addCampaignClearChar(campaignChar.id);
+   // 스테이지 클리어 코인 지급
+   gachaCoins += 50;
+   saveGachaData();
+   updateGachaCoinDisplay();
    }
    const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5','2-5':'2-6','2-6':'forge4','2-7':'2-8','2-8':'2-9','2-9':'boss2' };
    const _nextStage = _nextMap[window._campaignStage];
@@ -9289,6 +9463,204 @@ function _buildCampaignNodes() {
  if (lk11) lk11.style.display = 'none';
  if (ul11) ul11.style.display = 'block';
 }
+// ── 선생 뽑기 시스템 (코인 기반) ──
+function updateGachaCoinDisplay() {
+  const el = document.getElementById('gachaCoinCount');
+  if (el) el.textContent = gachaCoins;
+}
+
+async function saveGachaData() {
+  if (!currentUser) return;
+  const hiddenStr = Array.from(unlockedHidden).join(',');
+  try {
+    await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
+      method: 'PATCH',
+      headers: SB_HEADERS,
+      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_coins: gachaCoins })
+    });
+    currentUser.unlocked_hidden = hiddenStr;
+    currentUser.gacha_coins = gachaCoins;
+  } catch(e) {}
+}
+
+function openGacha() {
+  if (!currentUser) { alert('로그인이 필요합니다.'); return; }
+  updateGachaCoinDisplay();
+  renderGachaOwned();
+  document.getElementById('gachaResult').style.display = 'none';
+  showScreen('gachaScreen');
+}
+
+function renderGachaOwned() {
+  const row = document.getElementById('gachaOwnedRow');
+  if (!row) return;
+  row.innerHTML = '';
+  TEACHER_IDS.forEach(id => {
+    const def = CHARACTER_DEFS.find(d => d.id === id);
+    if (!def) return;
+    const unlocked = unlockedHidden.has(id);
+    const card = document.createElement('div');
+    card.className = 'char-card';
+    card.style.cssText = unlocked
+      ? 'border-color:#c8a800;box-shadow:0 0 8px rgba(200,168,0,0.4);cursor:default'
+      : 'opacity:0.35;filter:grayscale(1);cursor:default';
+    card.innerHTML = `
+      <div class="char-circle" style="background:${unlocked ? def.color : '#888'}">${unlocked ? def.name : '?'}</div>
+      <div class="char-name">${unlocked ? def.name : '???'}</div>
+      <div class="char-stats" style="font-size:10px">${unlocked ? '보유 중 ✓' : '미보유'}</div>
+    `;
+    row.appendChild(card);
+  });
+}
+
+function _doGachaPull(pullCount) {
+  // 1회 100코인 / 10+1회 1000코인 (보너스 1회)
+  const locked = TEACHER_IDS.filter(id => !unlockedHidden.has(id));
+  const results = [];
+  for (let i = 0; i < pullCount; i++) {
+    // 20% 확률로 캐릭터, 80% 꽝
+    if (locked.length > 0 && _r() < 0.2) {
+      const idx = _fl(_r() * locked.length);
+      const pick = locked.splice(idx, 1)[0];
+      unlockedHidden.add(pick);
+      results.push({ type: 'char', id: pick });
+    } else if (locked.length === 0) {
+      // 모두 보유 → 코인 50 환급
+      gachaCoins += 50;
+      results.push({ type: 'coin', amount: 50 });
+    } else {
+      results.push({ type: 'miss' });
+    }
+  }
+  return results;
+}
+
+async function doGacha(count) {
+  if (!currentUser) return;
+  const cost = count === 1 ? 100 : 1000;
+  const pulls = count === 1 ? 1 : 11;
+  if (gachaCoins < cost) {
+    alert(`코인이 부족합니다! (보유: ${gachaCoins}코인, 필요: ${cost}코인)\n캠페인 스테이지를 클리어해서 코인을 모으세요!`);
+    return;
+  }
+  gachaCoins -= cost;
+  const results = _doGachaPull(pulls);
+  await saveGachaData();
+  updateGachaCoinDisplay();
+  renderGachaOwned();
+  buildCharSelect();
+  _playGachaMotion(results);
+}
+
+function _playGachaMotion(results) {
+  const overlay  = document.getElementById('gachaOverlay');
+  const boxRow   = document.getElementById('gachaBoxRow');
+  const revealArea = document.getElementById('gachaRevealArea');
+  const revealMsg  = document.getElementById('gachaRevealMsg');
+  const hint     = document.getElementById('gachaTapHint');
+  const closeBtn = document.getElementById('gachaOverlayClose');
+
+  overlay.style.display = 'flex';
+  boxRow.style.display  = 'flex';
+  boxRow.innerHTML      = '';
+  revealArea.innerHTML  = '';
+  revealArea.style.display = 'none';
+  revealMsg.style.display  = 'none';
+  hint.style.opacity   = '0';
+  closeBtn.style.display = 'none';
+
+  // 상자 생성
+  const boxes = results.map((r, i) => {
+    const box = document.createElement('div');
+    box.className = 'gacha-box' + (r.type === 'char' ? ' is-char' : '');
+    box.textContent = '?';
+    box.style.cssText = `opacity:0;animation:gachaBoxDrop 0.45s cubic-bezier(0.215,0.61,0.355,1) ${i*0.08}s both`;
+    boxRow.appendChild(box);
+    return box;
+  });
+
+  const lastDelay = (results.length - 1) * 80 + 450 + 16;
+
+  // 2초 뒤 힌트
+  setTimeout(() => { hint.style.opacity = '1'; }, lastDelay + 400);
+
+  let opened = false;
+
+  overlay.onclick = (e) => {
+    if (e.target === closeBtn) return;
+    if (!opened) {
+      opened = true;
+      _openGachaBoxes(results, boxes, revealArea, revealMsg, hint, closeBtn);
+    }
+  };
+  closeBtn.onclick = (e) => {
+    e.stopPropagation();
+    overlay.style.display = 'none';
+    overlay.onclick = null;
+    boxRow.style.display = 'flex';
+    document.getElementById('gachaResult').style.display = 'none';
+  };
+}
+
+function _openGachaBoxes(results, boxes, revealArea, revealMsg, hint, closeBtn) {
+  hint.style.opacity = '0';
+  boxes.forEach((box, i) => {
+    setTimeout(() => { box.style.animation = `gachaBoxOpen 0.38s ease-out ${i*0.06}s forwards`; }, 0);
+  });
+
+  const openEnd = boxes.length * 60 + 380;
+  setTimeout(() => {
+    document.getElementById('gachaBoxRow').style.display = 'none';
+    revealArea.style.display = 'flex';
+
+    const newChars = [];
+    const coinRefund = results.filter(r => r.type === 'coin').reduce((s, r) => s + r.amount, 0);
+
+    results.forEach((r, i) => {
+      const card = document.createElement('div');
+      card.className = 'char-card gacha-revealed';
+      card.style.cssText = `animation-delay:${i*0.07}s;cursor:default`;
+      if (r.type === 'char') {
+        const def = CHARACTER_DEFS.find(d => d.id === r.id);
+        newChars.push(def.name);
+        card.style.cssText += ';border-color:#c8a800;box-shadow:0 0 14px rgba(200,168,0,0.7);background:#fffbe6';
+        card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats" style="font-size:10px;color:#c8a800;font-weight:800">★ NEW!</div>`;
+      } else if (r.type === 'coin') {
+        card.style.cssText += ';border-color:#c8a800;background:#fff8e1';
+        card.innerHTML = `<div class="char-circle" style="background:#c8a800;font-size:22px">🪙</div><div class="char-name">코인 환급</div><div class="char-stats" style="font-size:10px">+${r.amount}</div>`;
+      } else {
+        card.style.cssText += ';opacity:0.55';
+        card.innerHTML = '<div class="char-circle" style="background:#888;font-size:22px">💨</div><div class="char-name">꽝</div><div class="char-stats" style="font-size:10px;color:#aaa">아쉽네요</div>';
+      }
+      revealArea.appendChild(card);
+    });
+
+    revealMsg.style.display = 'block';
+    if (newChars.length > 0) {
+      revealMsg.textContent = '✨ ' + newChars.join(', ') + ' 언락!' + (coinRefund > 0 ? ` +${coinRefund}🪙` : '');
+      revealMsg.style.color = '#ffd700';
+    } else if (coinRefund > 0) {
+      revealMsg.textContent = `모든 선생 보유 중! 코인 ${coinRefund} 환급`;
+      revealMsg.style.color = '#c8a800';
+    } else {
+      revealMsg.textContent = '꽝... 다음엔 될 거예요!';
+      revealMsg.style.color = '#aaa';
+    }
+    setTimeout(() => { closeBtn.style.display = 'block'; }, results.length * 70 + 300);
+  }, openEnd);
+}
+
+
+// 관리자용 (콘솔에서 addGachaCoins(N))
+async function addGachaCoins(n) {
+  if (!currentUser) return;
+  gachaCoins += n;
+  await saveGachaData();
+  updateGachaCoinDisplay();
+  console.log(`코인 ${n} 지급. 현재: ${gachaCoins}`);
+}
+
+
 // ── 온라인 PvP ──
 let _onlineRole = null;   // 'host' | 'guest'
 let _onlineRoom = null;   // 방 코드
@@ -9416,8 +9788,8 @@ function _startOnlineSelecting() {
 
   // 일반 + 언락된 히든/슈퍼히든 포함
   const avail = CHARACTER_DEFS.filter(d =>
-    !d.isDummy && (
-      (d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN') ||
+    !d.isDummy && d.group !== 'CAMPAIGN_NPC' && (
+      (d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') ||
       unlockedHidden.has(d.id)
     )
   );
