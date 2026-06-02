@@ -1755,15 +1755,10 @@ function startPredictMode() {
 
 function choosePrediction(side) {
  predictState.userPick = side;
- // 베팅 잠금 및 코인 차감
+ // 베팅 잠금 (코인 차감은 결과 시 처리)
+ if (predictBetAmount > 0 && predictBetAmount < 50) predictBetAmount = 0;
  if (predictBetAmount > 0) {
-  if (predictBetAmount < 50) { predictBetAmount = 0; }
-  else {
-   predictBetAmount = Math.min(predictBetAmount, 500, gachaCoins);
-   gachaCoins -= predictBetAmount;
-   saveGachaData();
-   updateGachaCoinDisplay();
-  }
+  predictBetAmount = Math.min(predictBetAmount, 500, gachaCoins);
  }
  const betArea = document.getElementById('predictBetArea');
  if (betArea) betArea.style.pointerEvents = 'none';
@@ -1817,11 +1812,11 @@ function checkPredictResult() {
  if (correct) {
   predictStreak++;
   if (bet >= 50) {
-   const prize = bet * 2;
-   gachaCoins += prize;
+   // 성공: 베팅액 차감 없이 베팅액만큼 추가 지급 (순이익 +bet)
+   gachaCoins += bet;
    saveGachaData();
    updateGachaCoinDisplay();
-   betResultText = `🪙 +${prize}코인 획득! (${bet}×2)`;
+   betResultText = `🪙 +${bet}코인 획득!`;
   }
  } else {
   const _brokenStreak = predictStreak;
@@ -1830,6 +1825,10 @@ function checkPredictResult() {
    setTimeout(() => openRecordPopup(_brokenStreak), 400);
   }
   if (bet >= 50) {
+   // 실패: 베팅액 차감
+   gachaCoins = Math.max(0, gachaCoins - bet);
+   saveGachaData();
+   updateGachaCoinDisplay();
    betResultText = `🪙 -${bet}코인 소멸`;
   }
  }
