@@ -1709,6 +1709,9 @@ function setPredictBet(amount) {
 
 function _initPredictBet() {
   predictBetAmount = 0;
+  // 잠금 해제
+  const betArea = document.getElementById('predictBetArea');
+  if (betArea) betArea.style.pointerEvents = 'auto';
   const input = document.getElementById('predictBetInput');
   if (input) { input.value = 0; input.oninput = () => {
     let v = parseInt(input.value) || 0;
