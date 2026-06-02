@@ -973,8 +973,31 @@ function openCampaign() {
 
 function selectCampaignChar(def) {
  campaignChar = def;
- setTimeout(updateCampaignStats, 100);
+ // 완전 초기화 (버프, 클리어 기록 모두 리셋)
+ campaignBuffs = [];
  window._clearedStages = [];
+ window._lastClearedStage = null;
+ window._stage2Unlocked = false;
+ window._campaignJustWon = false;
+ setTimeout(updateCampaignStats, 100);
+ // forge0, 1-1 항상 열기 / 나머지 잠금
+ ['forge0','1-1','1-2','1-3','1-4','1-5','1-6','forge','1-7','1-8','1-9','forge2','forge3','boss1'].forEach(sid => {
+  const lk = document.getElementById('stage-' + sid + '-locked');
+  const ul = document.getElementById('stage-' + sid);
+  if (sid === 'forge0' || sid === '1-1') {
+   if (lk) lk.style.display = 'none';
+   if (ul) { ul.style.display = 'block'; ul.querySelectorAll('.cleared-mark').forEach(m => m.remove()); }
+  } else {
+   if (lk) lk.style.display = 'block';
+   if (ul) { ul.style.display = 'none'; ul.querySelectorAll('.cleared-mark').forEach(m => m.remove()); }
+  }
+ });
+ ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet'].forEach(sid => {
+  const lk = document.getElementById('stage-' + sid + '-locked');
+  const ul = document.getElementById('stage-' + sid);
+  if (lk) lk.style.display = 'none';
+  if (ul) ul.style.display = 'none';
+ });
  const badge = document.getElementById('campaignCharBadge');
  if (badge) badge.textContent = '캐릭터: ' + def.name;
  saveCampaignProgress();
