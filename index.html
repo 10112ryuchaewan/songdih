@@ -304,6 +304,7 @@
   <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
   <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 선생 뽑기</button>
+  <div id="toiletPaperDisplay" style="position:absolute;bottom:12px;right:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-end;pointer-events:none"></div>
 </div>
 
 <div id="gachaOverlay">
@@ -852,7 +853,7 @@ async function loginUser() {
  if (!nick || !pw) { errEl.textContent = '닉네임과 비밀번호를 입력하세요.'; return; }
 
  try {
- const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=nickname,pw,unlocked_hidden,gacha_coins,campaign_progress,campaign_cleared`, { headers: SB_HEADERS });
+ const r = await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(nick)}&select=nickname,pw,unlocked_hidden,gacha_coins,toilet_paper,campaign_progress,campaign_cleared`, { headers: SB_HEADERS });
  const rows = await r.json();
  if (!rows.length) { errEl.textContent = '존재하지 않는 닉네임입니다.'; return; }
  if (rows[0].pw !== pw) { errEl.textContent = '비밀번호가 틀렸습니다.'; return; }
@@ -894,7 +895,9 @@ function onLoginSuccess() {
  });
  }
  gachaCoins = parseInt(currentUser.gacha_coins || 0);
+ toiletPaperCount = parseInt(currentUser.toilet_paper || 0);
  updateGachaCoinDisplay();
+ updateToiletPaperDisplay();
  const badge = document.getElementById('userBadge');
  const nickEl = document.getElementById('userBadgeNick');
  if (badge) { badge.style.display = 'block'; nickEl.textContent = '👤 ' + currentUser.nickname; }
@@ -2144,6 +2147,7 @@ function buildCharSelect() {
 
 const unlockedHidden = new Set();
 let gachaCoins = 0;
+let toiletPaperCount = 0;
 const TEACHER_IDS = ['hyuncheol','seungoh','hyekyung','youngouk','eunju'];
 
 
@@ -9558,6 +9562,29 @@ function _buildCampaignNodes() {
  if (lkf0) lkf0.style.display = 'none';
  if (ulf0) ulf0.style.display = 'block';
 }
+// ── 휴지 표시 ──
+function updateToiletPaperDisplay() {
+  const el = document.getElementById('toiletPaperDisplay');
+  if (!el) return;
+  el.innerHTML = '';
+  // 최대 50개까지 표시 (너무 많으면 숫자로)
+  const show = Math.min(toiletPaperCount, 30);
+  for (let i = 0; i < show; i++) {
+    const t = document.createElement('span');
+    t.textContent = '🧻';
+    t.style.cssText = 'font-size:16px;line-height:1;animation:dropIn 0.3s ease both';
+    t.style.animationDelay = (i * 0.03) + 's';
+    el.appendChild(t);
+  }
+  if (toiletPaperCount > 30) {
+    const more = document.createElement('span');
+    more.textContent = `+${toiletPaperCount - 30}`;
+    more.style.cssText = 'font-size:11px;color:#aaa;font-weight:700;align-self:center';
+    el.appendChild(more);
+  }
+}
+
+
 // ── 선생 뽑기 시스템 (코인 기반) ──
 function updateGachaCoinDisplay() {
   const el = document.getElementById('gachaCoinCount');
@@ -9571,10 +9598,11 @@ async function saveGachaData() {
     await fetch(`${SB_URL}/rest/v1/users?nickname=eq.${encodeURIComponent(currentUser.nickname)}`, {
       method: 'PATCH',
       headers: SB_HEADERS,
-      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_coins: gachaCoins })
+      body: JSON.stringify({ unlocked_hidden: hiddenStr, gacha_coins: gachaCoins, toilet_paper: toiletPaperCount })
     });
     currentUser.unlocked_hidden = hiddenStr;
     currentUser.gacha_coins = gachaCoins;
+    currentUser.toilet_paper = toiletPaperCount;
   } catch(e) {}
 }
 
@@ -9609,21 +9637,27 @@ function renderGachaOwned() {
 }
 
 function _doGachaPull(pullCount) {
-  // 1회 100코인 / 10+1회 1000코인 (보너스 1회)
+  // 캐릭터 20% / 휴지 1% / 꽝 79%
   const locked = TEACHER_IDS.filter(id => !unlockedHidden.has(id));
   const results = [];
   for (let i = 0; i < pullCount; i++) {
-    // 20% 확률로 캐릭터, 80% 꽝
-    if (locked.length > 0 && _r() < 0.2) {
+    const roll = _r();
+    if (locked.length === 0) {
+      // 모두 보유 → 코인 50 환급
+      gachaCoins += 50;
+      results.push({ type: 'coin', amount: 50 });
+    } else if (roll < 0.20) {
+      // 20% 캐릭터
       const idx = _fl(_r() * locked.length);
       const pick = locked.splice(idx, 1)[0];
       unlockedHidden.add(pick);
       results.push({ type: 'char', id: pick });
-    } else if (locked.length === 0) {
-      // 모두 보유 → 코인 50 환급
-      gachaCoins += 50;
-      results.push({ type: 'coin', amount: 50 });
+    } else if (roll < 0.21) {
+      // 1% 휴지
+      toiletPaperCount++;
+      results.push({ type: 'toilet' });
     } else {
+      // 79% 꽝
       results.push({ type: 'miss' });
     }
   }
@@ -9642,6 +9676,7 @@ async function doGacha(count) {
   const results = _doGachaPull(pulls);
   await saveGachaData();
   updateGachaCoinDisplay();
+  updateToiletPaperDisplay();
   renderGachaOwned();
   buildCharSelect();
   _playGachaMotion(results);
@@ -9723,6 +9758,9 @@ function _openGachaBoxes(results, boxes, revealArea, revealMsg, hint, closeBtn) 
       } else if (r.type === 'coin') {
         card.style.cssText += ';border-color:#c8a800;background:#fff8e1';
         card.innerHTML = `<div class="char-circle" style="background:#c8a800;font-size:22px">🪙</div><div class="char-name">코인 환급</div><div class="char-stats" style="font-size:10px">+${r.amount}</div>`;
+      } else if (r.type === 'toilet') {
+        card.style.cssText += ';border-color:#ddd;background:#f9f9f9;box-shadow:0 0 8px rgba(0,0,0,0.1)';
+        card.innerHTML = '<div class="char-circle" style="background:#eee;font-size:28px">🧻</div><div class="char-name" style="color:#999">휴지</div><div class="char-stats" style="font-size:10px;color:#bbb">메인에 쌓임</div>';
       } else {
         card.style.cssText += ';opacity:0.55';
         card.innerHTML = '<div class="char-circle" style="background:#888;font-size:22px">💨</div><div class="char-name">꽝</div><div class="char-stats" style="font-size:10px;color:#aaa">아쉽네요</div>';
