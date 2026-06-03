@@ -303,7 +303,7 @@
   <button class="btn btn-secondary drop-item" id="btn-campaign" style="margin-top:8px;animation-delay:1.5s">📖 캠페인</button>
   <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
-  <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 선생 뽑기</button>
+  <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 캐릭터 뽑기</button>
   <div id="toiletPaperDisplay" style="position:absolute;bottom:12px;right:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-end;pointer-events:none"></div>
   <div id="mustardDisplay" style="position:absolute;bottom:12px;left:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-start;pointer-events:none"></div>
 </div>
@@ -587,7 +587,7 @@
   </div>
 </div>
 <div id="gachaScreen" class="screen" style="flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;overflow-y:auto">
-  <div style="font-size:20px;font-weight:900;color:#c8a800;margin-bottom:4px;letter-spacing:2px">🎰 선생 뽑기</div>
+  <div style="font-size:20px;font-weight:900;color:#c8a800;margin-bottom:4px;letter-spacing:2px">🎰 캐릭터 뽑기</div>
   <div style="font-size:12px;color:#888;margin-bottom:16px">선생 캐릭터를 뽑아 언락하세요</div>
 
   <!-- 코인 표시 -->
@@ -725,6 +725,7 @@ function _initTouchBindings() {
  _bindBtn('btn-campaign-next', () => {
  window._campaignJustWon = false;
  showScreen('campaignMap');
+ setTimeout(() => loadCampaignProgress(), 100);
  });
  _bindBtn('btn-campaign-back', () => {
  window._campaignJustWon = false;
@@ -1031,7 +1032,7 @@ function startCampaignStage(stageId) {
   alert('이미 클리어한 스테이지입니다!');
   return;
  }
- var _STAGE_CFG = { '1-1': { enemy:'taeyoung', buff:{ id:'taeyoung', hpBonus:-32 } }, '1-2': { enemy:'chaewan', buff:{ id:'chaewan', hpBonus:-36 } }, '1-3': { enemy:'sumin', buff:{ id:'sumin', hpBonus:-14 } }, '1-4': { enemy:'seungbin' }, '1-5': { enemy:'junjoo' }, '1-6': { enemy:'byungheon' }, '1-7': { enemy:'hyuncheol', buff:{ id:'hyuncheol', hpBonus:30 } }, '1-8': { enemy:'seungoh', buff:{ id:'seungoh', dmgMult:1.2 } }, '1-9': { enemy:'youngouk', buff:{ id:'youngouk', hpBonus:150 } }, 'boss1':{ enemy:'jumi', buff:{ id:'jumi', hpBonus:100 } }, '2-1': { enemy:'hyekyung', buff:{ id:'hyekyung', hpBonus:30, cdMult:0.8 } }, '2-2': { enemy:'taeyeon', buff:{ id:'taeyeon', startAwakened:true } }, '2-3': { enemy:'younghoon', buff:{ id:'younghoon', hpBonus:20, cdMult:0.4 } }, '2-5': { enemy:'eunju', buff:{ id:'eunju', hpBonus:30 } }, '2-6': { enemy:'giwon', buff:{ id:'giwon', hpBonus:50, startWall:true } }, '2-8': { enemy:'dogyungyun', buff:{ id:'dogyungyun',hpBonus:80 } }, '2-9': { enemy:'byungheon', buff:{ id:'byungheon', cdMult:0.4 } }, 'boss2':{ enemy:'woojin', buff:{ id:'woojin', hpBonus:100, woojinNaijja:5 } }, '2-4': { enemies:['taeyoung','sumin'], buffs:[{ id:'taeyoung',hpBonus:20 },{ id:'sumin',hpBonus:20 }] }, '2-7': { enemies:['hyuncheol','youngouk'], buffs:[{ id:'hyuncheol',hpMult:1.1,dmgMult:1.2 },{ id:'youngouk',hpMult:1.1,dmgMult:1.2 }] },
+ var _STAGE_CFG = { '1-1': { enemy:'taeyoung', buff:{ id:'taeyoung', hpBonus:-32 } }, '1-2': { enemy:'chaewan', buff:{ id:'chaewan', hpBonus:-36 } }, '1-3': { enemy:'sumin', buff:{ id:'sumin', hpBonus:-14 } }, '1-4': { enemy:'seungbin' }, '1-5': { enemy:'junjoo' }, '1-6': { enemy:'byungheon' }, '1-7': { enemy:'hyuncheol', buff:{ id:'hyuncheol', hpBonus:30 } }, '1-8': { enemy:'seungoh', buff:{ id:'seungoh', dmgMult:1.2 } }, '1-9': { enemy:'youngouk', buff:{ id:'youngouk', hpBonus:150 } }, 'boss1':{ enemy:'jumi', buff:{ id:'jumi', hpBonus:100 } }, '2-1': { enemy:'hyekyung', buff:{ id:'hyekyung', hpBonus:30, cdMult:0.8 } }, '2-2': { enemy:'taeyeon', buff:{ id:'taeyeon', startAwakened:true } }, '2-3': { enemy:'younghoon', buff:{ id:'younghoon', hpBonus:20, cdMult:0.4 } }, '2-5': { enemy:'eunju', buff:{ id:'eunju', hpBonus:30, startTriangle:true } }, '2-6': { enemy:'giwon', buff:{ id:'giwon', hpBonus:50, startWall:true } }, '2-8': { enemy:'dogyungyun', buff:{ id:'dogyungyun',hpBonus:80 } }, '2-9': { enemy:'byungheon', buff:{ id:'byungheon', cdMult:0.2 } }, 'boss2':{ enemy:'woojin', buff:{ id:'woojin', hpBonus:100, woojinNaijja:5 } }, '2-4': { enemies:['taeyoung','sumin'], buffs:[{ id:'taeyoung',hpBonus:20 },{ id:'sumin',hpBonus:20 }] }, '2-7': { enemies:['hyuncheol','youngouk'], buffs:[{ id:'hyuncheol',hpMult:1.1,dmgMult:1.2 },{ id:'youngouk',hpMult:1.1,dmgMult:1.2 }] },
    '3-1': { enemy:'yeonhoo',  buff:{ id:'yeonhoo',  hpBonus:40, cdMult:0.9 } },
    '3-2': { enemy:'sangjin',  buff:{ id:'sangjin',  cdMult:0.5 } },
    '3-3': { enemies:['seungoh','taeyeon'], buffs:[{ id:'seungoh' },{ id:'taeyeon' }] },
@@ -1041,7 +1042,7 @@ function startCampaignStage(stageId) {
    '3-7': { enemy:'dogyungyun', buff:{ id:'dogyungyun', startGundamParts:3 } },
    '3-8': { enemy:'seungbin', buff:{ id:'seungbin',  startTurrets:2 } },
    '3-9': { enemies:['seungoh','hyekyung','eunju'], buffs:[{ id:'seungoh' },{ id:'hyekyung' },{ id:'eunju' }] },
-   'boss3': { enemy:'cheolhaeng', buff:{ id:'cheolhaeng', hpBonus:80, cdMult:0.8 } },
+   'boss3': { enemy:'cheolhaeng', buff:{ id:'cheolhaeng', hpBonus:180, cdMult:0.8, boss3Mode:true } },
   };
  const cfg = _STAGE_CFG[stageId];
  if (!cfg) return;
@@ -1246,6 +1247,18 @@ document.addEventListener('keydown', (e) => {
  if (_cheatBuffer.endsWith('cheat')) {
  _cheatBuffer = '';
  openCheatPanel();
+ }
+ if (_cheatBuffer.endsWith('clear2')) {
+ _cheatBuffer = '';
+ window._stage2Unlocked = true;
+ // boss2 클리어 상태로 세팅
+ window._clearedStages = window._clearedStages || [];
+ if (!window._clearedStages.includes('boss2')) window._clearedStages.push('boss2');
+ markStageCleared('boss2');
+ // 챕터3 노드 언락
+ ['forge-adv','2-1','2-2','2-3','church','toilet','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2'].forEach(id => unlockStage(id));
+ setTimeout(() => unlockStage('3-1'), 400);
+ saveCampaignProgress();
  }
 });
 
@@ -2982,8 +2995,11 @@ function startBattle() {
  if (!window._campaignMode) window._campaignMode = false;
  if (!window._predictMode)  window._predictMode  = false;
  if (!window._onlineMode)   window._onlineMode   = false;
- window._campaignEnemyBuff  = null;
- window._campaignEnemyBuffs = null;
+ // 캠페인 모드가 아닐 때만 버프 초기화 (캠페인은 startCampaignStage에서 직전에 세팅)
+ if (!window._campaignMode) {
+  window._campaignEnemyBuff  = null;
+  window._campaignEnemyBuffs = null;
+ }
  showScreen('battle');
  timeScale = 1; setSpeed(1);
  const predOverlay = document.getElementById('predict-overlay');
@@ -3070,7 +3086,7 @@ function startBattle() {
   hp: def.hp,
   maxHp: def.hp,
   r: def.radius,
-  skillCooldown: def.skill.cooldown * 0.5,
+  skillCooldown: def.id === 'cheolhaeng' ? 0 : def.skill.cooldown * 0.5,
   skillActive: false,
   auraTimer: 0,
   auraDmgTimer: 0,
@@ -3280,10 +3296,14 @@ function startBattle() {
   if (eb.dmgMult) { enemyFighter.def = { ...enemyFighter.def, touchDmg: enemyFighter.def.touchDmg * eb.dmgMult }; }
   if (eb.startAwakened) {
   enemyFighter.awakened = true;
-  enemyFighter.awakeningActive = false;
+  enemyFighter.awakeningActive = true;
+  enemyFighter.awakeningTimer = 1000;
+  enemyFighter.wingProgress = 0;
+  enemyFighter.wingParticles = [];
   enemyFighter.speedMult = 1.4;
   enemyFighter.skillCooldown = 4000;
-  enemyFighter.wingProgress = 1;
+  enemyFighter.vx = 0;
+  enemyFighter.vy = 0;
   }
   if (eb.startWall) {
   const sk = enemyFighter.def.skill;
@@ -3303,7 +3323,9 @@ function startBattle() {
   }
   if (eb.startTriangle) {
   enemyFighter.eunjuTriangleDone = true;
-  if (gameState) gameState.eunjuTriangle = true;
+  gameState.eunjuTriangle = true;
+  gameState.shake = _mx(gameState.shake || 0, 16);
+  if (gameState.dmgTexts) _dt(W * 0.4, H * 0.5, '삼각비!', 2000, -0.4, '#d4186c', 24);
   }
   if (eb.touchDmgSet !== undefined) {
   enemyFighter.def = { ...enemyFighter.def, touchDmg: eb.touchDmgSet };
@@ -3354,6 +3376,9 @@ function startBattle() {
   if (eb.dmgMult && enemyFighter.def.id === 'sehwan') {
   // 한세환 데미지 배율 플래그 (slap/shock/room에 적용)
   enemyFighter._sehwanDmgMult = eb.dmgMult;
+  }
+  if (eb.boss3Mode) {
+  enemyFighter._boss3Mode = true;
   }
   if (eb.cdMult) {
   enemyFighter.skillCooldown *= eb.cdMult;
@@ -4384,7 +4409,7 @@ function update(dt) {
  }
 
  if (f._absoluteZero && f.hp > 0) {
-  const auraR = (f.r || 28) * 3.5;
+  const auraR = (f.r || 28) * 3.5 + 16;
   if (!f._azExposed) f._azExposed = {};
   enemies.forEach((en, ei) => {
   if (en.hp <= 0) return;
@@ -5237,6 +5262,15 @@ function update(dt) {
   if (!gameState.cheolhaengNotes) gameState.cheolhaengNotes = [];
   gameState.cheolhaengNotes.push({ x: f.x, y: f.y, ownerId: idx, r: 22, arrived: false, growTimer: 0 });
   _dt(f.x, f.y - f.r - 14, '♫ 가창!', 1000, -0.4, '#cc8800', 14);
+  // boss3Mode: 가창 2번
+  if (f._boss3Mode) {
+   const _oidx = idx, _fx = f.x, _fy = f.y;
+   setTimeout(() => {
+    if (!gameState || gameState.over) return;
+    gameState.cheolhaengNotes.push({ x: _fx, y: _fy, ownerId: _oidx, r: 22, arrived: false, growTimer: 0 });
+    _dt(_fx, _fy - 42, '♫ 가창!', 1000, -0.4, '#cc8800', 14);
+   }, 600);
+  }
   f._cheolSkill2Cd = f.def.skill2.cooldown;
   }
  }
@@ -5853,7 +5887,8 @@ function update(dt) {
   const enemies = fighters.filter((f, fi) => {
   if (f.hp <= 0) return false;
   if (fi === turret.ownerId) return false;
-  if (owner && f.def.id === 'seungbin') return false;
+  // 같은 편 seungbin 클론만 제외 (적 seungbin은 공격 가능)
+  if (owner && owner.def.id === 'seungbin' && f.def.id === 'seungbin' && f._seungbinAlly) return false;
   return true;
   });
   if (enemies.length > 0) {
@@ -6410,7 +6445,7 @@ function update(dt) {
      fighters.forEach((ft, fi) => {
       if (fi === tp.ownerId || ft.hp <= 0) return;
       ft.lastDmgFrom = tp.ownerId;
-      applyDmg(ft, 0.5, fighters[tp.ownerId]);
+      applyDmg(ft, 0.8, fighters[tp.ownerId]);
       ft.vx = _mx(ft.vx, BASE_SPEED * 2.5);
      });
     }
@@ -6436,8 +6471,11 @@ function update(dt) {
     }
    } else {
     cn.growTimer -= dt;
-    const progress = 1 - cn.growTimer / 2000; // 0→1
-    cn.r = 22 + 88 * progress; // 22 → 110 (400% 부풀기)
+    const totalTime = cn.isSub ? 1400 : 2000;
+    const baseR = cn.isSub ? 16 : 22;
+    const maxAdd = cn.isSub ? 74 : 88; // 작은음표: 16→90, 큰음표: 22→110
+    const progress = 1 - cn.growTimer / totalTime;
+    cn.r = baseR + maxAdd * progress;
     if (cn.growTimer <= 0) {
      // 폭발
      _sp(cn.x, cn.y, '#cc8800', 16);
@@ -6446,10 +6484,26 @@ function update(dt) {
       if (fi === cn.ownerId || ft.hp <= 0) return;
       if (_hp(ft.x - cn.x, ft.y - cn.y) < ft.r + cn.r) {
        ft.lastDmgFrom = cn.ownerId;
-       applyDmg(ft, 15, fighters[cn.ownerId]);
-       _dt(ft.x, ft.y - ft.r - 10, '♪ 15', 800, -0.5, '#cc8800', 13);
+       const dmg = cn.isSub ? 8 : 15;
+       applyDmg(ft, dmg, fighters[cn.ownerId]);
+       _dt(ft.x, ft.y - ft.r - 10, `♪ ${dmg}`, 800, -0.5, '#cc8800', 13);
       }
      });
+     // 작은 음표 4개 생성 (분열 없음)
+      if (!cn.isSub) {
+       for (let s = 0; s < 4; s++) {
+        const ang = (s / 4) * _PI2;
+        const dist2 = 120;
+        gameState.cheolhaengNotes.push({
+         x: cn.x + _co(ang) * dist2,
+         y: cn.y + _si(ang) * dist2,
+         ownerId: cn.ownerId,
+         r: 16, arrived: true,
+         growTimer: 1400,
+         isSub: true,
+        });
+       }
+      }
      gameState.cheolhaengNotes.splice(i, 1);
     }
    }
@@ -7165,10 +7219,18 @@ function activateSkill(fighter, idx, _enemyIgnored) {
 
  if (fighter.def.id === 'cheolhaeng') {
   if (!gameState.trumpets) gameState.trumpets = [];
-  // 스킬1: 트럼펫 — 경기장 왼쪽 훨씬 밖에서 날아들어옴
+  // 스킬1: 트럼펫
   gameState.trumpets.push({ phase: 0, x: -60, y: H / 2, size: 1.0, ownerId: idx, angle: 0, orbitTimer: 0, life: 0, dmgTimer: 0 });
   _dt(fighter.x, fighter.y - fighter.r - 14, '🎺 트럼펫!', 1200, -0.4, '#cc4400', 15);
   _sp(fighter.x, fighter.y, '#cc4400', 12);
+  // boss3Mode: 5초 후 트럼펫 추가 발사
+  if (fighter._boss3Mode) {
+   const _ownerId = idx;
+   setTimeout(() => {
+    if (!gameState || gameState.over) return;
+    gameState.trumpets.push({ phase: 0, x: -60, y: H / 2, size: 1.0, ownerId: _ownerId, angle: 0, orbitTimer: 0, life: 0, dmgTimer: 0 });
+   }, 5000);
+  }
  }
 }
 
@@ -7855,81 +7917,25 @@ function render(ctx) {
  ctx.restore();
  });
 
- // ── 이철행T 트럼펫 렌더링 ──
- (gameState.trumpets || []).forEach(tp => {
-  ctx.save();
-  if (tp.phase === 0 || tp.phase === 1) {
-   // 날아오거나 제자리 자전 중
-   const sz = _rnd(48 * tp.size);
-   ctx.font = `bold ${sz}px serif`;
-   ctx.textAlign = 'center';
-   ctx.textBaseline = 'middle';
-   ctx.globalAlpha = 0.92;
-   ctx.translate(tp.x, tp.y);
-   if (tp.phase === 1) {
-    // 제자리 자전
-    ctx.rotate(tp.angle);
-    // 잔상
-    ctx.globalAlpha = 0.2;
-    ctx.fillText('🎺', 0, sz * 0.5);
-    ctx.globalAlpha = 0.92;
-   }
-   ctx.fillText('🎺', 0, 0);
-  } else if (tp.phase === 2) {
-   // 레이저: 트럼펫에서 수평 빔이 경기장 전체를 좌→우로 덮음
-   ctx.globalAlpha = 1.0;
-   const laserSz = _rnd(48 * tp.size);
-   const now = Date.now();
-
-   // 빔 레이어 (굵은 띠 여러 겹)
-   const beams = [
-    { y: H * 0.08, h: H * 0.10, color: 'rgba(220,30,0,0.85)' },
-    { y: H * 0.18, h: H * 0.08, color: 'rgba(255,100,0,0.75)' },
-    { y: H * 0.30, h: H * 0.12, color: 'rgba(255,160,0,0.70)' },
-    { y: H * 0.42, h: H * 0.16, color: 'rgba(255,230,30,0.90)' }, // 중앙 밝은 띠
-    { y: H * 0.50, h: H * 0.08, color: 'rgba(255,255,100,0.95)' }, // 핵심 노란 빔
-    { y: H * 0.58, h: H * 0.16, color: 'rgba(255,230,30,0.90)' },
-    { y: H * 0.70, h: H * 0.12, color: 'rgba(255,160,0,0.70)' },
-    { y: H * 0.82, h: H * 0.08, color: 'rgba(255,100,0,0.75)' },
-    { y: H * 0.90, h: H * 0.10, color: 'rgba(220,30,0,0.85)' },
-   ];
-
-   beams.forEach((bm, bi) => {
-    const flicker = _si(now / 50 + bi * 1.1) * 3;
-    // 왼쪽(-200)부터 오른쪽 끝(W)까지 수평 직사각형 띠
-    const grad = ctx.createLinearGradient(-200, 0, W, 0);
-    grad.addColorStop(0,   bm.color.replace(/[\d.]+\)$/, '0)'));
-    grad.addColorStop(0.05, bm.color);
-    grad.addColorStop(0.95, bm.color);
-    grad.addColorStop(1,   bm.color.replace(/[\d.]+\)$/, '0)'));
-    ctx.fillStyle = grad;
-    ctx.fillRect(-200, bm.y + flicker, W + 200, bm.h);
-   });
-
-   // 트럼펫 아이콘
-   ctx.font = `bold ${laserSz}px serif`;
-   ctx.textAlign = 'right';
-   ctx.textBaseline = 'middle';
-   ctx.fillText('🎺', -4, H / 2);
-  }
-  ctx.restore();
- });
-
  // ── 이철행T 가창 음표 렌더링 ──
  (gameState.cheolhaengNotes || []).forEach(cn => {
   ctx.save();
-  ctx.globalAlpha = cn.arrived ? Math.min(1, cn.growTimer / 2000 + 0.3) : 0.9;
-  ctx.font = `bold ${_rnd(cn.r * 1.6)}px serif`;
+  const alpha = cn.arrived ? Math.min(1, cn.growTimer / (cn.isSub ? 1400 : 2000) + 0.3) : 0.9;
+  ctx.globalAlpha = alpha;
+  const fontSize = _rnd(cn.r * (cn.isSub ? 1.8 : 1.6));
+  ctx.font = `bold ${fontSize}px serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#cc8800';
-  ctx.fillText('♪', cn.x, cn.y);
+  ctx.fillStyle = cn.isSub ? '#e8a000' : '#cc8800';
+  ctx.fillText(cn.isSub ? '♩' : '♪', cn.x, cn.y);
   if (cn.arrived) {
-   // 폭발 예고 원
    ctx.beginPath();
    ctx.arc(cn.x, cn.y, cn.r, 0, _PI2);
-   ctx.strokeStyle = `rgba(204,136,0,${0.3 + 0.4 * (1 - cn.growTimer/2000)})`;
-   ctx.lineWidth = 3;
+   const growRatio = 1 - cn.growTimer / (cn.isSub ? 1400 : 2000);
+   ctx.strokeStyle = cn.isSub
+    ? `rgba(232,160,0,${0.3 + 0.4 * growRatio})`
+    : `rgba(204,136,0,${0.3 + 0.4 * growRatio})`;
+   ctx.lineWidth = cn.isSub ? 2 : 3;
    ctx.stroke();
   }
   ctx.restore();
@@ -7964,7 +7970,7 @@ function render(ctx) {
 
  gameState.fighters.forEach(f => {
  if (!f._absoluteZero || f.hp <= 0) return;
- const auraR = (f.r || 28) * 3.5;
+ const auraR = (f.r || 28) * 3.5 + 16;
  const pulse = 0.18 + 0.07 * _si(Date.now() / 400);
  ctx.save();
  const grad = ctx.createRadialGradient(f.x, f.y, auraR * 0.4, f.x, f.y, auraR);
@@ -9005,6 +9011,57 @@ function render(ctx) {
  }
 
  if (_camApplied) ctx.restore();
+
+ // ── 이철행T 트럼펫 렌더링 (최상위 z) ──
+ if (gameState && gameState.trumpets) {
+  (gameState.trumpets).forEach(tp => {
+   ctx.save();
+   ctx.globalAlpha = 1.0;
+   if (tp.phase === 0 || tp.phase === 1) {
+    const sz = _rnd(48 * tp.size);
+    ctx.font = `bold ${sz}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.translate(tp.x, tp.y);
+    if (tp.phase === 1) {
+     ctx.rotate(tp.angle);
+     ctx.globalAlpha = 0.2;
+     ctx.fillText('🎺', 0, sz * 0.5);
+     ctx.globalAlpha = 1.0;
+    }
+    ctx.fillText('🎺', 0, 0);
+   } else if (tp.phase === 2) {
+    const laserSz = _rnd(48 * tp.size);
+    const now = Date.now();
+    const beams = [
+     { y: H * 0.08, h: H * 0.10, color: 'rgba(220,30,0,0.85)' },
+     { y: H * 0.18, h: H * 0.08, color: 'rgba(255,100,0,0.75)' },
+     { y: H * 0.30, h: H * 0.12, color: 'rgba(255,160,0,0.70)' },
+     { y: H * 0.42, h: H * 0.16, color: 'rgba(255,230,30,0.90)' },
+     { y: H * 0.50, h: H * 0.08, color: 'rgba(255,255,100,0.95)' },
+     { y: H * 0.58, h: H * 0.16, color: 'rgba(255,230,30,0.90)' },
+     { y: H * 0.70, h: H * 0.12, color: 'rgba(255,160,0,0.70)' },
+     { y: H * 0.82, h: H * 0.08, color: 'rgba(255,100,0,0.75)' },
+     { y: H * 0.90, h: H * 0.10, color: 'rgba(220,30,0,0.85)' },
+    ];
+    beams.forEach((bm, bi) => {
+     const flicker = _si(now / 50 + bi * 1.1) * 3;
+     const grad = ctx.createLinearGradient(-200, 0, W, 0);
+     grad.addColorStop(0,    bm.color.replace(/[\d.]+\)$/, '0)'));
+     grad.addColorStop(0.05, bm.color);
+     grad.addColorStop(0.95, bm.color);
+     grad.addColorStop(1,    bm.color.replace(/[\d.]+\)$/, '0)'));
+     ctx.fillStyle = grad;
+     ctx.fillRect(-200, bm.y + flicker, W + 200, bm.h);
+    });
+    ctx.font = `bold ${laserSz}px serif`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎺', -4, H / 2);
+   }
+   ctx.restore();
+  });
+ }
 }
 
 function buildBattleUI(fighters) {
@@ -9724,10 +9781,10 @@ function endGame() {
  }
  if (wasCampaign) {
   window._campaignMode = false;
-  const playerWon = campaignChar && (
+  const playerWon = !!(campaignChar && (
    (winner && winner.def.id === campaignChar.id) ||
-   !fighters.some(f => f.def.id !== campaignChar.id && !f.isByungheonClone && f.hp > 0)
-  );
+   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f.hp <= 0)
+  ));
   const isDraw = draw;
   if (normalBtns) normalBtns.style.display = 'none';
   if (campaignBtns) campaignBtns.style.display = 'block';
@@ -9782,17 +9839,17 @@ function endGame() {
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
 
-  const playerWon = campaignChar && (
+  const playerWon = !!(campaignChar && (
    (winner && winner.def.id === campaignChar.id) ||
-   !fighters.some(f => f.def.id !== campaignChar.id && !f.isByungheonClone && f.hp > 0)
-  );
+   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f.hp <= 0)
+  ));
   if (isBoss3Clear && playerWon) {
-   document.getElementById('winnerName').textContent = '🏆 Boss-3 격파!';
+   document.getElementById('winnerName').textContent = '🏆 캠페인 완료!';
    document.getElementById('resultText').textContent = '이철행T 해금!';
    document.getElementById('btn-campaign-next').style.display = 'block';
    document.getElementById('btn-campaign-next').textContent = '맵으로 →';
    document.getElementById('btn-campaign-back').textContent = '메인으로';
-   if (campaignChar) addCampaignClearChar(campaignChar.id);
+   if (campaignChar) addCampaignClearChar(campaignChar.id); // boss3에서만 메달 지급
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss3')) window._clearedStages.push('boss3');
    markStageCleared('boss3');
@@ -9847,14 +9904,13 @@ function endGame() {
    document.getElementById('btn-campaign-next').style.display = 'block';
    document.getElementById('btn-campaign-next').textContent = '맵으로 →';
    document.getElementById('btn-campaign-back').textContent = '메인으로';
-   if (campaignChar) addCampaignClearChar(campaignChar.id);
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss2')) window._clearedStages.push('boss2');
    markStageCleared('boss2');
    gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
    // 챕터3 개방
-   setTimeout(() => { unlockStage('3-1'); }, 500);
+   setTimeout(() => { unlockStage('3-1'); }, 700);
 
    if (!unlockedHidden.has('woojin')) {    unlockedHidden.add('woojin');
     saveUnlockedHidden();
@@ -9904,7 +9960,6 @@ function endGame() {
    document.getElementById('btn-campaign-next').style.display = 'block';
    document.getElementById('btn-campaign-next').textContent = '맵으로 →';
    document.getElementById('btn-campaign-back').textContent = '메인으로';
-   if (campaignChar) addCampaignClearChar(campaignChar.id);
    if (!window._stage2Unlocked) {
    window._stage2Unlocked = true;
    const mapEl = document.getElementById('campaignMap');
@@ -9986,7 +10041,6 @@ function endGame() {
    if (!window._clearedStages.includes(window._campaignStage)) {
    window._clearedStages.push(window._campaignStage);
    markStageCleared(window._campaignStage);
-   if (campaignChar) addCampaignClearChar(campaignChar.id);
    // 스테이지 클리어 코인 지급
    gachaCoins += 50;
    saveGachaData();
@@ -10233,16 +10287,17 @@ function _doGachaPull(pullCount) {
   const results = [];
   for (let i = 0; i < pullCount; i++) {
     const roll = _r();
-    if (locked.length === 0) {
-      // 모두 보유 → 겨자로 대체
-      mustardCount++;
-      results.push({ type: 'mustard' });
-    } else if (roll < 0.20) {
-      // 20% 캐릭터
-      const idx = _fl(_r() * locked.length);
-      const pick = locked.splice(idx, 1)[0];
-      unlockedHidden.add(pick);
-      results.push({ type: 'char', id: pick });
+    if (roll < 0.20) {
+      if (locked.length === 0) {
+        // 모두 보유 → 캐릭터 20% 자리를 겨자로 대체
+        mustardCount++;
+        results.push({ type: 'mustard' });
+      } else {
+        const idx = _fl(_r() * locked.length);
+        const pick = locked.splice(idx, 1)[0];
+        unlockedHidden.add(pick);
+        results.push({ type: 'char', id: pick });
+      }
     } else if (roll < 0.21) {
       // 1% 휴지
       toiletPaperCount++;
@@ -10466,7 +10521,7 @@ function _subscribeRoom(code) {
 
   // Supabase JS SDK 없으면 polling으로 대체
   if (!_onlineChannel) {
-    _onlineSubscription = setInterval(() => _pollRoom(code), 800);
+    _onlineSubscription = setInterval(() => _pollRoom(code), 300);
     return;
   }
   _onlineChannel
@@ -10478,7 +10533,13 @@ async function _pollRoom(code) {
   try {
     const r = await fetch(`${SB_URL}/rest/v1/rooms?code=eq.${code}&select=*`, { headers: SB_HEADERS });
     const rows = await r.json();
-    if (rows.length) _onRoomUpdate({ new: rows[0] });
+    if (rows.length) {
+      const row = rows[0];
+      if (row.game_state && typeof row.game_state === 'string') {
+        try { row.game_state = JSON.parse(row.game_state); } catch(e) {}
+      }
+      _onRoomUpdate({ new: row });
+    }
   } catch(e) {}
 }
 
@@ -10501,7 +10562,9 @@ function _onRoomUpdate(payload) {
 
   // Guest: Host가 playing 상태로 바꾼 후 game_state 수신
   if (room.status === 'playing' && _onlineRole === 'guest') {
-    if (room.game_state) _applyRemoteState(room.game_state);
+    if (room.game_state) _applyRemoteState(
+      typeof room.game_state === 'string' ? JSON.parse(room.game_state) : room.game_state
+    );
   }
 }
 
@@ -10610,7 +10673,7 @@ var _onlineSendTimer = 0;
 function _sendOnlineState() {
   if (!window._onlineMode || !window._onlineIsHost || !gameState) return;
   _onlineSendTimer++;
-  if (_onlineSendTimer % 3 !== 0) return; // 매 3프레임마다 전송 (20fps, 부하 감소)
+  if (_onlineSendTimer % 2 !== 0) return; // 매 2프레임마다 전송 (~30fps)
   const slim = {
     fighters: gameState.fighters.map(f => ({
       x: _rnd(f.x), y: _rnd(f.y),
@@ -10619,15 +10682,17 @@ function _sendOnlineState() {
       skillCooldown: _rnd(f.skillCooldown),
       name: f.def.name, color: f.def.color, r: f.r,
       skillActive: f.skillActive, awakened: f.awakened,
+      awakeningActive: f.awakeningActive,
     })),
-    particles: gameState.particles.slice(0, 30).map(p => ({
+    particles: gameState.particles.slice(0, 40).map(p => ({
       x: _rnd(p.x), y: _rnd(p.y), r: p.r, color: p.color, alpha: _rnd(p.alpha*100)/100
     })),
-    dmgTexts: (gameState.dmgTexts || []).slice(0, 10),
+    dmgTexts: (gameState.dmgTexts || []).slice(0, 15),
     over: gameState.over,
     winner: gameState.winner ? gameState.winner.def.name : null,
     shake: gameState.shake || 0,
     W, H,
+    t: Date.now(),
   };
   fetch(`${SB_URL}/rest/v1/rooms?code=eq.${_onlineRoom}`, {
     method: 'PATCH',
@@ -10682,14 +10747,19 @@ function _applyRemoteState(state) {
     }
     requestAnimationFrame(guestLoop);
   }
-  // 상태 업데이트
+  // 상태 업데이트 (보간 적용)
+  const LERP = 0.35;
   state.fighters.forEach((sf, i) => {
     if (!gameState.fighters[i]) return;
     const f = gameState.fighters[i];
-    f.x = sf.x; f.y = sf.y;
+    // 위치 보간 (끊김 방지)
+    f.x = f.x + (sf.x - f.x) * LERP;
+    f.y = f.y + (sf.y - f.y) * LERP;
+    f.vx = sf.vx; f.vy = sf.vy;
     f.hp = sf.hp; f.maxHp = sf.maxHp;
     f.skillActive = sf.skillActive;
     f.awakened = sf.awakened;
+    f.awakeningActive = sf.awakeningActive;
     f.skillCooldown = sf.skillCooldown;
   });
   gameState.particles = (state.particles || []).map(p => ({ ...p, life: 200, maxLife: 200 }));
