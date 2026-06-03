@@ -1230,6 +1230,16 @@ function resetCampaign() {
  });
 
  saveCampaignProgress();
+ // forge0 명시적 초기화 (cleared 표시 제거 + onclick 재연결)
+ const forge0El = document.getElementById('stage-forge0');
+ if (forge0El) {
+  forge0El.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+  forge0El.onclick = () => openForge('forge0');
+  const c0 = forge0El.querySelector('div');
+  if (c0) { c0.style.opacity = '1'; c0.style.cursor = 'pointer'; c0.style.filter = ''; }
+ }
+ campaignBuffs.length = 0;
+ updateCampaignStats();
  window._stage2Unlocked = false;
  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
  const locked = document.getElementById('stage-' + sid + '-locked');
@@ -1545,7 +1555,7 @@ function openForge(forgeId) {
  const _forgeUnlockNext = { 'forge0': null, 'forge': '1-2', 'forge2': '1-7', 'forge3': 'boss1', 'forge4': '2-7' };
  forgeId = forgeId || 'forge';
  window._currentForgeId = forgeId;
- if ((window._clearedStages||[]).includes(forgeId)) {
+ if ((window._clearedStages||[]).includes(forgeId) && forgeId !== 'forge0') {
  alert('이미 강화를 완료했습니다!');
  return;
  }
@@ -10742,31 +10752,41 @@ function endGame() {
    const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5','2-5':'2-6','2-6':'forge4','2-7':'2-8','2-8':'2-9','2-9':'boss2','3-1':'3-2','3-2':'forge5','3-3':'3-4','3-4':'3-5','3-5':'forge-sp','3-6':'3-7','3-7':'3-8','3-8':'3-9','3-9':'forge6' };
    const _nextStage = _nextMap[window._campaignStage];
    if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
-   // 멀티버스 클리어 시 김태윤 해금
-   if (window._campaignStage === 'multiverse' && !unlockedHidden.has('kimtaeyun')) {
-    unlockedHidden.add('kimtaeyun');
-    saveUnlockedHidden();
-    setTimeout(() => {
-     const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
-     if (def) {
-      const overlay = document.getElementById('unlockOverlay');
-      const box = document.getElementById('unlockBox');
-      const name = document.getElementById('unlockName');
-      const icon = document.getElementById('unlockIcon');
-      if (overlay && box && name && icon) {
-       name.textContent = '김태윤 해금!!';
-       icon.style.background = def.color;
-       icon.textContent = def.name;
-       let sub = document.getElementById('unlockSub');
-       if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#c0008a;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
-       sub.textContent = '💻 멀티버스의 구원자 격파 보상!';
-       box.style.borderColor = '#c0008a';
-       box.style.boxShadow = '0 0 32px rgba(192,0,138,0.6)';
-       overlay.style.display = 'flex';
+   // 멀티버스 클리어 시 김태윤 해금 + 캠페인 자동 초기화
+   if (window._campaignStage === 'multiverse') {
+    if (!unlockedHidden.has('kimtaeyun')) {
+     unlockedHidden.add('kimtaeyun');
+     saveUnlockedHidden();
+     setTimeout(() => {
+      const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
+      if (def) {
+       const overlay = document.getElementById('unlockOverlay');
+       const box = document.getElementById('unlockBox');
+       const name = document.getElementById('unlockName');
+       const icon = document.getElementById('unlockIcon');
+       if (overlay && box && name && icon) {
+        name.textContent = '김태윤 해금!!';
+        icon.style.background = def.color;
+        icon.textContent = def.name;
+        let sub = document.getElementById('unlockSub');
+        if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#c0008a;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
+        sub.textContent = '💻 멀티버스의 구원자 격파 보상!';
+        box.style.borderColor = '#c0008a';
+        box.style.boxShadow = '0 0 32px rgba(192,0,138,0.6)';
+        overlay.style.display = 'flex';
+       }
       }
-     }
-     buildCharSelect();
-    }, 800);
+      buildCharSelect();
+     }, 800);
+    }
+    // 캠페인 자동 초기화 (해금 연출 후 3초 뒤)
+    setTimeout(() => {
+     document.getElementById('resultText').textContent = '🏆 완주! 캠페인이 초기화됩니다...';
+    }, 1200);
+    setTimeout(() => {
+     resetCampaign();
+     showScreen('campaignMap');
+    }, 3500);
    }
    if (window._campaignStage === '2-3') {
    setTimeout(() => {
