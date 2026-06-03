@@ -1045,7 +1045,7 @@ function startCampaignStage(stageId) {
    '3-8': { enemy:'seungbin', buff:{ id:'seungbin',  startTurrets:2 } },
    '3-9': { enemies:['seungoh','hyekyung','eunju'], buffs:[{ id:'seungoh' },{ id:'hyekyung' },{ id:'eunju' }] },
    'boss3': { enemy:'cheolhaeng', buff:{ id:'cheolhaeng', hpBonus:180, cdMult:0.8, boss3Mode:true } },
-   'multiverse': { enemy:'kimtaeyun', buff:{ id:'kimtaeyun', hpBonus:840, touchDmgSet:20 } },
+   'multiverse': { enemy:'kimtaeyun', buff:{ id:'kimtaeyun', hpBonus:840, touchDmgSet:20, cdMult:1, multiverseMode:true } },
   };
  const cfg = _STAGE_CFG[stageId];
  if (!cfg) return;
@@ -3383,6 +3383,12 @@ function startBattle() {
   }
   if (eb.boss3Mode) {
   enemyFighter._boss3Mode = true;
+  }
+  if (eb.multiverseMode) {
+  enemyFighter._multiverseMode = true;
+  // 키리네 스킬2 쿨타임 10초로 강제 설정
+  enemyFighter.def = { ...enemyFighter.def, skill2: { ...enemyFighter.def.skill2, cooldown: 10000 } };
+  enemyFighter._kirineSkill2Cd = 10000;
   }
   if (eb.cdMult) {
   enemyFighter.skillCooldown *= eb.cdMult;
@@ -6715,9 +6721,10 @@ function update(dt) {
     f._hasRing = true;
     _dt(f.x, f.y - f.r - 20, '💍 반지 획득!', 2000, -0.5, '#ffd700', 18);
     _sp(f.x, f.y, '#ffd700', 16);
-    // 큰 유리조각 3개 발사
-    for (let s = 0; s < 3; s++) {
-     const ang = (s / 3) * _PI2;
+    // 큰 유리조각 발사 (멀티버스 모드: 5개, 일반: 3개)
+    const shardCount = f._multiverseMode ? 5 : 3;
+    for (let s = 0; s < shardCount; s++) {
+     const ang = (s / shardCount) * _PI2;
      const spd = 4 + _r() * 1.5;
      gameState.glassShards.push({ x: f.x, y: f.y, vx: _co(ang)*spd, vy: _si(ang)*spd, timer: 1000, big: true, ownerId: fi });
     }
