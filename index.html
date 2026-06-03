@@ -523,7 +523,7 @@
   <div style="display:flex;gap:8px;width:100%;flex:1;min-height:0">
   <div style="flex:1;border-radius:12px;border:2px solid #3a7a1a;overflow:hidden">
     <div id="campaignScroll" style="overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;height:100%;min-height:250px">
-      <div style="position:relative;width:9500px;height:250px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)">
+      <div style="position:relative;width:10500px;height:250px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)">
         <div style="position:absolute;top:20px;left:80px;background:#fff;border-radius:50px;width:90px;height:28px;opacity:0.9"></div>
         <div style="position:absolute;top:30px;left:280px;background:#fff;border-radius:50px;width:70px;height:22px;opacity:0.9"></div>
         <div style="position:absolute;top:15px;left:500px;background:#fff;border-radius:50px;width:110px;height:30px;opacity:0.9"></div>
@@ -533,7 +533,7 @@
         <div style="position:absolute;bottom:50px;left:360px;text-align:center"><div style="width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:34px solid #2d7a1b;margin:0 auto"></div><div style="width:9px;height:16px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:700px;text-align:center"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #2d7a1b;margin:0 auto"></div><div style="width:8px;height:12px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:1020px;text-align:center"><div style="width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid #2d7a1b;margin:0 auto"></div><div style="width:10px;height:18px;background:#8b4513;margin:0 auto"></div></div>
-        <svg style="position:absolute;inset:0;width:9500px;height:250px;pointer-events:none;z-index:0" xmlns="http://www.w3.org/2000/svg">
+        <svg style="position:absolute;inset:0;width:10500px;height:250px;pointer-events:none;z-index:0" xmlns="http://www.w3.org/2000/svg">
           <line x1="130" y1="110" x2="262" y2="110" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="372" y1="110" x2="538" y2="110" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="608" y1="110" x2="778" y2="110" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
@@ -575,6 +575,7 @@
           <line x1="7168" y1="110" x2="7268" y2="110" stroke="rgba(255,80,80,0.9)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="7568" y1="110" x2="7668" y2="110" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="7738" y1="110" x2="7838" y2="110" stroke="rgba(204,0,255,0.9)" stroke-width="3" stroke-dasharray="10,7"/>
+          <line x1="7918" y1="110" x2="8148" y2="110" stroke="rgba(255,0,128,0.95)" stroke-width="5" stroke-dasharray="14,6"/>
         </svg>
         <div id="stage-nodes-container"></div>
       </div>
@@ -667,6 +668,7 @@ function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.
 const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 170, radius: 28, touchDmg: 6, skill: { cooldown: 9000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { label: '자율주행자동차', barColor: '#e87020', triggerHp: 0.5 } } ,
  { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } },
  { id: 'cheolhaeng', name: '이철행T', group: 'CAMPAIGN_NPC', color: '#8b2200', hp: 150, radius: 28, touchDmg: 10, skill: { cooldown: 17000, label: '트럼펫', barColor: '#cc4400' }, skill2: { cooldown: 9000, label: '가창', barColor: '#cc8800' } },
+ { id: 'kimtaeyun', name: '김태윤', group: 'CAMPAIGN_NPC', color: '#c0008a', hp: 160, radius: 30, touchDmg: 8, skill: { cooldown: 14000, label: '노트북 사수', barColor: '#0066cc' }, skill2: { cooldown: 20000, label: '키리네', barColor: '#ff44aa' }, skill3: { cooldown: 10000, label: '푸리나', barColor: '#44aaff' } },
 ];
 
 let selectedChars = [];
@@ -1043,6 +1045,7 @@ function startCampaignStage(stageId) {
    '3-8': { enemy:'seungbin', buff:{ id:'seungbin',  startTurrets:2 } },
    '3-9': { enemies:['seungoh','hyekyung','eunju'], buffs:[{ id:'seungoh' },{ id:'hyekyung' },{ id:'eunju' }] },
    'boss3': { enemy:'cheolhaeng', buff:{ id:'cheolhaeng', hpBonus:180, cdMult:0.8, boss3Mode:true } },
+   'multiverse': { enemy:'kimtaeyun', buff:{ id:'kimtaeyun', hpBonus:840, touchDmgSet:20 } },
   };
  const cfg = _STAGE_CFG[stageId];
  if (!cfg) return;
@@ -1159,6 +1162,7 @@ function loadCampaignProgress() {
   if (cs.includes('3-8')) _show('3-9');
   if (cs.includes('3-9')) _show('forge6');
   if (cs.includes('forge6')) _show('boss3');
+  if (cs.includes('boss3')) _show('multiverse');
  }
  } catch(e) { console.error('load campaign error', e); }
 }
@@ -1226,7 +1230,7 @@ function resetCampaign() {
 
  saveCampaignProgress();
  window._stage2Unlocked = false;
- ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3'].forEach(sid => {
+ ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
  const locked = document.getElementById('stage-' + sid + '-locked');
  const unlocked = document.getElementById('stage-' + sid);
  if (locked) locked.style.display = 'none';
@@ -3282,7 +3286,7 @@ function startBattle() {
  const greenHairs = [];
 
  const dmgDealt = new Array(fighters.length).fill(0);
- gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], trumpets: [], cheolhaengNotes: [], shake: 0, over: false, winner: null };
+ gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], shake: 0, over: false, winner: null };
 
  if (window._campaignMode && campaignChar) {
  const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
@@ -3475,6 +3479,24 @@ function wallBodyHit(fighter, wall) {
 function update(dt) {
  const { fighters, notes, particles, walls } = gameState;
 
+ // 노트북 가상 fighter — enemies 탐색용 (fighters 배열에는 넣지 않음)
+ const _laptopFighters = [];
+ if (gameState.laptops) {
+  gameState.laptops.forEach(lp => {
+   if (lp.hp <= 0) return;
+   _laptopFighters.push({
+    x: lp.x, y: lp.y, vx: 0, vy: 0,
+    hp: lp.hp, maxHp: lp.maxHp, r: 16,
+    def: { name: '노트북', color: '#0066cc', touchDmg: 0, isDummy: true, id: '_laptop',
+           skill: { label: '', barColor: '#0066cc', cooldown: 999999 } },
+    _isLaptop: true, _laptopRef: lp,
+    lastDmgFrom: lp.ownerId,
+    isByungheonClone: false, sleepTimer: -1, goldenActive: false,
+    awakeningActive: false, tidalTransforming: false,
+   });
+  });
+ }
+
  fighters.forEach(f => { f.isHyunLifted = false; });
  fighters.forEach(f => {
  if (f.def.id !== 'hyuncheol' || !f.hyunFrozenTargets) return;
@@ -3543,6 +3565,7 @@ function update(dt) {
  const enemy = enemies[0];
 
  if (f.def.isDummy && !f._dummyCanMove) { f.vx = 0; f.vy = 0; }
+ if (f.def.id === 'kimtaeyun' && f._purinaStopMove) { f.vx = 0; f.vy = 0; }
  // 박상진T 자율주행 유도 (아주 약한 조향)
  if (f._sangjinHoming && f.hp > 0) {
   const tgts = fighters.filter((ft, fi) => fi !== idx && ft.hp > 0);
@@ -5255,6 +5278,27 @@ function update(dt) {
   }
  }
  // ── 이철행T 가창 스킬2 쿨타임 ──
+ if (f.def.id === 'kimtaeyun' && f.def.skill3 && f.hp > 0 && !(f.sleepTimer >= 0) && !f.isHyunLifted) {
+  if (f._purinaSkill3Cd === undefined) f._purinaSkill3Cd = f.def.skill3.cooldown;
+  f._purinaSkill3Cd = _mx(0, f._purinaSkill3Cd - dt);
+  if (f._purinaSkill3Cd <= 0 && f._purinaPhase === undefined) {
+   f._purinaPhase = 0;
+   f._purinaTimer = 600;
+   f._purinaFlash = 600;
+   f._purinaSkill3Cd = f.def.skill3.cooldown;
+   gameState.shake = _mx(gameState.shake || 0, 6);
+  }
+ }
+ if (f.def.id === 'kimtaeyun' && f.def.skill2 && f.hp > 0 && !(f.sleepTimer >= 0) && !f.isHyunLifted) {
+  if (f._kirineSkill2Cd === undefined) f._kirineSkill2Cd = f.def.skill2.cooldown;
+  f._kirineSkill2Cd = _mx(0, f._kirineSkill2Cd - dt);
+  if (f._kirineSkill2Cd <= 0 && f._kirinePhase === undefined) {
+  f._kirinePhase = 0;
+  f._kirineTimer = 800;
+  f._kirineSkill2Cd = f.def.skill2.cooldown;
+  gameState.shake = _mx(gameState.shake || 0, 8);
+  }
+ }
  if (f.def.id === 'cheolhaeng' && f.def.skill2 && f.hp > 0 && !(f.sleepTimer >= 0) && !f.isHyunLifted) {
   if (f._cheolSkill2Cd === undefined) f._cheolSkill2Cd = f.def.skill2.cooldown;
   f._cheolSkill2Cd = _mx(0, f._cheolSkill2Cd - dt);
@@ -5706,6 +5750,7 @@ function update(dt) {
  sw.r += sw.speed * dt / 16;
  sw.life -= dt;
  if (sw.life <= 0) { soundwaves.splice(i, 1); continue; }
+ if (sw._isPurinaWave) continue; // 푸리나 파동 — 순수 장식, 히트 없음
  fighters.forEach((f, idx) => {
   if (idx === sw.owner) return;
   if (sw.hit.has(idx)) return;
@@ -6352,6 +6397,71 @@ function update(dt) {
  }
  }
 
+ // ── 노트북 접촉 피격 (근접공격으로 HP 감소) ──
+ if (gameState.laptops) {
+  gameState.laptops.forEach(lp => {
+   if (lp.hp <= 0) return;
+   fighters.forEach((ft, fi) => {
+    if (fi === lp.ownerId || ft.hp <= 0) return;
+    if (_hp(ft.x - lp.x, ft.y - lp.y) < ft.r + 16) {
+     lp._hitCd = (lp._hitCd || 0) - dt;
+     if ((lp._hitCd || 0) <= 0) {
+      lp._hitCd = 500;
+      const dmg = ft.def.touchDmg || 5;
+      lp.hp = _mx(0, lp.hp - dmg);
+      _dt(lp.x, lp.y - 22, `-${dmg}`, 700, -0.4, '#ff4444', 11);
+      if (lp.hp <= 0) _sp(lp.x, lp.y, '#0066cc', 8);
+     }
+    }
+   });
+  });
+ }
+
+ // ── 노트북 범용 투사체 피격 체크 ──
+ if (_laptopFighters.length > 0 && gameState.laptops) {
+  // 강꼬치고기
+  (gameState.fishBullets || []).forEach(fb => {
+   _laptopFighters.forEach(lv => {
+    if (lv._laptopRef.hp <= 0) return;
+    if (_hp(lv.x-fb.x, lv.y-fb.y) < lv.r + fb.r) {
+     lv._laptopRef.hp = _mx(0, lv._laptopRef.hp - 14);
+     _dt(lv.x, lv.y-22, '-14', 700, -0.4, '#ff4444', 11);
+    }
+   });
+  });
+  // 트럼펫 레이저
+  (gameState.trumpets || []).forEach(tp => {
+   if (tp.phase !== 2) return;
+   _laptopFighters.forEach(lv => {
+    if (lv._laptopRef.hp <= 0) return;
+    tp._laptopDmgCd = (tp._laptopDmgCd || 0) - dt;
+    if (tp._laptopDmgCd <= 0) { tp._laptopDmgCd = 100; lv._laptopRef.hp = _mx(0, lv._laptopRef.hp - 0.8); }
+   });
+  });
+  // soundwave 장판
+  (gameState.soundwaves || []).forEach(sw => {
+   if (!sw.dmg || sw.dmg <= 0 || sw._isPurinaWave) return;
+   _laptopFighters.forEach(lv => {
+    if (lv._laptopRef.hp <= 0) return;
+    const d = _hp(lv.x - sw.x, lv.y - sw.y);
+    if (d < sw.r + lv.r && d > sw.r - 10) {
+     lv._laptopRef.hp = _mx(0, lv._laptopRef.hp - sw.dmg);
+     _dt(lv.x, lv.y-22, `-${_rnd(sw.dmg)}`, 700, -0.4, '#ff4444', 11);
+    }
+   });
+  });
+  // 가스
+  (gameState.gases || []).forEach(gs => {
+   if (!isFinite(gs.r) || gs.r <= 0) return;
+   _laptopFighters.forEach(lv => {
+    if (lv._laptopRef.hp <= 0) return;
+    if (_hp(lv.x - gs.x, lv.y - gs.y) < lv.r + gs.r) {
+     lv._laptopRef.hp = _mx(0, lv._laptopRef.hp - 0.5);
+    }
+   });
+  });
+ }
+
  // ── 박상진T 강꼬치고기 ──
  if (gameState.fishBullets) {
   for (let i = gameState.fishBullets.length - 1; i >= 0; i--) {
@@ -6510,6 +6620,175 @@ function update(dt) {
   }
  }
 
+ // ── 김태윤 노트북 회복 레이저 ──
+ if (gameState.laptops) {
+  for (let i = gameState.laptops.length - 1; i >= 0; i--) {
+   const lp = gameState.laptops[i];
+   if (lp.hp <= 0) { gameState.laptops.splice(i, 1); continue; }
+   lp.healTimer -= dt;
+   if (lp.healTimer <= 0) {
+    lp.healTimer = 3000;
+    const owner = fighters[lp.ownerId];
+    if (owner && owner.hp > 0) {
+     const healMult = owner._purinaHealMult || 1;
+     owner.hp = _mn(owner.maxHp, owner.hp + 5 * healMult);
+     _dt(owner.x, owner.y - owner.r - 10, `💙 +${5 * healMult}`, 700, -0.4, '#0066cc', 11);
+     lp._laserFlash = 400;
+    }
+   }
+   if (lp._laserFlash > 0) lp._laserFlash -= dt;
+  }
+ }
+
+ // ── 김태윤 유리조각 ──
+ if (gameState.glassShards) {
+  for (let i = gameState.glassShards.length - 1; i >= 0; i--) {
+   const gs = gameState.glassShards[i];
+   gs.x += gs.vx * timeScale;
+   gs.y += gs.vy * timeScale;
+   gs.timer -= dt;
+   if (gs.timer <= 0) {
+    // 폭발
+    const dmg = gs.big ? 20 : 7;
+    const r   = gs.big ? 110 : 56;
+    _sp(gs.x, gs.y, '#ff88cc', gs.big ? 14 : 8);
+    gameState.shake = _mx(gameState.shake || 0, gs.big ? 12 : 5);
+    fighters.forEach((ft, fi) => {
+     if (fi === gs.ownerId || ft.hp <= 0) return;
+     if (_hp(ft.x - gs.x, ft.y - gs.y) < ft.r + r) {
+      ft.lastDmgFrom = gs.ownerId;
+      applyDmg(ft, dmg, fighters[gs.ownerId]);
+      _dt(ft.x, ft.y - ft.r - 10, `💎 ${dmg}`, 900, -0.5, '#ff44aa', gs.big ? 15 : 12);
+     }
+    });
+    // 노트북 폭발 피격
+    _laptopFighters.forEach(lv => {
+     if (lv._laptopRef.hp <= 0 || lv._laptopRef.ownerId === gs.ownerId) return;
+     if (_hp(lv.x - gs.x, lv.y - gs.y) < lv.r + r) { lv._laptopRef.hp = _mx(0, lv._laptopRef.hp - dmg); _dt(lv.x, lv.y-22, `💎-${dmg}`, 900, -0.4, '#ff44aa', 11); }
+    });
+    gameState.glassShards.splice(i, 1);
+    continue;
+   }
+   // 벽 튕김
+   if (gs.x < 0 || gs.x > W) gs.vx *= -1;
+   if (gs.y < 0 || gs.y > H) gs.vy *= -1;
+  }
+ }
+
+ // ── 김태윤 키리네 phase 업데이트 ──
+ fighters.forEach((f, fi) => {
+  if (f.def.id !== 'kimtaeyun' || f.hp <= 0) return;
+  if (f._kirinePhase === undefined) return;
+  f._kirineTimer -= dt;
+
+  if (f._kirinePhase === 0) {
+   // 핑크빛 섬광 0.8초
+   if (f._kirineTimer <= 0) {
+    f._kirinePhase = 1;
+    f._kirineTimer = 3000;
+    f._speedMultOrig = f.speedMult || 1;
+    f.speedMult = (f.speedMult || 1) * 1.5;
+    f._kirineShardTimer = 500;
+    _dt(f.x, f.y - f.r - 16, '💎 키리네!', 1500, -0.5, '#ff44aa', 16);
+   }
+  } else if (f._kirinePhase === 1) {
+   // 3초간 이동속도 50%↑ + 0.5초마다 유리조각 산포
+   f._kirineShardTimer -= dt;
+   if (f._kirineShardTimer <= 0) {
+    f._kirineShardTimer = 500;
+    for (let s = 0; s < 6; s++) {
+     const ang = (s / 6) * _PI2 + _r() * 0.5;
+     const spd = 3 + _r() * 2;
+     gameState.glassShards.push({ x: f.x, y: f.y, vx: _co(ang)*spd, vy: _si(ang)*spd, timer: 1000, big: false, ownerId: fi });
+    }
+   }
+   if (f._kirineTimer <= 0) {
+    f.speedMult = f._speedMultOrig;
+    f._kirinePhase = 2;
+    f._kirineTimer = 1500;
+   }
+  } else if (f._kirinePhase === 2) {
+   // 반지 획득 연출
+   if (f._kirineTimer <= 0) {
+    f._kirinePhase = 3;
+    f._kirineTimer = 0;
+    f._hasRing = true;
+    _dt(f.x, f.y - f.r - 20, '💍 반지 획득!', 2000, -0.5, '#ffd700', 18);
+    _sp(f.x, f.y, '#ffd700', 16);
+    // 큰 유리조각 3개 발사
+    for (let s = 0; s < 3; s++) {
+     const ang = (s / 3) * _PI2;
+     const spd = 4 + _r() * 1.5;
+     gameState.glassShards.push({ x: f.x, y: f.y, vx: _co(ang)*spd, vy: _si(ang)*spd, timer: 1000, big: true, ownerId: fi });
+    }
+    // 키리네 종료
+    f._kirinePhase = undefined;
+   }
+  }
+ });
+
+ // ── 김태윤 푸리나 phase 업데이트 ──
+ fighters.forEach((f, fi) => {
+  if (f.def.id !== 'kimtaeyun' || f.hp <= 0 || f._purinaPhase === undefined) return;
+  f._purinaTimer -= dt;
+
+  if (f._purinaPhase === 0) {
+   // 푸른빛 섬광 0.6초
+   if (f._purinaTimer <= 0) {
+    f._purinaPhase = 1;
+    f._purinaTimer = 2500; // phase1 지속시간
+    f._purinaStopMove = true;
+    // 물방울 5개 초기화
+    f._purinaDroplets = Array.from({ length: 5 }, (_, i) => ({
+     angle: (i / 5) * _PI2,
+     orbitR: 60,
+     scale: 1,
+    }));
+    _dt(f.x, f.y - f.r - 18, '💧 푸리나!', 1500, -0.5, '#44aaff', 16);
+   }
+  } else if (f._purinaPhase === 1) {
+   // 물방울 회전 + 흡수 (점점 작아지며 안으로)
+   const progress = 1 - f._purinaTimer / 2500;
+   if (f._purinaDroplets) {
+    f._purinaDroplets.forEach(d => {
+     d.angle += 0.06 * timeScale;
+     d.orbitR = 60 * (1 - progress * 0.85);
+     d.scale = 1 - progress * 0.8;
+    });
+   }
+   if (f._purinaTimer <= 0) {
+    f._purinaPhase = 2;
+    f._purinaTimer = 5000;
+    f._purinaStopMove = false;
+    f._purinaDroplets = null;
+    // 이동 재개 — 방향 초기화
+    const resumeAng = _r() * _PI2;
+    f.vx = _co(resumeAng) * BASE_SPEED * (f.speedMult || 1);
+    f.vy = _si(resumeAng) * BASE_SPEED * (f.speedMult || 1);
+    // 물결 파동 생성
+    for (let w = 0; w < 4; w++) {
+     setTimeout(() => {
+      if (!gameState || !gameState.soundwaves) return;
+      gameState.soundwaves.push({ x: f.x, y: f.y, r: f.r, speed: 6, life: 1000, dmg: 0, knockback: 0, wallDmgTimer: 0, owner: fi, hit: new Set(), _isPurinaWave: true });
+     }, w * 250);
+    }
+    // 버프 적용
+    f._purinaHealMult = 2;   // 노트북 회복량 2배
+    f._purinaDmgMult = 1.5;  // 피해 1.5배
+    _dt(f.x, f.y - f.r - 20, '🌊 푸리나 발동!', 2000, -0.5, '#44aaff', 18);
+    _sp(f.x, f.y, '#44aaff', 16);
+   }
+  } else if (f._purinaPhase === 2) {
+   // 버프 유지
+   if (f._purinaTimer <= 0) {
+    f._purinaPhase = undefined;
+    f._purinaHealMult = 1;
+    f._purinaDmgMult = 1;
+    _dt(f.x, f.y - f.r - 14, '🌊 종료', 900, -0.4, '#44aaff', 12);
+   }
+  }
+ });
+
  // ── 박상진T 자율주행자동차 스킬2 체크 ──
  fighters.forEach((f, fi) => {
   if (f.def.id !== 'sangjin' || f.hp <= 0 || f._sangjinCarActive) return;
@@ -6528,6 +6807,7 @@ function update(dt) {
  const g = gases[i];
  g.life -= dt;
  if (g.life <= 0) { gases.splice(i, 1); continue; }
+ if (!isFinite(g.r) || g.r <= 0) { gases.splice(i, 1); continue; }
  g.hitCooldown = _mx(0, g.hitCooldown - dt);
  fighters.forEach((f, fidx) => {
   if (fidx === g.ownerId) return;
@@ -6822,6 +7102,15 @@ function update(dt) {
 }
 
 function applyDmg(f, dmg, attacker) {
+ // 노트북 피격 처리
+ if (f && f._isLaptop && f._laptopRef) {
+  const lp = f._laptopRef;
+  if (lp.hp <= 0) return;
+  lp.hp = _mx(0, lp.hp - dmg);
+  if (gameState && gameState.dmgTexts) _dt(lp.x, lp.y - 22, `-${_rnd(dmg)}`, 700, -0.4, '#ff4444', 11);
+  if (lp.hp <= 0) _sp(lp.x, lp.y, '#0066cc', 8);
+  return;
+ }
  if (f.awakeningActive) return;
  if (f.tidalTransforming) return;
  if (f.goldenActive) return;
@@ -6841,6 +7130,7 @@ function applyDmg(f, dmg, attacker) {
  }
  if (f.def && f.def.id === 'giwon' && f.tidalActive) dmg *= 0.7;
  if (attacker && attacker._qtyOverQuality) dmg *= 0.8;
+ if (attacker && attacker.def && attacker.def.id === 'kimtaeyun' && attacker._purinaDmgMult) dmg *= attacker._purinaDmgMult;
  if (f.def.id === 'taeyeon' && f.awakened) dmg *= 1.2;
  if (f.def && f.def.id === 'eunju' && dmg > 0) {
  const atkIdx = f.lastDmgFrom;
@@ -7217,6 +7507,16 @@ function activateSkill(fighter, idx, _enemyIgnored) {
   _dt(fighter.x, fighter.y - fighter.r - 10, '🐟 강꼬치고기!', 900, -0.4, '#4a90d9', 12);
  }
 
+ if (fighter.def.id === 'kimtaeyun') {
+  if (!gameState.laptops) gameState.laptops = [];
+  // 스킬1: 노트북 설치
+  const lx = fighter.x + (_r()-0.5)*80;
+  const ly = fighter.y + (_r()-0.5)*60;
+  gameState.laptops.push({ x: _mx(20,_mn(W-20,lx)), y: _mx(20,_mn(H-20,ly)), ownerId: idx, hp: 15, maxHp: 15, healTimer: 3000, _laserFlash: 0 });
+  _dt(fighter.x, fighter.y - fighter.r - 14, '💻 노트북 설치!', 1200, -0.4, '#0066cc', 14);
+  _sp(fighter.x, fighter.y, '#0066cc', 8);
+ }
+
  if (fighter.def.id === 'cheolhaeng') {
   if (!gameState.trumpets) gameState.trumpets = [];
   // 스킬1: 트럼펫
@@ -7369,6 +7669,8 @@ function renderRoom() {
   rctx.restore();
  });
  }
+
+ // 임시 추가한 노트북 가상 fighter — 투사체 피격 체크는 update()에서 처리
 }
 
 function render(ctx) {
@@ -7790,6 +8092,7 @@ function render(ctx) {
  });
 
  gameState.gases.forEach(g => {
+ if (!isFinite(g.r) || g.r <= 0) return;
  const alpha = (g.life / g.maxLife) * 0.55;
  const grad = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, g.r * 1.4);
  grad.addColorStop(0, `rgba(140,210,0,${alpha})`);
@@ -9012,6 +9315,149 @@ function render(ctx) {
 
  if (_camApplied) ctx.restore();
 
+ // ── 김태윤 푸리나 렌더링 ──
+ (gameState.fighters || []).forEach(f => {
+  if (f.def.id !== 'kimtaeyun' || f.hp <= 0) return;
+  // phase0: 푸른빛 섬광
+  if (f._purinaPhase === 0 && f._purinaFlash > 0) {
+   f._purinaFlash -= 16;
+   ctx.save();
+   ctx.globalAlpha = Math.max(0, f._purinaFlash / 600) * 0.45;
+   ctx.fillStyle = '#44aaff';
+   ctx.fillRect(0, 0, W, H);
+   ctx.restore();
+  }
+  // phase1: 물방울 회전
+  if (f._purinaPhase === 1 && f._purinaDroplets) {
+   f._purinaDroplets.forEach(d => {
+    const dx = f.x + _co(d.angle) * d.orbitR;
+    const dy = f.y + _si(d.angle) * d.orbitR;
+    ctx.save();
+    ctx.globalAlpha = d.scale * 0.9;
+    ctx.font = `bold ${_rnd(22 * d.scale)}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('💧', dx, dy);
+    ctx.restore();
+   });
+  }
+  // phase2: 물결 파동
+  if (f._purinaPhase === 2) {
+   const waveR = 20 + (1 - f._purinaTimer / 5000) * W * 0.5;
+   ctx.save();
+   ctx.globalAlpha = Math.max(0, f._purinaTimer / 5000) * 0.18;
+   ctx.beginPath();
+   ctx.arc(f.x, f.y, waveR, 0, _PI2);
+   ctx.strokeStyle = '#44aaff';
+   ctx.lineWidth = 4;
+   ctx.stroke();
+   ctx.restore();
+   // 버프 중 파란 테두리
+   ctx.save();
+   ctx.globalAlpha = 0.5 + 0.2 * _si(Date.now() / 300);
+   ctx.beginPath();
+   ctx.arc(f.x, f.y, f.r + 6, 0, _PI2);
+   ctx.strokeStyle = '#44aaff';
+   ctx.lineWidth = 3;
+   ctx.stroke();
+   ctx.restore();
+  }
+ });
+
+ // ── 김태윤 키리네 섬광 렌더링 ──
+ (gameState.fighters || []).forEach(f => {
+  if (f.def.id !== 'kimtaeyun' || f.hp <= 0) return;
+  // 키리네 진행 중 상시 핑크빛 섬광
+  const inKirine = f._kirinePhase !== undefined;
+  const flashAlpha = inKirine ? 0.28 + 0.10 * _si(Date.now() / 180) : 0;
+  if (flashAlpha <= 0) return;
+  ctx.save();
+  ctx.globalAlpha = flashAlpha;
+  ctx.fillStyle = '#ff88cc';
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+ });
+
+ // ── 김태윤 노트북 렌더링 ──
+ (gameState.laptops || []).forEach(lp => {
+  ctx.save();
+  ctx.globalAlpha = 0.95;
+  // 히트박스 원
+  ctx.beginPath();
+  ctx.arc(lp.x, lp.y, 16, 0, _PI2);
+  ctx.strokeStyle = 'rgba(0,102,204,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  // 노트북 아이콘
+  ctx.font = 'bold 22px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('💻', lp.x, lp.y);
+  // HP바 (배경)
+  const bw = 36, bh = 5;
+  const bx = lp.x - bw / 2, by = lp.y + 18;
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(bx, by, bw, bh);
+  // HP바 (현재)
+  const hpRatio = lp.hp / lp.maxHp;
+  ctx.fillStyle = hpRatio > 0.5 ? '#0066cc' : hpRatio > 0.2 ? '#ff8800' : '#cc0000';
+  ctx.fillRect(bx, by, bw * hpRatio, bh);
+  // HP바 테두리
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(bx, by, bw, bh);
+  // HP 숫자
+  ctx.font = '9px sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${_rnd(lp.hp)}/${lp.maxHp}`, lp.x, by + bh + 8);
+  // 회복 레이저 플래시
+  if (lp._laserFlash > 0) {
+   ctx.globalAlpha = Math.min(1, lp._laserFlash / 200) * 0.7;
+   ctx.strokeStyle = '#44aaff';
+   ctx.lineWidth = 3;
+   ctx.setLineDash([6, 4]);
+   ctx.beginPath();
+   const owner = gameState.fighters[lp.ownerId];
+   if (owner) { ctx.moveTo(lp.x, lp.y); ctx.lineTo(owner.x, owner.y); }
+   ctx.stroke();
+   ctx.setLineDash([]);
+  }
+  ctx.restore();
+ });
+
+ // ── 김태윤 유리조각 렌더링 ──
+ (gameState.glassShards || []).forEach(gs => {
+  ctx.save();
+  const lifeRatio = gs.timer / (gs.big ? 1000 : 1000);
+  ctx.globalAlpha = 0.85;
+  ctx.font = `bold ${gs.big ? 56 : 32}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('💎', gs.x, gs.y);
+  // 폭발 예고 원
+  if (gs.timer < 400) {
+   const pulse = 1 - gs.timer / 400;
+   ctx.beginPath();
+   ctx.arc(gs.x, gs.y, (gs.big ? 110 : 56) * pulse, 0, _PI2);
+   ctx.strokeStyle = gs.big ? 'rgba(255,68,170,0.7)' : 'rgba(255,136,204,0.5)';
+   ctx.lineWidth = gs.big ? 3 : 2;
+   ctx.stroke();
+  }
+  ctx.restore();
+ });
+
+ // ── 김태윤 반지 장착 표시 ──
+ (gameState.fighters || []).forEach(f => {
+  if (f.def.id !== 'kimtaeyun' || !f._hasRing || f.hp <= 0) return;
+  ctx.save();
+  ctx.font = '14px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('💍', f.x + f.r * 0.8, f.y - f.r * 0.8);
+  ctx.restore();
+ });
+
  // ── 이철행T 트럼펫 렌더링 (최상위 z) ──
  if (gameState && gameState.trumpets) {
   (gameState.trumpets).forEach(tp => {
@@ -9146,6 +9592,13 @@ function buildBattleUI(fighters) {
   html += bar('sk', '#1a6b8a', '100%', '4px');
   html += lbl('sklbl', '#1a6b8a', '🐟 강꼬치고기');
   html += lbl('sangjin-car-' + pid, '#e87020', '대기 중');
+ } else if (id === 'kimtaeyun') {
+  html += bar('sk', '#0066cc', '100%', '4px');
+  html += lbl('sklbl', '#0066cc', '💻 노트북 사수 ✦');
+  html += bar('kimsk2', '#ff44aa', '100%', '4px');
+  html += lbl('kimsk2lbl', '#ff44aa', '💎 키리네 ✦');
+  html += bar('kimsk3', '#44aaff', '100%', '4px');
+  html += lbl('kimsk3lbl', '#44aaff', '🌊 푸리나 ✦');
  } else if (id === 'cheolhaeng') {
   html += bar('sk', '#cc4400', '100%', '4px');
   html += lbl('sklbl', '#cc4400', '🎺 트럼펫 ✦');
@@ -9327,6 +9780,23 @@ function updateBattleUI(fighters) {
   if (njEl) njEl.style.width = _mn(100, ((f.woojinNaijja||0)/10)*100) + '%';
   if (njLbl) njLbl.textContent = `나이짜! (${f.woojinNaijja||0}/10)${f.woojinFieldActive ? ' ✦ 회복 활성' : ''}`;
   if (flLbl) { flLbl.textContent = f.woojinFieldActive ? '⚡ 필드 발동!' : '필드 — 대기 중'; flLbl.style.color = f.woojinFieldActive ? '#c8a800' : '#555'; }
+ } else if (f.def.id === 'kimtaeyun') {
+  const sk1El = document.getElementById('sk-' + pid);
+  const sk1Lbl = document.getElementById('sklbl-' + pid);
+  const sk2El = document.getElementById('kimsk2-' + pid);
+  const sk2Lbl = document.getElementById('kimsk2lbl-' + pid);
+  if (sk1El) sk1El.style.width = f.skillCooldown <= 0 ? '100%' : _mx(0, 100 - (f.skillCooldown / f.def.skill.cooldown) * 100) + '%';
+  if (sk1Lbl) sk1Lbl.textContent = f.skillCooldown <= 0 ? '💻 노트북 사수 ✦' : `💻 노트북 사수 (${((f.skillCooldown||0)/1000).toFixed(1)}s)`;
+  const cd2 = f._kirineSkill2Cd !== undefined ? f._kirineSkill2Cd : 0;
+  if (sk2El) sk2El.style.width = cd2 <= 0 ? '100%' : _mx(0, 100 - (cd2 / f.def.skill2.cooldown) * 100) + '%';
+  const kirineState = f._kirinePhase !== undefined ? ['섬광중','질주중','반지획득','완전체'][f._kirinePhase] || '' : '';
+  if (sk2Lbl) sk2Lbl.textContent = kirineState ? `💎 키리네 [${kirineState}]` : (cd2 <= 0 ? '💎 키리네 ✦' : `💎 키리네 (${(cd2/1000).toFixed(1)}s)`);
+  const sk3El = document.getElementById('kimsk3-' + pid);
+  const sk3Lbl = document.getElementById('kimsk3lbl-' + pid);
+  const cd3 = f._purinaSkill3Cd !== undefined ? f._purinaSkill3Cd : 0;
+  if (sk3El) sk3El.style.width = cd3 <= 0 ? '100%' : _mx(0, 100 - (cd3 / f.def.skill3.cooldown) * 100) + '%';
+  const purinaState = f._purinaPhase !== undefined ? ['섬광','흡수중','🌊버프중'][f._purinaPhase] || '' : '';
+  if (sk3Lbl) sk3Lbl.textContent = purinaState ? `🌊 푸리나 [${purinaState}]` : (cd3 <= 0 ? '🌊 푸리나 ✦' : `🌊 푸리나 (${(cd3/1000).toFixed(1)}s)`);
  } else if (f.def.id === 'sangjin') {
   const carEl = document.getElementById('sangjin-car-' + pid);
   if (carEl) carEl.textContent = f._sangjinCarActive ? '🚗 자율주행 중!' : '대기 중';
@@ -9822,7 +10292,7 @@ function endGame() {
    else unlocked.onclick = () => startCampaignStage(sid);
    }
   });
-  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3'].forEach(sid => {
+  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
    const unlocked = document.getElementById('stage-' + sid);
    if (locked) locked.style.display = 'none';
@@ -9834,7 +10304,7 @@ function endGame() {
   });
   saveCampaignProgress();
   } else {
-  const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍' };
+  const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍', 'multiverse': '멀티버스의 구원자' };
   const isBossClear = window._campaignStage === 'boss1';
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
@@ -9855,6 +10325,7 @@ function endGame() {
    markStageCleared('boss3');
    gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
+   setTimeout(() => unlockStage('multiverse'), 600);
    if (!unlockedHidden.has('cheolhaeng')) {
     unlockedHidden.add('cheolhaeng');
     saveUnlockedHidden();
@@ -10049,6 +10520,32 @@ function endGame() {
    const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5','2-5':'2-6','2-6':'forge4','2-7':'2-8','2-8':'2-9','2-9':'boss2','3-1':'3-2','3-2':'forge5','3-3':'3-4','3-4':'3-5','3-5':'forge-sp','3-6':'3-7','3-7':'3-8','3-8':'3-9','3-9':'forge6' };
    const _nextStage = _nextMap[window._campaignStage];
    if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
+   // 멀티버스 클리어 시 김태윤 해금
+   if (window._campaignStage === 'multiverse' && !unlockedHidden.has('kimtaeyun')) {
+    unlockedHidden.add('kimtaeyun');
+    saveUnlockedHidden();
+    setTimeout(() => {
+     const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
+     if (def) {
+      const overlay = document.getElementById('unlockOverlay');
+      const box = document.getElementById('unlockBox');
+      const name = document.getElementById('unlockName');
+      const icon = document.getElementById('unlockIcon');
+      if (overlay && box && name && icon) {
+       name.textContent = '김태윤 해금!!';
+       icon.style.background = def.color;
+       icon.textContent = def.name;
+       let sub = document.getElementById('unlockSub');
+       if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#c0008a;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
+       sub.textContent = '💻 멀티버스의 구원자 격파 보상!';
+       box.style.borderColor = '#c0008a';
+       box.style.boxShadow = '0 0 32px rgba(192,0,138,0.6)';
+       overlay.style.display = 'flex';
+      }
+     }
+     buildCharSelect();
+    }, 800);
+   }
    if (window._campaignStage === '2-3') {
    setTimeout(() => {
     ['church','toilet'].forEach(id => {
@@ -10093,9 +10590,12 @@ var _CAMPAIGN_NODES = [ { id:'forge0', x:60, y:110, label:'강화', type:'forge'
   { id:'3-9', x:7480, y:110, label:'학업의 삼원색', type:'ch3-dark' },
   { id:'forge6', x:7680, y:110, label:'강화', type:'forge' },
   { id:'boss3', x:7880, y:110, label:'음악의 폭풍', type:'boss3' },
+  { id:'multiverse', x:8180, y:110, label:'멀티버스의 구원자', type:'final-boss' },
 ];
 
-var _NODE_STYLE = { start: { bg:'#f5c518', border:'#c8a800', text:'#111', labelColor:'#fff', icon:null, size:64, borderW:4 }, ch1: { bg:'#4caf50', border:'#2d8a2d', text:'#fff', labelColor:'#fff', icon:null, size:62, borderW:4 }, ch2: { bg:'#4a7abf', border:'#2a5a9f', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, 'ch2-dark':{ bg:'#1a6b8a', border:'#0a4a6a', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, ch3: { bg:'#7b2fff', border:'#5a00cc', text:'#fff', labelColor:'#d4aaff', icon:null, size:62, borderW:4 }, 'ch3-dark':{ bg:'#4a0080', border:'#7b2fff', text:'#fff', labelColor:'#c084fc', icon:null, size:62, borderW:4 }, boss: { bg:'#8b0000', border:'#ff2222', text:'#ffcccc', labelColor:'#ff6666', icon:'💀', size:62, borderW:4 }, boss2: { bg:'#6b0000', border:'#ff6600', text:'#ffddaa', labelColor:'#ff8844', icon:'💀', size:64, borderW:4 }, boss3: { bg:'#4a0060', border:'#cc00ff', text:'#ffccff', labelColor:'#ee88ff', icon:'💀', size:64, borderW:4 }, forge: { bg:'linear-gradient(135deg,#ff8c00,#ffd700)', border:'#cc6600', text:null, labelColor:'#ffd700', icon:'🔨', size:62, borderW:4 }, 'forge-adv':{ bg:'linear-gradient(135deg,#7b2fff,#c084fc)', border:'#5a00cc', text:null, labelColor:'#c084fc', icon:'💎', size:62, borderW:4 }, 'forge-sp': { bg:'linear-gradient(135deg,#cc00aa,#ff44cc)', border:'#880077', text:null, labelColor:'#ffaaee', icon:'⚗️', size:62, borderW:4 }, church: { bg:'#f5e6c8', border:'#c8a840', text:null, labelColor:'#c8a840', icon:'⛪', size:56, borderW:4 }, toilet: { bg:'#e0eeee', border:'#7ab', text:null, labelColor:'#5aa', icon:'🚽', size:56, borderW:4 }, };
+var _NODE_STYLE = { start: { bg:'#f5c518', border:'#c8a800', text:'#111', labelColor:'#fff', icon:null, size:64, borderW:4 }, ch1: { bg:'#4caf50', border:'#2d8a2d', text:'#fff', labelColor:'#fff', icon:null, size:62, borderW:4 }, ch2: { bg:'#4a7abf', border:'#2a5a9f', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, 'ch2-dark':{ bg:'#1a6b8a', border:'#0a4a6a', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, ch3: { bg:'#7b2fff', border:'#5a00cc', text:'#fff', labelColor:'#d4aaff', icon:null, size:62, borderW:4 }, 'ch3-dark':{ bg:'#4a0080', border:'#7b2fff', text:'#fff', labelColor:'#c084fc', icon:null, size:62, borderW:4 }, boss: { bg:'#8b0000', border:'#ff2222', text:'#ffcccc', labelColor:'#ff6666', icon:'💀', size:62, borderW:4 }, boss2: { bg:'#6b0000', border:'#ff6600', text:'#ffddaa', labelColor:'#ff8844', icon:'💀', size:64, borderW:4 }, boss3: { bg:'#4a0060', border:'#cc00ff', text:'#ffccff', labelColor:'#ee88ff', icon:'💀', size:64, borderW:4 },
+ final: { bg:'linear-gradient(135deg,#1a1a2e,#16213e)', border:'#f5c518', text:'#f5c518', labelColor:'#f5c518', icon:'⭐', size:68, borderW:5 },
+ 'final-boss': { bg:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', border:'#ff0080', text:'#fff', labelColor:'#ff88cc', icon:'🌌', size:72, borderW:5 }, forge: { bg:'linear-gradient(135deg,#ff8c00,#ffd700)', border:'#cc6600', text:null, labelColor:'#ffd700', icon:'🔨', size:62, borderW:4 }, 'forge-adv':{ bg:'linear-gradient(135deg,#7b2fff,#c084fc)', border:'#5a00cc', text:null, labelColor:'#c084fc', icon:'💎', size:62, borderW:4 }, 'forge-sp': { bg:'linear-gradient(135deg,#cc00aa,#ff44cc)', border:'#880077', text:null, labelColor:'#ffaaee', icon:'⚗️', size:62, borderW:4 }, church: { bg:'#f5e6c8', border:'#c8a840', text:null, labelColor:'#c8a840', icon:'⛪', size:56, borderW:4 }, toilet: { bg:'#e0eeee', border:'#7ab', text:null, labelColor:'#5aa', icon:'🚽', size:56, borderW:4 }, };
 
 var _NODE_LOCK_STYLE = { default: { bg:'#aaa', border:'#888' }, ch2: { bg:'#7090bb', border:'#4a6a9f' }, };
 
@@ -10106,7 +10606,7 @@ function _buildCampaignNodes() {
   const s = _NODE_STYLE[node.type] || _NODE_STYLE.ch1;
   const lkStyle = node.type.startsWith('ch2') ? _NODE_LOCK_STYLE.ch2 : _NODE_LOCK_STYLE.default;
   const nodeW = (node.type === 'forge' || node.type === 'forge-adv' || node.type === 'church' || node.type === 'toilet') ? 70 : 90;
-  const lkIcon = (node.type === 'boss' || node.type === 'boss2' || node.type === 'boss3') ? '💀' : (s.icon || '🔒');
+  const lkIcon = (node.type === 'boss' || node.type === 'boss2' || node.type === 'boss3') ? '💀' : node.type === 'final-boss' ? '🌌' : node.type === 'final' ? '⭐' : (s.icon || '🔒');
   const lkIconSzPx = (node.type === 'church' || node.type === 'toilet') ? 52 : 58;
   const lkFontSz = (node.type.startsWith('ch2') || node.type === 'church' || node.type === 'toilet') ? 20 : 22;
   const lkLblColor = (node.type.startsWith('ch2') || node.type === 'church' || node.type === 'toilet') ? '#aaddff' : '#fff';
@@ -10148,10 +10648,12 @@ function _buildCampaignNodes() {
   } else {
    const isBoss2 = node.type === 'boss2';
    const isBoss3 = node.type === 'boss3';
+   const isFinal = node.type === 'final';
+   const isFinalBoss = node.type === 'final-boss';
    const isBoss  = node.type === 'boss' || isBoss2 || isBoss3;
-   const label   = isBoss3 ? 'BOSS-3' : (isBoss2 ? 'BOSS-2' : (isBoss ? 'BOSS' : node.id));
+   const label   = isFinalBoss ? 'FINAL' : (isFinal ? 'STAGE' : (isBoss3 ? 'BOSS-3' : (isBoss2 ? 'BOSS-2' : (isBoss ? 'BOSS' : node.id))));
    circDiv.style.fontWeight = '900';
-   circDiv.style.fontSize = (isBoss2 || isBoss3 ? 12 : 15) + 'px';
+   circDiv.style.fontSize = (isFinalBoss ? 11 : isFinal ? 12 : isBoss2 || isBoss3 ? 12 : 15) + 'px';
    circDiv.style.color = s.text;
    circDiv.textContent = label;
   }
