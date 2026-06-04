@@ -434,7 +434,6 @@
     <div style="font-size:20px;font-weight:900;color:#ffd700;margin-bottom:4px">강화</div>
     <div style="font-size:12px;color:#888;margin-bottom:20px">하나를 선택하세요. 캠페인 한정 적용됩니다.</div>
     <div id="forgeOptions" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px"></div>
-    <button onclick="closeForge()" style="background:none;border:1px solid #555;color:#888;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px">닫기</button>
   </div>
 </div>
 
@@ -665,7 +664,7 @@
 <script>const _r=Math.random.bind(Math),_hp=Math.hypot.bind(Math),_a2=Math.atan2.bind(Math),_co=Math.cos.bind(Math),_si=Math.sin.bind(Math),_mn=Math.min.bind(Math),_mx=Math.max.bind(Math),_fl=Math.floor.bind(Math),_abs=Math.abs.bind(Math),_rnd=Math.round.bind(Math),_PI2=Math.PI*2;
 function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.push({x,y,text:t,life:l,maxLife:l,vy:v,color:c,fontSize:s});}
 
-const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병헌', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 18300, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 170, radius: 28, touchDmg: 6, skill: { cooldown: 9000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { label: '자율주행자동차', barColor: '#e87020', triggerHp: 0.5 } } ,
+const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병현', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 15000, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, }, skill2: { cooldown: 4000, label: '감자지뢰', barColor: '#cc4400' } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', }, skill2: { cooldown: 8000, label: '모기보이스', barColor: '#880066' } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 170, radius: 28, touchDmg: 6, skill: { cooldown: 9000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { label: '자율주행자동차', barColor: '#e87020', triggerHp: 0.5 } } ,
  { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } },
  { id: 'cheolhaeng', name: '이철행T', group: 'CAMPAIGN_NPC', color: '#8b2200', hp: 150, radius: 28, touchDmg: 10, skill: { cooldown: 17000, label: '트럼펫', barColor: '#cc4400' }, skill2: { cooldown: 9000, label: '가창', barColor: '#cc8800' } },
  { id: 'hangeonwoo', name: '한건우T', group: 'TEACHER', color: '#b84000', hp: 170, radius: 28, touchDmg: 8, skill: { cooldown: 8000, label: '타원의방정식', barColor: '#e86020' }, skill2: { cooldown: 14000, label: '정사영', barColor: '#cc3300' } },
@@ -1035,7 +1034,7 @@ function startCampaignStage(stageId) {
   alert('이미 클리어한 스테이지입니다!');
   return;
  }
- var _STAGE_CFG = { '1-1': { enemy:'taeyoung', buff:{ id:'taeyoung', hpBonus:-32 } }, '1-2': { enemy:'chaewan', buff:{ id:'chaewan', hpBonus:-36 } }, '1-3': { enemy:'sumin', buff:{ id:'sumin', hpBonus:-14 } }, '1-4': { enemy:'seungbin' }, '1-5': { enemy:'junjoo' }, '1-6': { enemy:'byungheon' }, '1-7': { enemy:'hyuncheol', buff:{ id:'hyuncheol', hpBonus:30 } }, '1-8': { enemy:'seungoh', buff:{ id:'seungoh', dmgMult:1.2 } }, '1-9': { enemy:'youngouk', buff:{ id:'youngouk', hpBonus:150 } }, 'boss1':{ enemy:'jumi', buff:{ id:'jumi', hpBonus:100 } }, '2-1': { enemy:'hyekyung', buff:{ id:'hyekyung', hpBonus:30, cdMult:0.8 } }, '2-2': { enemy:'taeyeon', buff:{ id:'taeyeon', startAwakened:true } }, '2-3': { enemy:'younghoon', buff:{ id:'younghoon', hpBonus:20, cdMult:0.4 } }, '2-5': { enemy:'eunju', buff:{ id:'eunju', hpBonus:30, startTriangle:true } }, '2-6': { enemy:'giwon', buff:{ id:'giwon', hpBonus:50, startWall:true } }, '2-8': { enemy:'dogyungyun', buff:{ id:'dogyungyun',hpBonus:80 } }, '2-9': { enemy:'byungheon', buff:{ id:'byungheon', cdMult:0.2 } }, 'boss2':{ enemy:'woojin', buff:{ id:'woojin', hpBonus:100, woojinNaijja:5 } }, '2-4': { enemies:['taeyoung','sumin'], buffs:[{ id:'taeyoung',hpBonus:20 },{ id:'sumin',hpBonus:20 }] }, '2-7': { enemies:['hyuncheol','youngouk'], buffs:[{ id:'hyuncheol',hpMult:1.1,dmgMult:1.2 },{ id:'youngouk',hpMult:1.1,dmgMult:1.2 }] },
+ var _STAGE_CFG = { '1-1': { enemy:'taeyoung', buff:{ id:'taeyoung', hpBonus:-32 } }, '1-2': { enemy:'chaewan', buff:{ id:'chaewan', hpBonus:-36 } }, '1-3': { enemy:'sumin', buff:{ id:'sumin', hpBonus:-14 } }, '1-4': { enemy:'seungbin' }, '1-5': { enemy:'junjoo' }, '1-6': { enemy:'byungheon' }, '1-7': { enemy:'hyuncheol', buff:{ id:'hyuncheol', hpBonus:30 } }, '1-8': { enemy:'seungoh', buff:{ id:'seungoh', dmgMult:1.2 } }, '1-9': { enemy:'youngouk', buff:{ id:'youngouk', hpBonus:0 } }, 'boss1':{ enemy:'jumi', buff:{ id:'jumi', hpBonus:100 } }, '2-1': { enemy:'hyekyung', buff:{ id:'hyekyung', hpBonus:30, cdMult:0.8 } }, '2-2': { enemy:'taeyeon', buff:{ id:'taeyeon', startAwakened:true } }, '2-3': { enemy:'younghoon', buff:{ id:'younghoon', hpBonus:20, cdMult:0.4 } }, '2-5': { enemy:'eunju', buff:{ id:'eunju', hpBonus:30, startTriangle:true } }, '2-6': { enemy:'giwon', buff:{ id:'giwon', hpBonus:50, startWall:true } }, '2-8': { enemy:'dogyungyun', buff:{ id:'dogyungyun',hpBonus:80 } }, '2-9': { enemy:'byungheon', buff:{ id:'byungheon', cdMult:0.2 } }, 'boss2':{ enemy:'woojin', buff:{ id:'woojin', hpBonus:100, woojinNaijja:5 } }, '2-4': { enemies:['taeyoung','sumin'], buffs:[{ id:'taeyoung',hpBonus:20 },{ id:'sumin',hpBonus:20 }] }, '2-7': { enemies:['hyuncheol','youngouk'], buffs:[{ id:'hyuncheol',hpMult:1.1,dmgMult:1.2 },{ id:'youngouk',hpMult:1.1,dmgMult:1.2 }] },
    '3-1': { enemy:'yeonhoo',  buff:{ id:'yeonhoo',  hpBonus:40, cdMult:0.9 } },
    '3-2': { enemy:'sangjin',  buff:{ id:'sangjin',  cdMult:0.5 } },
    '3-3': { enemies:['seungoh','taeyeon'], buffs:[{ id:'seungoh' },{ id:'taeyeon' }] },
@@ -1354,8 +1353,8 @@ async function addCampaignClearChar(charId) {
 }
 
 let campaignBuffs = [];
-const FORGE_NORMAL = [ { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' }, { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' }, { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' }, { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' }, { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' }, { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' }, { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' }, { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' }, { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' }, ];
-const FORGE_SPECIAL = [ { id: 'vampire', label: '흡혈', desc: '접촉 공격에 25% 흡혈 추가', icon: '🧛', type: 'special' }, { id: 'satellite', label: '위성', desc: '주변 공전하는 별 3개 (+2 데미지)', icon: '⭐', type: 'special' }, { id: 'poison', label: '독', desc: '피해 +20% 단 3초에 걸쳐 데미지 적용', icon: '☠️', type: 'special' }, { id: 'goonmod', label: 'Goonmod Activate', desc: '3초마다 5데미지 회색 공 발사', icon: '🩶', type: 'special' }, { id: 'qty_over_quality', label: '질보다 양', desc: '전체 데미지 -20% 대신 스킬 쿨타임 -40%', icon: '⚡⚡', type: 'special' }, { id: 'absolute_zero', label: '절대 영도', desc: '오오라 생성 — 적 이동속도 -50%, 4초 노출 시 10데미지', icon: '❄️', type: 'special' }, ];
+const FORGE_NORMAL = [ { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' }, { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' }, { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' }, { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' }, { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' }, { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' }, { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' }, { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' }, { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' }, { id: 'cd_5', label: '쿨타임 감소 I', desc: '스킬 쿨타임 -5%', icon: '⏱️', type: 'normal' }, { id: 'cd_10', label: '쿨타임 감소 II', desc: '스킬 쿨타임 -10%', icon: '⏰', type: 'normal' }, { id: 'cd_15', label: '쿨타임 감소 III', desc: '스킬 쿨타임 -15%', icon: '⚡⏱️', type: 'normal' }, ];
+const FORGE_SPECIAL = [ { id: 'vampire', label: '흡혈', desc: '접촉 공격에 25% 흡혈 추가', icon: '🧛', type: 'special' }, { id: 'satellite', label: '위성', desc: '주변 공전하는 별 3개 (+2 데미지)', icon: '⭐', type: 'special' }, { id: 'poison', label: '독', desc: '피해 +20% 단 3초에 걸쳐 데미지 적용', icon: '☠️', type: 'special' }, { id: 'goonmod', label: 'Goonmod Activate', desc: '3초마다 5데미지 회색 공 발사', icon: '🩶', type: 'special' }, { id: 'qty_over_quality', label: '질보다 양', desc: '전체 데미지 -20% 대신 스킬 쿨타임 -40%', icon: '⚡⚡', type: 'special' }, { id: 'qty_over_quality_adv', label: '양보단 질', desc: '스킬 쿨타임 +20% 대신 전체 데미지 +40%', icon: '💥', type: 'special' }, { id: 'absolute_zero', label: '절대 영도', desc: '오오라 생성 — 적 이동속도 -50%, 4초 노출 시 10데미지 (범위 33% 증가)', icon: '❄️', type: 'special' }, ];
 
 function getForgeOptions() {
  const availableSpecial = FORGE_SPECIAL.filter(s => !campaignBuffs.includes(s.id));
@@ -1631,7 +1630,7 @@ function closeForge() {
 
 function applyCampaignBuffs(fighter) {
  if (!fighter || !campaignBuffs.length) return;
- const _BUFF_MAP = { hp_10: f => { f.hp += 10; f.maxHp += 10; }, hp_20: f => { f.hp += 20; f.maxHp += 20; }, hp_30: f => { f.hp += 30; f.maxHp += 30; }, choco_pie: f => { f.hp += 20; f.maxHp += 20; }, dmg_5: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 5 }; }, dmg_7: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 7 }; }, dmg_9: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 9 }; }, dodge_3: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.03; }, dodge_5: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.05; }, dodge_7: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.07; }, vampire: f => { f._campaignVampire = true; }, satellite: f => { f._campaignSatellite = true; f._satAngle = 0; }, poison: f => { f._campaignPoison = true; }, goonmod: f => { f._campaignGoonmod = true; f._goonmodTimer = 3000; }, qty_over_quality: f => { f._qtyOverQuality = true; }, absolute_zero: f => { f._absoluteZero = true; }, goonmod_boost: f => { f._goonmodTimer = _mn(f._goonmodTimer || 3000, 1500); f._goonmodHalfCd = true; }, };
+ const _BUFF_MAP = { hp_10: f => { f.hp += 10; f.maxHp += 10; }, hp_20: f => { f.hp += 20; f.maxHp += 20; }, hp_30: f => { f.hp += 30; f.maxHp += 30; }, choco_pie: f => { f.hp += 20; f.maxHp += 20; }, dmg_5: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 5 }; }, dmg_7: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 7 }; }, dmg_9: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 9 }; }, dodge_3: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.03; }, dodge_5: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.05; }, dodge_7: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.07; }, cd_5: f => { f._cdReduction = (f._cdReduction || 1) * 0.95; }, cd_10: f => { f._cdReduction = (f._cdReduction || 1) * 0.90; }, cd_15: f => { f._cdReduction = (f._cdReduction || 1) * 0.85; }, vampire: f => { f._campaignVampire = true; }, satellite: f => { f._campaignSatellite = true; f._satAngle = 0; }, poison: f => { f._campaignPoison = true; }, goonmod: f => { f._campaignGoonmod = true; f._goonmodTimer = 3000; }, qty_over_quality: f => { f._qtyOverQuality = true; }, qty_over_quality_adv: f => { f._qtyOverQualityAdv = true; }, absolute_zero: f => { f._absoluteZero = true; }, goonmod_boost: f => { f._goonmodTimer = _mn(f._goonmodTimer || 3000, 1500); f._goonmodHalfCd = true; }, };
  campaignBuffs.forEach(buffId => {
   const fn = _BUFF_MAP[buffId];
   if (fn) fn(fighter);
@@ -1650,6 +1649,22 @@ function applyCampaignBuffs(fighter) {
  if (fighter.def.skill) fighter.def = { ...fighter.def, skill: { ...fighter.def.skill, cooldown: _rnd(fighter.def.skill.cooldown * 0.6) } };
  if (fighter.def.skill2) fighter.def = { ...fighter.def, skill2: { ...fighter.def.skill2, cooldown: _rnd(fighter.def.skill2.cooldown * 0.6) } };
  if (fighter.def.skill3) fighter.def = { ...fighter.def, skill3: { ...fighter.def.skill3, cooldown: _rnd(fighter.def.skill3.cooldown * 0.6) } };
+ }
+ if (fighter._qtyOverQualityAdv) {
+ // 쿨타임 +20%, 데미지 +40%는 applyDmg에서 처리
+ const cdMult = 1.2;
+ fighter.skillCooldown *= cdMult;
+ if (fighter.def.skill) fighter.def = { ...fighter.def, skill: { ...fighter.def.skill, cooldown: _rnd(fighter.def.skill.cooldown * cdMult) } };
+ if (fighter.def.skill2) fighter.def = { ...fighter.def, skill2: { ...fighter.def.skill2, cooldown: _rnd(fighter.def.skill2.cooldown * cdMult) } };
+ if (fighter.def.skill3) fighter.def = { ...fighter.def, skill3: { ...fighter.def.skill3, cooldown: _rnd(fighter.def.skill3.cooldown * cdMult) } };
+ }
+ if (fighter._cdReduction && fighter._cdReduction < 1) {
+ const r = fighter._cdReduction;
+ fighter.skillCooldown *= r;
+ fighter.skill2Cooldown *= r;
+ if (fighter.def.skill) fighter.def = { ...fighter.def, skill: { ...fighter.def.skill, cooldown: _rnd(fighter.def.skill.cooldown * r) } };
+ if (fighter.def.skill2) fighter.def = { ...fighter.def, skill2: { ...fighter.def.skill2, cooldown: _rnd(fighter.def.skill2.cooldown * r) } };
+ if (fighter.def.skill3) fighter.def = { ...fighter.def, skill3: { ...fighter.def.skill3, cooldown: _rnd((fighter.def.skill3 || {cooldown:9999}).cooldown * r) } };
  }
 }
 
@@ -3297,7 +3312,7 @@ function startBattle() {
  const greenHairs = [];
 
  const dmgDealt = new Array(fighters.length).fill(0);
- gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], hangeonwooBalls: [], cones: [], shake: 0, over: false, winner: null };
+ gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], hangeonwooBalls: [], cones: [], potatoMines: [], mosquitoes: [], shake: 0, over: false, winner: null };
 
  if (window._campaignMode && campaignChar) {
  const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
@@ -3568,7 +3583,7 @@ function update(dt) {
   }
  }
 
- const enemies = fighters.filter((ft, i) => i !== idx && ft.hp > 0);
+ const enemies = fighters.filter((ft, i) => i !== idx && ft.hp > 0 && !ft.isByungheonClone);
  if (enemies.length === 0) {
   f.x += f.vx * timeScale; f.y += f.vy * timeScale;
   return;
@@ -4449,7 +4464,7 @@ function update(dt) {
  }
 
  if (f._absoluteZero && f.hp > 0) {
-  const auraR = (f.r || 28) * 3.5 + 16;
+  const auraR = ((f.r || 28) * 3.5 + 16) * 1.33;
   if (!f._azExposed) f._azExposed = {};
   enemies.forEach((en, ei) => {
   if (en.hp <= 0) return;
@@ -5280,12 +5295,13 @@ function update(dt) {
  const isEunjuCharmed = gameState && gameState.fighters.some(ft =>
   ft.def.id === 'eunju' && ft.eunjuCharmTargets && ft.eunjuCharmTargets.some(ct => ct.ref === f)
  );
- if (f.def.id !== 'hyuncheol' && !f.isByungheonClone && f.def.id !== 'seungoh' && f.def.id !== 'hyekyung' && f.def.id !== 'sehwan' && f.def.id !== 'geumilcheol' && !f.def.isDummy && !(f.sleepTimer >= 0) && !isEunjuCharmed && !(f.sehwanInRoom && f.def.id !== 'sehwan') && !f.isHyunLifted) {
+ if (f.def.id !== 'hyuncheol' && f.def.id !== 'seungoh' && f.def.id !== 'hyekyung' && f.def.id !== 'sehwan' && f.def.id !== 'geumilcheol' && !f.def.isDummy && !(f.sleepTimer >= 0) && !isEunjuCharmed && !(f.sehwanInRoom && f.def.id !== 'sehwan') && !f.isHyunLifted) {
   f.skillCooldown = _mx(0, f.skillCooldown - dt);
   if (f.skillCooldown <= 0) {
   activateSkill(f, idx, enemy);
   f.skillCooldown = f.def.skill.cooldown;
-  if (f.def.id === 'byungheon') {
+  // 본체 분열 시 분신들도 동시 발동 (단, 분신 자신의 쿨타임은 별도로 관리)
+  if (f.def.id === 'byungheon' && !f.isByungheonClone) {
    gameState.fighters.forEach((cf, ci) => {
    if (!cf.isByungheonClone || cf.cloneParent !== f || cf.hp <= 0) return;
    activateSkill(cf, ci, enemy);
@@ -5956,13 +5972,13 @@ function update(dt) {
   if (enemies.length > 0) {
   const tgt = enemies.reduce((a,b) => _hp(a.x-turret.x,a.y-turret.y)<_hp(b.x-turret.x,b.y-turret.y)?a:b);
   const ang = _a2(tgt.y - turret.y, tgt.x - turret.x);
-  const spd = 40;
+  const spd = 20;
   gameState.notes.push({
    x: turret.x, y: turret.y,
    vx: _co(ang) * spd, vy: _si(ang) * spd,
    owner: turret.ownerId, r: 7,
    isTurretBullet: true,
-   dmg: 7,
+   dmg: 6,
   });
   }
  }
@@ -6412,6 +6428,116 @@ function update(dt) {
   gameState.woojinBalls.splice(i, 1);
   }
  }
+ }
+
+ // ── 홍은주T 모기보이스 스킬2 쿨타임 ──
+ fighters.forEach((f, fi) => {
+  if (f.def.id !== 'eunju' || f.hp <= 0 || f.sleepTimer >= 0 || f.isHyunLifted || !f.def.skill2) return;
+  if (f._mosquitoSk2Cd === undefined) f._mosquitoSk2Cd = f.def.skill2.cooldown;
+  f._mosquitoSk2Cd = _mx(0, f._mosquitoSk2Cd - dt);
+  if (f._mosquitoSk2Cd <= 0) {
+   f._mosquitoSk2Cd = f.def.skill2.cooldown;
+   const tgts = fighters.filter((ft, fti) => fti !== fi && ft.hp > 0);
+   if (tgts.length === 0) return;
+   // 모기 2마리 소환 (적에게 붙음)
+   for (let m = 0; m < 2; m++) {
+    const tgt = tgts[_fl(_r() * tgts.length)];
+    const tgtIdx = fighters.indexOf(tgt);
+    gameState.mosquitoes.push({
+     ownerId: fi, targetId: tgtIdx,
+     x: f.x + (_r()-0.5)*30, y: f.y + (_r()-0.5)*30,
+     life: 4000, dmgDealt: 0, healDone: false,
+     dmgTimer: 0, angle: _r() * _PI2,
+    });
+   }
+   _dt(f.x, f.y - f.r - 14, '🦟🦟 모기보이스!', 1000, -0.4, '#880066', 14);
+  }
+ });
+
+ // ── 홍은주T 모기 업데이트 ──
+ if (gameState.mosquitoes) {
+  for (let i = gameState.mosquitoes.length - 1; i >= 0; i--) {
+   const mq = gameState.mosquitoes[i];
+   const tgt = fighters[mq.targetId];
+   const owner = fighters[mq.ownerId];
+   // 타겟이 죽었으면 제거
+   if (!tgt || tgt.hp <= 0) { gameState.mosquitoes.splice(i, 1); continue; }
+   // 타겟 추적 (빠르게 붙음)
+   const dx = tgt.x - mq.x, dy = tgt.y - mq.y;
+   const dist = _hp(dx, dy) || 1;
+   const orbitR = tgt.r + 10;
+   mq.angle += 0.08 * timeScale;
+   if (dist > orbitR + 5) {
+    mq.x += (dx / dist) * 5 * timeScale;
+    mq.y += (dy / dist) * 5 * timeScale;
+   } else {
+    // 붙어서 공전
+    mq.x = tgt.x + _co(mq.angle) * orbitR;
+    mq.y = tgt.y + _si(mq.angle) * orbitR;
+   }
+   // 4초간 8데미지 (0.5초마다 1데미지)
+   mq.life -= dt;
+   mq.dmgTimer -= dt;
+   if (mq.dmgTimer <= 0 && mq.dmgDealt < 8) {
+    mq.dmgTimer = 500;
+    tgt.lastDmgFrom = mq.ownerId;
+    applyDmg(tgt, 1, owner);
+    mq.dmgDealt += 1;
+   }
+   // 8데미지 완료 시 홍은주 회복 후 사라짐
+   if (mq.dmgDealt >= 8 && !mq.healDone) {
+    mq.healDone = true;
+    if (owner && owner.hp > 0) {
+     owner.hp = _mn(owner.maxHp, owner.hp + 8);
+     _dt(owner.x, owner.y - owner.r - 10, '🦟 +8', 800, -0.4, '#880066', 12);
+    }
+   }
+   if (mq.life <= 0 || (mq.healDone)) {
+    gameState.mosquitoes.splice(i, 1);
+   }
+  }
+ }
+
+ // ── 정승빈 감자지뢰 스킬2 쿨타임 ──
+ fighters.forEach((f, fi) => {
+  if (f.def.id !== 'seungbin' || f.hp <= 0 || f.sleepTimer >= 0 || f.isHyunLifted) return;
+  if (!f.def.skill2) return;
+  if (f._potatoSk2Cd === undefined) f._potatoSk2Cd = f.def.skill2.cooldown;
+  f._potatoSk2Cd = _mx(0, f._potatoSk2Cd - dt);
+  if (f._potatoSk2Cd <= 0) {
+   f._potatoSk2Cd = f.def.skill2.cooldown;
+   if (!gameState.potatoMines) gameState.potatoMines = [];
+   const mx = _mx(20, _mn(W-20, f.x + (_r()-0.5)*80));
+   const my = _mx(20, _mn(H-20, f.y + (_r()-0.5)*60));
+   gameState.potatoMines.push({ x: mx, y: my, ownerId: fi, r: 14, armed: false, armTimer: 500 });
+   _dt(f.x, f.y - f.r - 14, '🥔 감자지뢰!', 900, -0.4, '#cc4400', 13);
+   _sp(f.x, f.y, '#cc4400', 6);
+  }
+ });
+
+ // ── 정승빈 감자지뢰 피격 체크 ──
+ if (gameState.potatoMines) {
+  for (let i = gameState.potatoMines.length - 1; i >= 0; i--) {
+   const pm = gameState.potatoMines[i];
+   if (!pm.armed) {
+    pm.armTimer -= dt;
+    if (pm.armTimer <= 0) pm.armed = true;
+    continue;
+   }
+   let triggered = false;
+   fighters.forEach((ft, fi) => {
+    if (fi === pm.ownerId || ft.hp <= 0 || triggered) return;
+    if (_hp(ft.x - pm.x, ft.y - pm.y) < ft.r + pm.r) {
+     triggered = true;
+     ft.lastDmgFrom = pm.ownerId;
+     applyDmg(ft, 10, fighters[pm.ownerId]);
+     _dt(ft.x, ft.y - ft.r - 10, '🥔 10', 900, -0.5, '#cc4400', 13);
+     _sp(pm.x, pm.y, '#cc4400', 10);
+     gameState.shake = _mx(gameState.shake || 0, 5);
+    }
+   });
+   if (triggered) { gameState.potatoMines.splice(i, 1); }
+  }
  }
 
  // ── 한건우T 타원의방정식 공 ──
@@ -7279,6 +7405,9 @@ function applyDmg(f, dmg, attacker) {
  }
  if (f.def && f.def.id === 'giwon' && f.tidalActive) dmg *= 0.7;
  if (attacker && attacker._qtyOverQuality) dmg *= 0.8;
+ else if (!attacker && f.lastDmgFrom >= 0 && gameState && gameState.fighters[f.lastDmgFrom] && gameState.fighters[f.lastDmgFrom]._qtyOverQuality) dmg *= 0.8;
+ if (attacker && attacker._qtyOverQualityAdv) dmg *= 1.4;
+ else if (!attacker && f.lastDmgFrom >= 0 && gameState && gameState.fighters[f.lastDmgFrom] && gameState.fighters[f.lastDmgFrom]._qtyOverQualityAdv) dmg *= 1.4;
  if (attacker && attacker.def && attacker.def.id === 'kimtaeyun' && attacker._purinaDmgMult) dmg *= attacker._purinaDmgMult;
  if (f.def.id === 'taeyeon' && f.awakened) dmg *= 1.2;
  if (f.def && f.def.id === 'eunju' && dmg > 0) {
@@ -7542,6 +7671,11 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  spawnParticle(gameState.particles, fighter.x, fighter.y, '#f5c518', 10);
 
  } else if (fighter.def.id === 'byungheon') {
+ // 본체(최상위 부모) 찾기
+ let rootParent = fighter;
+ while (rootParent.cloneParent && rootParent.cloneParent.def && rootParent.cloneParent.def.id === 'byungheon') {
+  rootParent = rootParent.cloneParent;
+ }
  const cloneNames = ['류병철', '류병순', '류병건'];
  const cloneName = cloneNames[_fl(_r() * cloneNames.length)];
  const cloneColors = ['#9b4fc0', '#6b2f90', '#ab5fd0'];
@@ -7550,14 +7684,16 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  const spawnX = _mx(30, _mn(W-30, fighter.x + _co(angle) * fighter.r * 2.5));
  const spawnY = _mx(30, _mn(H-30, fighter.y + _si(angle) * fighter.r * 2.5));
  const moveAng = _r() * _PI2;
+ const cloneHp = _mx(1, _rnd(rootParent.maxHp * 0.15));
+ const cloneTouchDmg = rootParent.def.touchDmg * 0.5;
  const cloneDef = {
   id: 'byungheon',
   name: cloneName,
   group: 'STUDENTS',
   color: cloneColor,
-  hp: 20,
+  hp: cloneHp,
   radius: 20,
-  touchDmg: 4.8,
+  touchDmg: cloneTouchDmg,
   skill: { cooldown: 7000, label: '분열', barColor: cloneColor },
   isClone: true,
  };
@@ -7566,7 +7702,7 @@ function activateSkill(fighter, idx, _enemyIgnored) {
   x: spawnX, y: spawnY,
   vx: _co(moveAng) * 7,
   vy: _si(moveAng) * 7,
-  hp: 20, maxHp: 20,
+  hp: cloneHp, maxHp: cloneHp,
   r: 20,
   skillCooldown: 10000,
   skillActive: false, auraTimer: 0, auraDmgTimer: 0,
@@ -8429,7 +8565,7 @@ function render(ctx) {
 
  gameState.fighters.forEach(f => {
  if (!f._absoluteZero || f.hp <= 0) return;
- const auraR = (f.r || 28) * 3.5 + 16;
+ const auraR = ((f.r || 28) * 3.5 + 16) * 1.33;
  const pulse = 0.18 + 0.07 * _si(Date.now() / 400);
  ctx.save();
  const grad = ctx.createRadialGradient(f.x, f.y, auraR * 0.4, f.x, f.y, auraR);
@@ -9614,6 +9750,56 @@ function render(ctx) {
   ctx.restore();
  });
 
+ // ── 홍은주T 모기 렌더링 ──
+ (gameState.mosquitoes || []).forEach(mq => {
+  ctx.save();
+  const buzz = _si(Date.now() / 60 + mq.angle * 3) * 2;
+  ctx.font = 'bold 16px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.globalAlpha = 0.9;
+  ctx.fillText('🦟', mq.x + buzz, mq.y);
+  // 흡혈 진행도 표시
+  if (mq.dmgDealt > 0) {
+   ctx.globalAlpha = 0.7;
+   ctx.fillStyle = '#880066';
+   ctx.font = 'bold 8px sans-serif';
+   ctx.fillText(`${mq.dmgDealt}/8`, mq.x, mq.y - 14);
+  }
+  ctx.restore();
+ });
+
+ // ── 정승빈 감자지뢰 렌더링 ──
+ (gameState.potatoMines || []).forEach(pm => {
+  ctx.save();
+  ctx.globalAlpha = pm.armed ? 1.0 : 0.5 + 0.4 * _si(Date.now() / 120);
+  ctx.font = 'bold 22px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🥔', pm.x, pm.y);
+  // 빨간 도화선
+  ctx.strokeStyle = pm.armed ? '#ff2200' : '#ff8800';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pm.x + 6, pm.y - 8);
+  ctx.quadraticCurveTo(pm.x + 14, pm.y - 18, pm.x + 10, pm.y - 26);
+  ctx.stroke();
+  // 도화선 끝 불꽃
+  if (pm.armed) {
+   ctx.font = '10px serif';
+   ctx.fillText('🔥', pm.x + 10, pm.y - 27);
+  }
+  // 작동 대기 중 범위 표시
+  if (!pm.armed) {
+   ctx.globalAlpha = 0.15;
+   ctx.beginPath();
+   ctx.arc(pm.x, pm.y, pm.r, 0, _PI2);
+   ctx.fillStyle = '#cc4400';
+   ctx.fill();
+  }
+  ctx.restore();
+ });
+
  // ── 한건우T 타원의방정식 공 렌더링 ──
  (gameState.hangeonwooBalls || []).forEach(hb => {
   ctx.save();
@@ -9764,6 +9950,8 @@ function buildBattleUI(fighters) {
   html += bar('eunju-hp', '#d4186c', '100%', '4px');
   html += lbl('eunju-lbl', '#d4186c', '삼각비 — HP 50% 이하 발동');
   html += lbl('eunju-dmg', '#888', '접촉 데미지: 1');
+  html += bar('mosquitosk2', '#880066', '100%', '4px');
+  html += lbl('mosquitosk2lbl', '#880066', '🦟 모기보이스 ✦');
  } else if (id === 'youngouk') {
   html += lbl('youngouk', '#9b70d0', '수면 유도 — 준비 중', '4px');
   html += bar('yukjin', '#cc0000', '0%', '4px');
@@ -9780,6 +9968,8 @@ function buildBattleUI(fighters) {
   html += lbl('turretlbl', '#1a7a1a', '터렛 — 준비완료');
   html += bar('sunflowercd', '#f5c518', '0%', '4px');
   html += lbl('sunflowerlbl', '#f5c518', '해바라기 (준비 중)');
+  html += bar('potatosk2', '#cc4400', '100%', '4px');
+  html += lbl('potatosk2lbl', '#cc4400', '🥔 감자지뢰 ✦');
  } else if (id === 'giwon') {
   html += bar('sk', f.def.skill.barColor || '#1a6b8a', '0%', '4px');
   html += lbl('sklbl', '#1a6b8a', `${f.def.skill.label || '벽'} (${((f.def.skill.cooldown||8000)/1000).toFixed(0)}s)`);
@@ -10125,6 +10315,13 @@ function updateBattleUI(fighters) {
   else { eLbl.textContent = `삼각비 — HP ${Math.ceil(f.hp)}/${f.maxHp} (50% 이하 발동)`; eLbl.style.color = f.hp <= f.maxHp*0.5 ? '#d4186c' : '#aaa'; }
   }
   if (eDmg) eDmg.textContent = '접촉 데미지: ' + (f.eunjuFibB || 1);
+  const mqEl = document.getElementById('mosquitosk2-' + pid);
+  const mqLbl = document.getElementById('mosquitosk2lbl-' + pid);
+  if (mqEl && mqLbl && f.def.skill2) {
+  const cd2 = f._mosquitoSk2Cd !== undefined ? f._mosquitoSk2Cd : 0;
+  mqEl.style.width = cd2 <= 0 ? '100%' : _mx(0, 100 - (cd2 / f.def.skill2.cooldown) * 100) + '%';
+  mqLbl.textContent = cd2 <= 0 ? '🦟 모기보이스 ✦' : `🦟 모기보이스 (${(cd2/1000).toFixed(1)}s)`;
+  }
  }
 
  if (f.def.id === 'yeonhoo') {
@@ -10277,6 +10474,15 @@ function updateBattleUI(fighters) {
    tLbl.textContent = `터렛 (${(rem/1000).toFixed(1)}s)`;
    tLbl.style.color = '#999';
   }
+  }
+  // 감자지뢰 스킬2 UI
+  const pmEl = document.getElementById('potatosk2-' + pid);
+  const pmLbl = document.getElementById('potatosk2lbl-' + pid);
+  if (pmEl && pmLbl) {
+  const cd2 = f._potatoSk2Cd !== undefined ? f._potatoSk2Cd : 0;
+  const maxCd2 = (f.def.skill2 && f.def.skill2.cooldown) || 4000;
+  pmEl.style.width = cd2 <= 0 ? '100%' : _mx(0, 100 - (cd2/maxCd2)*100) + '%';
+  pmLbl.textContent = cd2 <= 0 ? '🥔 감자지뢰 ✦' : `🥔 감자지뢰 (${(cd2/1000).toFixed(1)}s)`;
   }
  }
 
@@ -10485,7 +10691,7 @@ function endGame() {
   window._campaignMode = false;
   const playerWon = !!(campaignChar && (
    (winner && winner.def.id === campaignChar.id) ||
-   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f.hp <= 0)
+   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f._isLaptop || f.hp <= 0)
   ));
   const isDraw = draw;
   if (normalBtns) normalBtns.style.display = 'none';
@@ -10543,7 +10749,7 @@ function endGame() {
 
   const playerWon = !!(campaignChar && (
    (winner && winner.def.id === campaignChar.id) ||
-   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f.hp <= 0)
+   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f._isLaptop || f.hp <= 0)
   ));
   if (isBoss3Clear && playerWon) {
    document.getElementById('winnerName').textContent = '🏆 캠페인 완료!';
