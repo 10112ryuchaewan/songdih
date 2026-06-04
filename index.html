@@ -304,6 +304,7 @@
   <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
   <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 캐릭터 뽑기</button>
+  <button class="btn btn-secondary drop-item" id="btn-bugreport" style="margin-top:6px;animation-delay:2.2s;border-color:#4a90d9;color:#4a90d9">📋 버그 알림판</button>
   <div id="toiletPaperDisplay" style="position:absolute;bottom:12px;right:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-end;pointer-events:none"></div>
   <div id="mustardDisplay" style="position:absolute;bottom:12px;left:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-start;pointer-events:none"></div>
 </div>
@@ -428,8 +429,32 @@
   </div>
 </div>
 
-<div id="forgeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;align-items:center;justify-content:center;flex-direction:column">
-  <div style="background:#1a1a1a;border:2px solid #cc6600;border-radius:20px;padding:28px 24px;max-width:500px;width:92%;text-align:center;box-shadow:0 0 40px rgba(255,140,0,0.4)">
+<!-- 버그 알림판 모달 -->
+<div id="bugReportModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:3001;align-items:center;justify-content:center">
+ <div style="background:#1a1a2e;border:2px solid #4a90d9;border-radius:20px;padding:24px;max-width:520px;width:94%;max-height:85vh;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 40px rgba(74,144,217,0.3)">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+   <div style="font-size:18px;font-weight:900;color:#4a90d9">📋 버그 알림판</div>
+   <button onclick="closeBugReport()" style="background:none;border:none;color:#888;font-size:22px;cursor:pointer;line-height:1">✕</button>
+  </div>
+  <div style="font-size:11px;color:#666">버그, 건의사항, 기타 의견을 자유롭게 남겨주세요.</div>
+  <!-- 글쓰기 영역 (토글) -->
+  <div id="bugWriteArea" style="display:none;flex-direction:column;gap:8px">
+   <textarea id="bugContent" placeholder="내용을 입력하세요..." style="width:100%;height:90px;background:#111;border:1px solid #4a90d9;border-radius:8px;color:#eee;padding:10px;font-size:13px;resize:none;box-sizing:border-box"></textarea>
+   <div style="display:flex;gap:8px;justify-content:flex-end">
+    <button onclick="cancelBugWrite()" style="background:none;border:1px solid #555;color:#888;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:13px">취소</button>
+    <button onclick="submitBugReport()" style="background:#4a90d9;border:none;color:#fff;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:13px;font-weight:700">등록</button>
+   </div>
+  </div>
+  <!-- 글쓰기 버튼 -->
+  <button id="bugWriteBtn" onclick="openBugWrite()" style="background:rgba(74,144,217,0.15);border:1px dashed #4a90d9;color:#4a90d9;border-radius:8px;padding:9px;cursor:pointer;font-size:13px">✏️ 글 남기기</button>
+  <!-- 목록 -->
+  <div id="bugList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:120px;max-height:52vh">
+   <div style="color:#555;text-align:center;padding:20px;font-size:13px">불러오는 중...</div>
+  </div>
+ </div>
+</div>
+
+<div id="forgeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;align-items:center;justify-content:center;flex-direction:column">  <div style="background:#1a1a1a;border:2px solid #cc6600;border-radius:20px;padding:28px 24px;max-width:500px;width:92%;text-align:center;box-shadow:0 0 40px rgba(255,140,0,0.4)">
     <div style="font-size:28px;margin-bottom:4px">🔨</div>
     <div style="font-size:20px;font-weight:900;color:#ffd700;margin-bottom:4px">강화</div>
     <div style="font-size:12px;color:#888;margin-bottom:20px">하나를 선택하세요. 캠페인 한정 적용됩니다.</div>
@@ -726,8 +751,12 @@ function _initTouchBindings() {
  _bindBtn('btn-result-main', () => showScreen('mainMenu'));
  _bindBtn('btn-campaign-next', () => {
  window._campaignJustWon = false;
+ const overlay = document.getElementById('unlockOverlay');
+ if (overlay) overlay.style.display = 'none';
  showScreen('campaignMap');
- setTimeout(() => loadCampaignProgress(), 100);
+ setTimeout(() => {
+  loadCampaignProgress();
+ }, 200);
  });
  _bindBtn('btn-campaign-back', () => {
  window._campaignJustWon = false;
@@ -752,6 +781,7 @@ function _initTouchBindings() {
  }
  _bindBtn('btn-online', openOnline);
  _bindBtn('btn-gacha', openGacha);
+ _bindBtn('btn-bugreport', () => openBugReport());
  _bindBtn('btn-gacha-1', () => doGacha(1));
  _bindBtn('btn-gacha-10', () => doGacha(10));
  _bindBtn('btn-create-room', createRoom);
@@ -1007,10 +1037,10 @@ function selectCampaignChar(def) {
   const ul = document.getElementById('stage-' + sid);
   if (sid === 'forge0' || sid === '1-1') {
    if (lk) lk.style.display = 'none';
-   if (ul) { ul.style.display = 'block'; ul.querySelectorAll('.cleared-mark').forEach(m => m.remove()); }
+   if (ul) { ul.style.display = 'block'; ul.querySelectorAll('.cleared-mark').forEach(c => { c.classList.remove('cleared-mark'); }); }
   } else {
    if (lk) lk.style.display = 'block';
-   if (ul) { ul.style.display = 'none'; ul.querySelectorAll('.cleared-mark').forEach(m => m.remove()); }
+   if (ul) { ul.style.display = 'none'; ul.querySelectorAll('.cleared-mark').forEach(c => { c.classList.remove('cleared-mark'); }); }
   }
  });
  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet'].forEach(sid => {
@@ -1170,21 +1200,20 @@ function loadCampaignProgress() {
 function markStageCleared(stageId) {
  const node = document.getElementById('stage-' + stageId);
  if (!node) return;
- if (node.querySelector('.cleared-mark')) return;
  const circle = node.querySelector('div');
- if (circle) {
- circle.style.background = '#666';
+ if (!circle) return;
+ if (circle.classList.contains('cleared-mark')) return; // 이미 클리어 표시됨
+ circle.style.background = 'linear-gradient(135deg,#3a3a3a,#555)';
  circle.style.borderColor = '#444';
+ circle.style.color = '#4caf50';
+ circle.style.fontSize = '22px';
+ circle.style.fontWeight = '900';
+ circle.textContent = '✓';
  circle.removeAttribute('onmouseover');
  circle.removeAttribute('onmouseout');
  circle.style.transform = '';
- }
- const mark = document.createElement('span');
- mark.className = 'cleared-mark';
- mark.style.cssText = 'position:absolute;top:2px;right:2px;background:#4caf50;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;z-index:10;pointer-events:none';
- mark.textContent = '✓';
- node.style.position = node.style.position || 'absolute';
- node.appendChild(mark);
+ circle.style.cursor = 'default';
+ circle.classList.add('cleared-mark');
  node.onclick = () => alert('이미 클리어한 스테이지입니다!');
 }
 
@@ -1204,7 +1233,7 @@ function resetCampaign() {
   if (unlocked) unlocked.style.display = 'none';
  }
  if (unlocked) {
-  unlocked.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+  unlocked.querySelectorAll('.cleared-mark').forEach(c => { c.classList.remove('cleared-mark'); });
   const circle = unlocked.querySelector('div');
   if (circle) {
   circle.style.opacity = '1';
@@ -1232,7 +1261,7 @@ function resetCampaign() {
  // forge0 명시적 초기화 (cleared 표시 제거 + onclick 재연결)
  const forge0El = document.getElementById('stage-forge0');
  if (forge0El) {
-  forge0El.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+  forge0El.querySelectorAll('.cleared-mark').forEach(c => { c.classList.remove('cleared-mark'); });
   forge0El.onclick = () => openForge('forge0');
   const c0 = forge0El.querySelector('div');
   if (c0) { c0.style.opacity = '1'; c0.style.cursor = 'pointer'; c0.style.filter = ''; }
@@ -1404,11 +1433,15 @@ function enterChurch() {
  document.body.appendChild(el);
  setTimeout(() => el.remove(), 2500);
  const ch = document.getElementById('stage-church');
- if (ch) ch.querySelector('div').textContent = '✅';
+ if (ch) { ch.querySelectorAll('div')[0].textContent = '✅'; }
+ // 화장실 완전히 숨김 (잠금/해제 상태 모두)
  const tl = document.getElementById('stage-toilet');
  const tll = document.getElementById('stage-toilet-locked');
- if (tl) { tl.style.display = 'none'; }
- if (tll) { tll.style.display = 'none'; }
+ if (tl) tl.style.display = 'none';
+ if (tll) tll.style.display = 'none';
+ // 교회 노드도 onclick 비활성화 (재방문 방지)
+ const chNode = document.getElementById('stage-church');
+ if (chNode) chNode.onclick = null;
  unlock24();
 }
 
@@ -1431,11 +1464,15 @@ function enterToilet() {
  document.body.appendChild(el);
  setTimeout(() => el.remove(), 2500);
  const tl2 = document.getElementById('stage-toilet');
- if (tl2) tl2.querySelector('div').textContent = '✅';
+ if (tl2) tl2.querySelectorAll('div')[0].textContent = '✅';
+ // 교회 완전히 숨김
  const ch2 = document.getElementById('stage-church');
  const chl = document.getElementById('stage-church-locked');
- if (ch2) { ch2.style.display = 'none'; }
- if (chl) { chl.style.display = 'none'; }
+ if (ch2) ch2.style.display = 'none';
+ if (chl) chl.style.display = 'none';
+ // 화장실 노드 onclick 비활성화
+ const tlNode = document.getElementById('stage-toilet');
+ if (tlNode) tlNode.onclick = null;
  unlock24();
 }
 
@@ -1460,10 +1497,14 @@ function updateCampaignStats() {
   if (id === 'dodge_5') dodgeChance += 0.05;
   if (id === 'dodge_7') dodgeChance += 0.07;
   if (id === 'qty_over_quality') { touchDmg *= 0.8; cdMult *= 0.6; }
+  if (id === 'qty_over_quality_adv') { touchDmg *= 1.4; cdMult *= 1.2; }
+  if (id === 'cd_5') cdMult *= 0.95;
+  if (id === 'cd_10') cdMult *= 0.90;
+  if (id === 'cd_15') cdMult *= 0.85;
   if (id === 'choco_pie') hp += 20;
  });
 
- const specialBuffIds = ['vampire','satellite','poison','goonmod','goonmod_boost','absolute_zero','qty_over_quality','choco_pie'];
+ const specialBuffIds = ['vampire','satellite','poison','goonmod','goonmod_boost','absolute_zero','qty_over_quality','qty_over_quality_adv','choco_pie'];
  const specialLabels = {
   vampire:'🧛 흡혈 (25%)',
   satellite:'⭐ 위성 (별 3개)',
@@ -1472,6 +1513,7 @@ function updateCampaignStats() {
   goonmod_boost:'🩶 Goonmod 2배',
   absolute_zero:'❄️ 절대 영도',
   qty_over_quality:'⚡⚡ 질보다 양',
+  qty_over_quality_adv:'💥 양보단 질',
   choco_pie:'🍫 초코파이 (+20HP)',
  };
  const gotSpecial = campaignBuffs.filter(id => specialBuffIds.includes(id));
@@ -1502,6 +1544,45 @@ function updateCampaignStats() {
   </div>` : `<div style="color:#555;font-size:13px;text-align:center;padding:8px">특수 강화 없음</div>`}
   ${campaignBuffs.length === 0 ? '<div style="color:#555;font-size:12px;text-align:center;margin-top:8px">강화 없음</div>' : ''}
  `;
+}
+
+function openForgeSp(forgeId) {
+ forgeId = forgeId || 'forge-sp';
+ if ((window._clearedStages||[]).includes(forgeId)) {
+ alert('이미 특별 강화를 완료했습니다!');
+ return;
+ }
+ window._currentForgeId = forgeId;
+ const modal = document.getElementById('forgeModal');
+ const optionsEl = document.getElementById('forgeOptions');
+ const titleEl = document.getElementById('forgeTitle');
+ if (!modal || !optionsEl) return;
+ if (titleEl) titleEl.textContent = '⚗️ 특별 강화';
+ optionsEl.innerHTML = '';
+ const available = FORGE_SPECIAL.filter(s => !campaignBuffs.includes(s.id));
+ const pool = available.length > 0
+ ? available.sort(() => _r()-0.5).slice(0, _mn(3, available.length))
+ : FORGE_SPECIAL.slice().sort(() => _r()-0.5).slice(0, 3);
+ pool.forEach(opt => {
+ const btn = document.createElement('button');
+ btn.className = 'btn';
+ btn.style.cssText = 'display:flex;align-items:center;gap:10px;text-align:left;padding:12px 16px;border:2px solid #cc00aa;background:rgba(204,0,170,0.1)';
+ btn.innerHTML = `<span style="font-size:24px">${opt.icon}</span><span><b style="color:#ffaaee">${opt.label}</b><br><span style="font-size:11px;color:#aaa">${opt.desc}</span></span>`;
+ btn.onclick = () => {
+  campaignBuffs.push(opt.id);
+  updateCampaignStats();
+  if (!(window._clearedStages||[]).includes(forgeId)) {
+  window._clearedStages = window._clearedStages || [];
+  window._clearedStages.push(forgeId);
+  markStageCleared(forgeId);
+  setTimeout(() => unlockStage('3-6'), 300);
+  }
+  saveCampaignProgress();
+  modal.style.display = 'none';
+ };
+ optionsEl.appendChild(btn);
+ });
+ modal.style.display = 'flex';
 }
 
 function openForgeAdv() {
@@ -1666,6 +1747,62 @@ function applyCampaignBuffs(fighter) {
  if (fighter.def.skill2) fighter.def = { ...fighter.def, skill2: { ...fighter.def.skill2, cooldown: _rnd(fighter.def.skill2.cooldown * r) } };
  if (fighter.def.skill3) fighter.def = { ...fighter.def, skill3: { ...fighter.def.skill3, cooldown: _rnd((fighter.def.skill3 || {cooldown:9999}).cooldown * r) } };
  }
+}
+
+// ── 버그 알림판 ──
+async function openBugReport() {
+ const modal = document.getElementById('bugReportModal');
+ if (modal) { modal.style.display = 'flex'; loadBugReports(); }
+}
+function closeBugReport() {
+ const modal = document.getElementById('bugReportModal');
+ if (modal) modal.style.display = 'none';
+}
+function openBugWrite() {
+ document.getElementById('bugWriteArea').style.display = 'flex';
+ document.getElementById('bugWriteBtn').style.display = 'none';
+ document.getElementById('bugContent').focus();
+}
+function cancelBugWrite() {
+ document.getElementById('bugWriteArea').style.display = 'none';
+ document.getElementById('bugWriteBtn').style.display = 'block';
+ document.getElementById('bugContent').value = '';
+}
+async function submitBugReport() {
+ const content = (document.getElementById('bugContent').value || '').trim();
+ if (!content) { alert('내용을 입력하세요.'); return; }
+ const nick = currentUser ? currentUser.nickname : '익명';
+ try {
+  const r = await fetch(`${SB_URL}/rest/v1/bug_reports`, {
+   method: 'POST',
+   headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
+   body: JSON.stringify({ nickname: nick, content })
+  });
+  if (!r.ok) throw new Error(r.status);
+  cancelBugWrite();
+  loadBugReports();
+ } catch(e) { alert('등록 실패: ' + e); }
+}
+async function loadBugReports() {
+ const listEl = document.getElementById('bugList');
+ if (!listEl) return;
+ listEl.innerHTML = '<div style="color:#555;text-align:center;padding:20px;font-size:13px">불러오는 중...</div>';
+ try {
+  const r = await fetch(`${SB_URL}/rest/v1/bug_reports?order=created_at.desc&limit=50`, { headers: SB_HEADERS });
+  const rows = await r.json();
+  if (!rows.length) { listEl.innerHTML = '<div style="color:#555;text-align:center;padding:20px;font-size:13px">아직 글이 없습니다.</div>'; return; }
+  listEl.innerHTML = rows.map(row => {
+   const d = new Date(row.created_at);
+   const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+   return `<div style="background:#111;border:1px solid #2a3a4a;border-radius:10px;padding:12px 14px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+     <span style="color:#4a90d9;font-weight:700;font-size:13px">${row.nickname || '익명'}</span>
+     <span style="color:#444;font-size:11px">${dateStr}</span>
+    </div>
+    <div style="color:#ccc;font-size:13px;line-height:1.5;white-space:pre-wrap">${row.content.replace(/</g,'&lt;')}</div>
+   </div>`;
+  }).join('');
+ } catch(e) { listEl.innerHTML = '<div style="color:#f66;text-align:center;padding:20px;font-size:13px">불러오기 실패</div>'; }
 }
 
 let _deleteTargetKey = null;
@@ -10689,6 +10826,8 @@ function endGame() {
  }
  if (wasCampaign) {
   window._campaignMode = false;
+  const isBoss2ClearEarly = window._campaignStage === 'boss2';
+  const isBoss3ClearEarly = window._campaignStage === 'boss3';
   const playerWon = !!(campaignChar && (
    (winner && winner.def.id === campaignChar.id) ||
    fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f._isLaptop || f.hp <= 0)
@@ -10696,7 +10835,7 @@ function endGame() {
   const isDraw = draw;
   if (normalBtns) normalBtns.style.display = 'none';
   if (campaignBtns) campaignBtns.style.display = 'block';
-  if (isDraw || !playerWon) {
+  if ((isDraw || !playerWon) && !isBoss2ClearEarly && !isBoss3ClearEarly) {
   document.getElementById('winnerName').textContent = '패배..';
   document.getElementById('resultText').textContent = '캠페인이 초기화됩니다.';
   document.getElementById('btn-campaign-next').style.display = 'none';
@@ -10715,7 +10854,7 @@ function endGame() {
    if (unlocked) unlocked.style.display = 'none';
    }
    if (unlocked) {
-   unlocked.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+   unlocked.querySelectorAll('.cleared-mark').forEach(c => { c.classList.remove('cleared-mark'); });
    const circle = unlocked.querySelector('div');
    if (circle) {
     circle.style.opacity = '1';
@@ -10741,23 +10880,26 @@ function endGame() {
    }
   });
   saveCampaignProgress();
+  } else if ((isDraw || !playerWon) && (isBoss2ClearEarly || isBoss3ClearEarly)) {
+  // boss2/boss3 패배 처리
+  document.getElementById('winnerName').textContent = '패배..';
+  document.getElementById('resultText').textContent = '다시 도전하세요!';
+  document.getElementById('btn-campaign-next').style.display = 'block';
+  document.getElementById('btn-campaign-next').textContent = '맵으로 →';
+  document.getElementById('btn-campaign-back').textContent = '메인으로';
   } else {
   const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍', 'multiverse': '멀티버스의 구원자' };
   const isBossClear = window._campaignStage === 'boss1';
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
-
-  const playerWon = !!(campaignChar && (
-   (winner && winner.def.id === campaignChar.id) ||
-   fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f._isLaptop || f.hp <= 0)
-  ));
+  // playerWon은 외부 스코프에서 이미 계산된 값 재사용
   if (isBoss3Clear && playerWon) {
    document.getElementById('winnerName').textContent = '🏆 캠페인 완료!';
-   document.getElementById('resultText').textContent = '이철행T 해금!';
+   document.getElementById('resultText').textContent = '이철행T 해금! +200🪙';
    document.getElementById('btn-campaign-next').style.display = 'block';
    document.getElementById('btn-campaign-next').textContent = '맵으로 →';
    document.getElementById('btn-campaign-back').textContent = '메인으로';
-   if (campaignChar) addCampaignClearChar(campaignChar.id); // boss3에서만 메달 지급
+   if (campaignChar) addCampaignClearChar(campaignChar.id);
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes('boss3')) window._clearedStages.push('boss3');
    markStageCleared('boss3');
@@ -10767,36 +10909,13 @@ function endGame() {
    if (!unlockedHidden.has('cheolhaeng')) {
     unlockedHidden.add('cheolhaeng');
     saveUnlockedHidden();
-    setTimeout(() => {
-     const def = CHARACTER_DEFS.find(d => d.id === 'cheolhaeng');
-     if (def) {
-      const overlay = document.getElementById('unlockOverlay');
-      const box = document.getElementById('unlockBox');
-      const name = document.getElementById('unlockName');
-      const icon = document.getElementById('unlockIcon');
-      if (overlay && box && name && icon) {
-       name.textContent = '이철행T 해금!!';
-       icon.style.background = def.color;
-       icon.textContent = def.name;
-       let sub = document.getElementById('unlockSub');
-       if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#cc4400;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
-       sub.textContent = '🎺 Boss-3 격파 보상 — 트럼펫의 폭풍!';
-       box.style.borderColor = '#cc4400';
-       box.style.boxShadow = '0 0 32px rgba(204,68,0,0.6)';
-       overlay.style.display = 'flex';
-       for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-         const el = document.createElement('div');
-         el.textContent = ['🎺','♪','🏆','♫','🎵'][i%5];
-         el.style.cssText = `position:fixed;font-size:${16+_r()*16}px;left:${5+_r()*90}%;top:${5+_r()*90}%;z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none`;
-         document.body.appendChild(el);
-         setTimeout(() => el.remove(), 1800);
-        }, i * 120);
-       }
-      }
-     }
-     buildCharSelect();
-    }, 800);
+    const def = CHARACTER_DEFS.find(d => d.id === 'cheolhaeng');
+    if (def) {
+     window._pendingUnlockDef = def;
+     window._pendingUnlockSub = '🎺 Boss-3 격파 보상 — 트럼펫의 폭풍!';
+     window._pendingUnlockColor = '#cc4400';
+    }
+    buildCharSelect();
    } else {
     document.getElementById('resultText').textContent = '🏆 Boss-3 격파! +200🪙';
     buildCharSelect();
@@ -10809,7 +10928,7 @@ function endGame() {
    document.getElementById('btn-campaign-back').textContent = '메인으로';
   } else if (isBoss2Clear && playerWon) {
    document.getElementById('winnerName').textContent = '🏆 Boss-2 격파!';
-   document.getElementById('resultText').textContent = '원우진 해금!';
+   document.getElementById('resultText').textContent = '원우진 해금! +200🪙';
    document.getElementById('btn-campaign-next').style.display = 'block';
    document.getElementById('btn-campaign-next').textContent = '맵으로 →';
    document.getElementById('btn-campaign-back').textContent = '메인으로';
@@ -10818,44 +10937,16 @@ function endGame() {
    markStageCleared('boss2');
    gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
    saveCampaignProgress();
-   // 챕터3 개방
    setTimeout(() => { unlockStage('3-1'); }, 700);
-
-   if (!unlockedHidden.has('woojin')) {    unlockedHidden.add('woojin');
+   if (!unlockedHidden.has('woojin')) {
+    unlockedHidden.add('woojin');
     saveUnlockedHidden();
-    setTimeout(() => {
-     const woojinDef = CHARACTER_DEFS.find(d => d.id === 'woojin');
-     if (woojinDef) {
-      const overlay = document.getElementById('unlockOverlay');
-      const box = document.getElementById('unlockBox');
-      const name = document.getElementById('unlockName');
-      const icon = document.getElementById('unlockIcon');
-      if (overlay && box && name && icon) {
-       name.textContent = '원우진 해금!!';
-       icon.style.background = woojinDef.color;
-       icon.textContent = woojinDef.name;
-       let sub = document.getElementById('unlockSub');
-       if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#4a90d9;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
-       sub.textContent = '⚾ Boss-2 격파 보상 — 야구소년 등장!';
-       box.style.borderColor = '#4a90d9';
-       box.style.boxShadow = '0 0 32px rgba(74,144,217,0.6)';
-       overlay.style.display = 'flex';
-       for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-         const el = document.createElement('div');
-         el.textContent = ['⚾','⚽','🏆','💨','⚡'][i%5];
-         el.style.cssText = `position:fixed;font-size:${16+_r()*16}px;left:${5+_r()*90}%;top:${5+_r()*90}%;z-index:1001;animation:starFloat 1.8s ease-out forwards;pointer-events:none`;
-         document.body.appendChild(el);
-         setTimeout(() => el.remove(), 1800);
-        }, i * 120);
-       }
-      }
-     }
-     buildCharSelect();
-    }, 800);
-   } else {
-    // 이미 해금된 경우 연출 없이 바로 결과 표시
-    document.getElementById('resultText').textContent = '🏆 Boss-2 격파! +200🪙';
+    const woojinDef = CHARACTER_DEFS.find(d => d.id === 'woojin');
+    if (woojinDef) {
+     window._pendingUnlockDef = woojinDef;
+     window._pendingUnlockSub = '⚾ Boss-2 격파 보상 — 야구소년 등장!';
+     window._pendingUnlockColor = '#4a90d9';
+    }
     buildCharSelect();
    }
   } else if (isBoss2Clear) {
@@ -10922,7 +11013,7 @@ function endGame() {
     if (unlocked) unlocked.style.display = 'none';
    }
    if (unlocked) {
-    unlocked.querySelectorAll('.cleared-mark').forEach(m => m.remove());
+    unlocked.querySelectorAll('.cleared-mark').forEach(c => { c.classList.remove('cleared-mark'); });
     const circle = unlocked.querySelector('div');
     if (circle) {
     circle.style.opacity = '1';
@@ -10963,32 +11054,15 @@ function endGame() {
     if (!unlockedHidden.has('kimtaeyun')) {
      unlockedHidden.add('kimtaeyun');
      saveUnlockedHidden();
-     setTimeout(() => {
-      const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
-      if (def) {
-       const overlay = document.getElementById('unlockOverlay');
-       const box = document.getElementById('unlockBox');
-       const name = document.getElementById('unlockName');
-       const icon = document.getElementById('unlockIcon');
-       if (overlay && box && name && icon) {
-        name.textContent = '김태윤 해금!!';
-        icon.style.background = def.color;
-        icon.textContent = def.name;
-        let sub = document.getElementById('unlockSub');
-        if (!sub) { sub = document.createElement('div'); sub.id = 'unlockSub'; sub.style.cssText = 'color:#c0008a;font-size:13px;margin-top:8px;font-style:italic;'; box.appendChild(sub); }
-        sub.textContent = '💻 멀티버스의 구원자 격파 보상!';
-        box.style.borderColor = '#c0008a';
-        box.style.boxShadow = '0 0 32px rgba(192,0,138,0.6)';
-        overlay.style.display = 'flex';
-       }
-      }
-      buildCharSelect();
-     }, 800);
+     const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
+     if (def) {
+      window._pendingUnlockDef = def;
+      window._pendingUnlockSub = '💻 멀티버스의 구원자 격파 보상!';
+      window._pendingUnlockColor = '#c0008a';
+     }
+     buildCharSelect();
     }
-    // 캠페인 자동 초기화 (해금 연출 후 3초 뒤)
-    setTimeout(() => {
-     document.getElementById('resultText').textContent = '🏆 완주! 캠페인이 초기화됩니다...';
-    }, 1200);
+    // 캠페인 자동 초기화 (3.5초 뒤)
     setTimeout(() => {
      resetCampaign();
      showScreen('campaignMap');
@@ -11021,6 +11095,26 @@ function endGame() {
   }
  }
  showScreen('result');
+ // 해금 연출 (결과화면 표시 직후)
+ if (window._pendingUnlockDef) {
+  const def = window._pendingUnlockDef;
+  const sub = window._pendingUnlockSub || '';
+  const col = window._pendingUnlockColor || def.color;
+  window._pendingUnlockDef = null;
+  setTimeout(() => {
+  // unlockSub 추가
+  const box = document.getElementById('unlockBox');
+  if (box) {
+   let subEl = document.getElementById('unlockSub');
+   if (!subEl) { subEl = document.createElement('div'); subEl.id = 'unlockSub'; subEl.style.cssText = `font-size:13px;margin-top:8px;font-style:italic`; box.appendChild(subEl); }
+   subEl.textContent = sub;
+   subEl.style.color = col;
+   box.style.borderColor = col;
+   box.style.boxShadow = `0 0 40px ${col}99`;
+  }
+  showUnlockOverlay(def);
+  }, 400);
+ }
  }, 500);
 }
 
@@ -11050,6 +11144,9 @@ var _NODE_LOCK_STYLE = { default: { bg:'#aaa', border:'#888' }, ch2: { bg:'#7090
 function _buildCampaignNodes() {
  const container = document.getElementById('stage-nodes-container');
  if (!container) return;
+ // 이미 빌드된 경우 중복 생성 방지
+ if (container.dataset.built === '1') return;
+ container.dataset.built = '1';
  _CAMPAIGN_NODES.forEach(function(node) {
   const s = _NODE_STYLE[node.type] || _NODE_STYLE.ch1;
   const lkStyle = node.type.startsWith('ch2') ? _NODE_LOCK_STYLE.ch2 : _NODE_LOCK_STYLE.default;
@@ -11116,7 +11213,7 @@ function _buildCampaignNodes() {
   (function(n) {
    if (n.type === 'forge')      actDiv.onclick = function() { openForge(n.id); };
    else if (n.type === 'forge-adv') actDiv.onclick = function() { openForgeAdv(); };
-   else if (n.type === 'forge-sp')  actDiv.onclick = function() { openForge(n.id); };
+   else if (n.type === 'forge-sp')  actDiv.onclick = function() { openForgeSp(n.id); };
    else if (n.type === 'church') actDiv.onclick = function() { enterChurch(); };
    else if (n.type === 'toilet') actDiv.onclick = function() { enterToilet(); };
    else actDiv.onclick = function() { startCampaignStage(n.id); };
