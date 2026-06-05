@@ -301,7 +301,7 @@
   <button class="btn btn-secondary drop-item" id="btn-predict" style="margin-top:8px;animation-delay:1.3s">🔮 예측 모드</button>
   <div id="main-streak-display" style="font-size:12px;color:#f5c518;font-weight:700;margin-top:4px;height:18px;animation-delay:1.4s" class="drop-item"></div>
   <button class="btn btn-secondary drop-item" id="btn-campaign" style="margin-top:8px;animation-delay:1.5s">📖 캠페인</button>
-  <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나</button>
+  <button class="btn btn-secondary drop-item" id="btn-arena" style="margin-top:8px;animation-delay:1.7s">🔒 아레나 (준비중)</button>
   <button class="btn btn-secondary drop-item" id="btn-online" style="margin-top:8px;animation-delay:1.9s">🌐 온라인 PvP</button>
   <button class="btn btn-secondary drop-item" id="btn-gacha" style="margin-top:8px;animation-delay:2.1s;border-color:#c8a800;color:#c8a800">🎰 캐릭터 뽑기</button>
   <button class="btn btn-secondary drop-item" id="btn-bugreport" style="margin-top:6px;animation-delay:2.2s;border-color:#4a90d9;color:#4a90d9">📋 버그 알림판</button>
@@ -524,15 +524,21 @@
 </div>
 
 <div id="arenaCharSelect" class="screen" style="overflow-y:auto;justify-content:flex-start;padding:24px 16px;align-items:center">
-  <div class="select-title" style="margin-bottom:4px">🏟️ 아레나</div>
-  <div style="font-size:12px;color:#888;font-style:italic;margin-bottom:4px">WASD 이동 / 1·2·3 스킬 / 마우스 조준</div>
-  <div style="font-size:13px;color:#aaa;margin-bottom:16px">조종할 캐릭터를 선택하세요</div>
-  <div id="arenaCharRow" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:700px;margin-bottom:16px"></div>
-  <div style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
-    <span style="font-size:13px;color:#aaa">상대:</span>
-    <select id="arenaEnemySelect" style="padding:6px 12px;border-radius:8px;border:1.5px solid #ddd;font-size:13px;background:#fafafa">
-    </select>
+  <div class="select-title" style="margin-bottom:4px">🏟️ 아레나 — 2인 대전</div>
+  <div style="font-size:11px;color:#888;margin-bottom:20px">P1: WASD 이동 / 1·2 스킬 &nbsp;|&nbsp; P2: 방향키 이동 / ,·. 스킬</div>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;margin-bottom:24px">
+   <!-- P1 -->
+   <div style="text-align:center">
+    <div style="font-size:15px;font-weight:900;color:#4a90d9;margin-bottom:10px">🎮 P1</div>
+    <div id="arenaP1Row" style="display:flex;flex-direction:column;gap:8px"></div>
+   </div>
+   <!-- P2 -->
+   <div style="text-align:center">
+    <div style="font-size:15px;font-weight:900;color:#e86020;margin-bottom:10px">🎮 P2</div>
+    <div id="arenaP2Row" style="display:flex;flex-direction:column;gap:8px"></div>
+   </div>
   </div>
+  <div id="arenaSelectStatus" style="font-size:13px;color:#888;margin-bottom:12px">캐릭터를 선택하세요</div>
   <button class="btn" id="arenaStartBtn" disabled style="opacity:0.35;margin-bottom:8px">⚔️ 아레나 시작!</button>
   <button class="btn btn-secondary" onclick="showScreen('mainMenu')">← 돌아가기</button>
 </div>
@@ -689,7 +695,7 @@
 <script>const _r=Math.random.bind(Math),_hp=Math.hypot.bind(Math),_a2=Math.atan2.bind(Math),_co=Math.cos.bind(Math),_si=Math.sin.bind(Math),_mn=Math.min.bind(Math),_mx=Math.max.bind(Math),_fl=Math.floor.bind(Math),_abs=Math.abs.bind(Math),_rnd=Math.round.bind(Math),_PI2=Math.PI*2;
 function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.push({x,y,text:t,life:l,maxLife:l,vy:v,color:c,fontSize:s});}
 
-const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병현', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 15000, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, }, skill2: { cooldown: 4000, label: '감자지뢰', barColor: '#cc4400' } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', }, skill2: { cooldown: 8000, label: '모기보이스', barColor: '#880066' } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 170, radius: 28, touchDmg: 6, skill: { cooldown: 9000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { label: '자율주행자동차', barColor: '#e87020', triggerHp: 0.5 } } ,
+const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병현', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 15000, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, }, skill2: { cooldown: 4000, label: '감자지뢰', barColor: '#cc4400' } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', }, skill2: { cooldown: 8000, label: '모기보이스', barColor: '#880066' } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 100, radius: 28, touchDmg: 6, skill: { cooldown: 5000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { cooldown: 12000, label: '자율주행자동차', barColor: '#e87020' } } ,
  { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } },
  { id: 'cheolhaeng', name: '이철행T', group: 'CAMPAIGN_NPC', color: '#8b2200', hp: 150, radius: 28, touchDmg: 10, skill: { cooldown: 17000, label: '트럼펫', barColor: '#cc4400' }, skill2: { cooldown: 9000, label: '가창', barColor: '#cc8800' } },
  { id: 'hangeonwoo', name: '한건우T', group: 'TEACHER', color: '#b84000', hp: 170, radius: 28, touchDmg: 8, skill: { cooldown: 8000, label: '타원의방정식', barColor: '#e86020' }, skill2: { cooldown: 14000, label: '정사영', barColor: '#cc3300' } },
@@ -741,7 +747,7 @@ function _initTouchBindings() {
  _bindBtn('btn-retry-predict', startPredictMode);
  _bindBtn('loginBtn', loginUser);
  _bindBtn('btn-campaign', openCampaign);
- _bindBtn('btn-arena', () => alert('🔒 개발 중입니다!'));
+ _bindBtn('btn-arena', () => alert('🔒 준비 중입니다!'));
  _bindBtn('signupBtn', signupUser);
  _bindBtn('guestBtn', guestStart);
  _bindBtn('btn-result-retry', () => {
@@ -809,77 +815,154 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const _arenaKeys = { w:false, a:false, s:false, d:false };
+const _arenaKeys2 = { up:false, down:false, left:false, right:false };
 let _arenaPlayerIdx = -1;
+let _arenaPlayer2Idx = -1;
 let _arenaMode = false;
+let _arenaP1Char = null;
+let _arenaP2Char = null;
 
 document.addEventListener('keydown', e => {
  if (!_arenaMode) return;
  const k = e.key.toLowerCase();
- if (k === 'w' || k === 'a' || k === 's' || k === 'd') { _arenaKeys[k] = true; e.preventDefault(); }
- if ((k === '1' || k === '2' || k === '3') && _arenaPlayerIdx >= 0 && gameState) {
-  const f = gameState.fighters[_arenaPlayerIdx];
-  if (f && f.hp > 0) {
-   const skillKey = k === '1' ? 'skill' : k === '2' ? 'skill2' : 'skill3';
-   if (f.def[skillKey]) activateSkill(f, _arenaPlayerIdx, null);
-  }
+ const key = e.key;
+ // P1 이동
+ if (k==='w'||k==='a'||k==='s'||k==='d') { _arenaKeys[k]=true; e.preventDefault(); }
+ // P2 이동
+ if (key==='ArrowUp')    { _arenaKeys2.up=true;    e.preventDefault(); }
+ if (key==='ArrowDown')  { _arenaKeys2.down=true;  e.preventDefault(); }
+ if (key==='ArrowLeft')  { _arenaKeys2.left=true;  e.preventDefault(); }
+ if (key==='ArrowRight') { _arenaKeys2.right=true; e.preventDefault(); }
+ // P1 스킬 (1=스킬1, 2=스킬2)
+ if (!isNaN(k) && ['1','2','3'].includes(k) && _arenaPlayerIdx >= 0 && gameState) {
+  e.preventDefault();
+  _arenaUseSkill(_arenaPlayerIdx, k);
+ }
+ // P2 스킬 (, . /)
+ if ((k===','||k==='.'||k==='/') && _arenaPlayer2Idx >= 0 && gameState) {
+  e.preventDefault();
+  const n = k===','?'1':k==='.'?'2':'3';
+  _arenaUseSkill(_arenaPlayer2Idx, n);
  }
 });
 document.addEventListener('keyup', e => {
- const k = e.key.toLowerCase();
- if (k === 'w' || k === 'a' || k === 's' || k === 'd') _arenaKeys[k] = false;
+ const k = e.key.toLowerCase(); const key = e.key;
+ if (k==='w'||k==='a'||k==='s'||k==='d') _arenaKeys[k]=false;
+ if (key==='ArrowUp')    _arenaKeys2.up=false;
+ if (key==='ArrowDown')  _arenaKeys2.down=false;
+ if (key==='ArrowLeft')  _arenaKeys2.left=false;
+ if (key==='ArrowRight') _arenaKeys2.right=false;
 });
+
+// 아레나 통합 스킬 사용 함수
+function _arenaUseSkill(fighterIdx, numKey) {
+ if (!gameState) return;
+ const f = gameState.fighters[fighterIdx];
+ if (!f || f.hp <= 0) return;
+ const id = f.def.id;
+
+ if (id === 'taeyoung') {
+  if (numKey === '1') {
+   // 태양빛
+   if (f.skillCooldown > 0) return;
+   activateSkill(f, fighterIdx, null);
+   f.skillCooldown = f.def.skill.cooldown;
+  } else if (numKey === '2') {
+   // 트름
+   if ((f._arenaSk2Cd||0) > 0) return;
+   gameState.gases.push({ x:f.x, y:f.y, r:f.r*3, life:f.def.skill2.gasDuration, maxLife:f.def.skill2.gasDuration, ownerId:fighterIdx, hitCooldown:0 });
+   spawnParticle(gameState.particles, f.x, f.y, '#7abf00', 10);
+   _dt(f.x, f.y-f.r-12, '💨 트름!', 900, -0.4, '#7abf00', 13);
+   f._arenaSk2Cd = f.def.skill2.cooldown;
+  }
+ } else if (id === 'taeyeon') {
+  if (numKey === '1') {
+   // 가사 수동 발사
+   if ((f._arenaLyricCd||0) > 0) return;
+   f._arenaLyricCd = 800;
+   const enemy = gameState.fighters.filter((_,i)=>i!==fighterIdx&&_.hp>0)[0];
+   if (enemy) {
+    const ang = _a2(enemy.y-f.y, enemy.x-f.x);
+    gameState.notes.push({ x:f.x, y:f.y, vx:_co(ang)*14, vy:_si(ang)*14, owner:fighterIdx, r:9, _arenaDmg:10 });
+    _dt(f.x, f.y-f.r-10, '♪', 700, -0.5, '#c0008a', 13);
+   }
+  } else if (numKey === '2') {
+   // 천안문
+   if (f._tianActive || f.tiananmenCooldown > 0) return;
+   f._tianActive = true;
+   f.tiananmenCooldown = 15000;
+   _dt(f.x, f.y-f.r-14, '천안문!', 1500, -0.5, '#8b0000', 16);
+   _sp(f.x, f.y, '#8b0000', 10);
+   const startHps = gameState.fighters.map(ft=>ft.hp);
+   const check = setInterval(() => {
+    if (!gameState||gameState.over){clearInterval(check);f._tianActive=false;return;}
+    const hit = gameState.fighters.some((ft,i)=>i!==fighterIdx&&ft.hp<startHps[i]);
+    if (hit){clearInterval(check);f._tianActive=false;return;}
+   },150);
+   setTimeout(()=>{clearInterval(check);f._tianActive=false;},5000);
+  }
+ }
+}
 
 let _arenaSelectedChar = null;
 let _arenaEnemyId = null;
 
-function openArena() {
- _arenaSelectedChar = null;
- const row = document.getElementById('arenaCharRow');
- const enemySel = document.getElementById('arenaEnemySelect');
+function openArena2P() {
+ _arenaP1Char = null;
+ _arenaP2Char = null;
+ const p1Row = document.getElementById('arenaP1Row');
+ const p2Row = document.getElementById('arenaP2Row');
  const startBtn = document.getElementById('arenaStartBtn');
- if (!row) return;
- row.innerHTML = '';
+ const status = document.getElementById('arenaSelectStatus');
+ if (!p1Row || !p2Row) return;
+ p1Row.innerHTML = '';
+ p2Row.innerHTML = '';
 
- const avail = CHARACTER_DEFS.filter(d => d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && !d.isDummy);
- avail.forEach(def => {
+ const arenaChars = [
+  CHARACTER_DEFS.find(d => d.id === 'taeyoung'),
+  CHARACTER_DEFS.find(d => d.id === 'taeyeon'),
+ ].filter(Boolean);
+
+ function makeCard(def, player) {
   const card = document.createElement('div');
   card.className = 'char-card';
-  card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats">HP: ${def.hp}<br>접촉: ${def.touchDmg}</div>`;
+  card.style.cssText = 'cursor:pointer;min-width:120px';
+  card.innerHTML = `<div class="char-circle" style="background:${def.color}">${def.name}</div><div class="char-name">${def.name}</div><div class="char-stats" style="font-size:10px">HP: ${def.hp}</div>`;
   card.onclick = () => {
+   const row = player === 1 ? p1Row : p2Row;
    row.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected'));
    card.classList.add('selected');
-   _arenaSelectedChar = def;
-   if (startBtn) { startBtn.disabled = false; startBtn.style.opacity = '1'; }
+   if (player === 1) _arenaP1Char = def;
+   else _arenaP2Char = def;
+   if (_arenaP1Char && _arenaP2Char) {
+    startBtn.disabled = false; startBtn.style.opacity = '1';
+    if (status) status.textContent = `${_arenaP1Char.name} vs ${_arenaP2Char.name}`;
+   } else {
+    if (status) status.textContent = player === 1 ? 'P2 캐릭터를 선택하세요' : 'P1 캐릭터를 선택하세요';
+   }
   };
-  row.appendChild(card);
- });
-
- if (enemySel) {
-  enemySel.innerHTML = '';
-  CHARACTER_DEFS.filter(d => !d.isDummy).forEach(def => {
-   const opt = document.createElement('option');
-   opt.value = def.id;
-   opt.textContent = def.name;
-   enemySel.appendChild(opt);
-  });
-  _arenaEnemyId = enemySel.value;
-  enemySel.onchange = () => { _arenaEnemyId = enemySel.value; };
+  return card;
  }
- if (startBtn) startBtn.onclick = startArena;
+
+ arenaChars.forEach(def => { p1Row.appendChild(makeCard(def, 1)); });
+ arenaChars.forEach(def => { p2Row.appendChild(makeCard(def, 2)); });
+
+ if (startBtn) startBtn.onclick = startArena2P;
  showScreen('arenaCharSelect');
 }
 
-function startArena() {
- if (!_arenaSelectedChar) return;
- const enemyDef = CHARACTER_DEFS.find(d => d.id === _arenaEnemyId) || CHARACTER_DEFS[0];
- selectedChars = [_arenaSelectedChar.id, enemyDef.id];
+function startArena2P() {
+ if (!_arenaP1Char || !_arenaP2Char) return;
+ selectedChars = [_arenaP1Char.id, _arenaP2Char.id];
  _arenaMode = true;
- _arenaKeys.w = _arenaKeys.a = _arenaKeys.s = _arenaKeys.d = false;
+ _arenaKeys.w=_arenaKeys.a=_arenaKeys.s=_arenaKeys.d=false;
+ _arenaKeys2.up=_arenaKeys2.down=_arenaKeys2.left=_arenaKeys2.right=false;
  startBattle();
  _arenaPlayerIdx = 0;
- const hint = document.getElementById('arenaHint');
- if (hint) hint.style.display = 'block';
+ _arenaPlayer2Idx = 1;
 }
+
+function openArena() { openArena2P(); }
 
 function showCharSelect() {
  window._fromPredict = false;
@@ -3449,7 +3532,7 @@ function startBattle() {
  const greenHairs = [];
 
  const dmgDealt = new Array(fighters.length).fill(0);
- gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], hangeonwooBalls: [], cones: [], potatoMines: [], mosquitoes: [], shake: 0, over: false, winner: null };
+ gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], waterDrops: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], hangeonwooBalls: [], cones: [], potatoMines: [], mosquitoes: [], shake: 0, over: false, winner: null };
 
  if (window._campaignMode && campaignChar) {
  const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
@@ -3684,10 +3767,23 @@ function update(dt) {
    if (_arenaKeys.s) pvy += spd;
    if (_arenaKeys.a) pvx -= spd;
    if (_arenaKeys.d) pvx += spd;
-
    if (pvx !== 0 && pvy !== 0) { pvx *= 0.707; pvy *= 0.707; }
    pf.vx = pvx;
    pf.vy = pvy;
+  }
+ }
+ if (_arenaMode && _arenaPlayer2Idx >= 0) {
+  const pf2 = fighters[_arenaPlayer2Idx];
+  if (pf2 && pf2.hp > 0) {
+   const spd2 = BASE_SPEED * (pf2.speedMult || 1) * 1.2;
+   let pvx2 = 0, pvy2 = 0;
+   if (_arenaKeys2.up)    pvy2 -= spd2;
+   if (_arenaKeys2.down)  pvy2 += spd2;
+   if (_arenaKeys2.left)  pvx2 -= spd2;
+   if (_arenaKeys2.right) pvx2 += spd2;
+   if (pvx2 !== 0 && pvy2 !== 0) { pvx2 *= 0.707; pvy2 *= 0.707; }
+   pf2.vx = pvx2;
+   pf2.vy = pvy2;
   }
  }
 
@@ -3726,7 +3822,8 @@ function update(dt) {
   return;
  }
 
- if (_arenaMode && idx === _arenaPlayerIdx) {
+ // 아레나 모드: P1/P2는 AI 제어 건너뜀
+ if (_arenaMode && (idx === _arenaPlayerIdx || idx === _arenaPlayer2Idx)) {
   f.x = _mx(f.r, _mn(W - f.r, f.x + f.vx * timeScale));
   f.y = _mx(f.r, _mn(H - f.r, f.y + f.vy * timeScale));
   return;
@@ -3735,6 +3832,7 @@ function update(dt) {
 
  if (f.def.isDummy && !f._dummyCanMove) { f.vx = 0; f.vy = 0; }
  if (f.def.id === 'kimtaeyun' && f._purinaStopMove) { f.vx = 0; f.vy = 0; }
+ if (f._carHidden) { f.vx = 0; f.vy = 0; }
  // 박상진T 자율주행 유도 (아주 약한 조향)
  if (f._sangjinHoming && f.hp > 0) {
   const tgts = fighters.filter((ft, fi) => fi !== idx && ft.hp > 0);
@@ -5429,15 +5527,16 @@ function update(dt) {
 
  if (f.hairImmuneTimer > 0) f.hairImmuneTimer -= dt;
 
+ const isArenaPlayer = _arenaMode && (idx === _arenaPlayerIdx || idx === _arenaPlayer2Idx);
  const isEunjuCharmed = gameState && gameState.fighters.some(ft =>
   ft.def.id === 'eunju' && ft.eunjuCharmTargets && ft.eunjuCharmTargets.some(ct => ct.ref === f)
  );
  if (f.def.id !== 'hyuncheol' && f.def.id !== 'seungoh' && f.def.id !== 'hyekyung' && f.def.id !== 'sehwan' && f.def.id !== 'geumilcheol' && !f.def.isDummy && !(f.sleepTimer >= 0) && !isEunjuCharmed && !(f.sehwanInRoom && f.def.id !== 'sehwan') && !f.isHyunLifted) {
   f.skillCooldown = _mx(0, f.skillCooldown - dt);
-  if (f.skillCooldown <= 0) {
+  // 아레나 플레이어: 자동발동만 막음 (쿨타임 감소는 계속)
+  if (f.skillCooldown <= 0 && !isArenaPlayer) {
   activateSkill(f, idx, enemy);
   f.skillCooldown = f.def.skill.cooldown;
-  // 본체 분열 시 분신들도 동시 발동 (단, 분신 자신의 쿨타임은 별도로 관리)
   if (f.def.id === 'byungheon' && !f.isByungheonClone) {
    gameState.fighters.forEach((cf, ci) => {
    if (!cf.isByungheonClone || cf.cloneParent !== f || cf.hp <= 0) return;
@@ -5490,7 +5589,7 @@ function update(dt) {
  }
  if (f.def.id === 'taeyoung' && f.def.skill2) {
   if (!f.isHyunLifted) f.skill2Cooldown = _mx(0, (f.skill2Cooldown || 0) - dt);
-  if (f.skill2Cooldown <= 0) {
+  if (f.skill2Cooldown <= 0 && !(_arenaMode && (idx===_arenaPlayerIdx||idx===_arenaPlayer2Idx))) {
   gameState.gases.push({
    x: f.x, y: f.y,
    r: f.r * 3,
@@ -5502,6 +5601,10 @@ function update(dt) {
   spawnParticle(gameState.particles, f.x, f.y, '#7abf00', 10);
   f.skill2Cooldown = f.def.skill2.cooldown;
   }
+ }
+ // 아레나에서 taeyoung skill2 쿨타임만 감소
+ if (f.def.id === 'taeyoung' && f.def.skill2 && _arenaMode && (idx===_arenaPlayerIdx||idx===_arenaPlayer2Idx)) {
+  f._arenaSk2Cd = _mx(0, (f._arenaSk2Cd||0) - dt);
  }
  if (f.poisonTimer > 0) {
   f.poisonTimer -= dt;
@@ -5818,7 +5921,7 @@ function update(dt) {
   if (!n.hitCooldowns) n.hitCooldowns = {};
   if ((n.hitCooldowns[eidx] || 0) > 0) return;
   ef.lastDmgFrom = n.owner;
-  const noteDmg = n.isTurretBullet ? n.dmg : (n.owner !== undefined && gameState.fighters[n.owner] && gameState.fighters[n.owner].noteCount > 7 ? 7 * 0.8 : 7);
+  const noteDmg = n.isTurretBullet ? n.dmg : n._arenaDmg ? n._arenaDmg : (n.owner !== undefined && gameState.fighters[n.owner] && gameState.fighters[n.owner].noteCount > 7 ? 7 * 0.8 : 7);
   applyDmg(ef, noteDmg);
   _sp(n.x, n.y, fighters[n.owner] ? fighters[n.owner].def.color : '#d0186e', 5);
   if (n.isTurretBullet) turretHit = true;
@@ -6853,6 +6956,67 @@ function update(dt) {
   });
  }
 
+ // 아레나 모드 P2 가사 쿨타임
+ if (_arenaMode && _arenaPlayer2Idx >= 0 && gameState) {
+  const f2 = fighters[_arenaPlayer2Idx];
+  if (f2 && f2._arenaLyricCd > 0) f2._arenaLyricCd = _mx(0, f2._arenaLyricCd - dt);
+ }
+
+function _sangjinStartCar(f, fi) {
+ if (!gameState) return;
+ const spawnX = f.x, spawnY = f.y;
+ // phase0: 사라짐
+ _dt(f.x, f.y - f.r - 16, '🚗 자주차 탑승!', 1200, -0.5, '#e87020', 15);
+ _sp(f.x, f.y, '#e87020', 12);
+ f._carHidden = true;
+ f.def = { ...f.def, touchDmg: 0 }; // 사라진 동안 접촉 무효
+ const origR = f.r;
+ f.r = 0; // 히트박스 없앰
+
+ // phase1: 0.8초마다 6회 공격
+ let hitCount = 0;
+ const doHit = () => {
+  if (!gameState || gameState.over || !f._carHidden) return;
+  const tgts = gameState.fighters.filter((_,i) => i !== fi && _.hp > 0);
+  if (!tgts.length) { endCar(); return; }
+  const tgt = tgts[_fl(_r() * tgts.length)];
+  // 검정 직사각형이 적 옆에서 가로지르며 날아옴
+  if (!gameState._carHits) gameState._carHits = [];
+  const carAng = _r() * _PI2;
+  const startDist = 80;
+  gameState._carHits.push({
+   x: tgt.x + _co(carAng) * startDist,
+   y: tgt.y + _si(carAng) * startDist,
+   vx: -_co(carAng) * 18,
+   vy: -_si(carAng) * 18,
+   w: 64, h: 28,
+   life: 400, maxLife: 400,
+   ownerId: fi,
+   tgtRef: tgt, tgtIdx: gameState.fighters.indexOf(tgt),
+   hit: false,
+  });
+  hitCount++;
+  if (hitCount < 6) setTimeout(doHit, 200);
+  else setTimeout(endCar, 200);
+ };
+ const endCar = () => {
+  if (!gameState) return;
+  f._carHidden = false;
+  f.r = origR;
+  f.x = _mx(origR, _mn(W-origR, spawnX));
+  f.y = _mx(origR, _mn(H-origR, spawnY));
+  f.def = { ...f.def, touchDmg: 6 };
+  f._sangjinCarActive = false;
+  // 이동 재개 - 랜덤 방향으로 속도 부여
+  const resumeAng = _r() * _PI2;
+  f.vx = _co(resumeAng) * BASE_SPEED * (f.speedMult || 1);
+  f.vy = _si(resumeAng) * BASE_SPEED * (f.speedMult || 1);
+  _dt(spawnX, spawnY - origR - 14, '🚗 귀환!', 1000, -0.4, '#e87020', 13);
+  _sp(spawnX, spawnY, '#e87020', 12);
+ };
+ setTimeout(doHit, 1000);
+}
+
  // ── 박상진T 강꼬치고기 ──
  if (gameState.fishBullets) {
   for (let i = gameState.fishBullets.length - 1; i >= 0; i--) {
@@ -6860,43 +7024,76 @@ function update(dt) {
    fb.life -= dt;
    fb.x += fb.vx * timeScale;
    fb.y += fb.vy * timeScale;
-   let bounced = false;
-   if (fb.x - fb.r < 0) { fb.x = fb.r; fb.vx = _abs(fb.vx); bounced = true; }
-   else if (fb.x + fb.r > W) { fb.x = W - fb.r; fb.vx = -_abs(fb.vx); bounced = true; }
-   if (fb.y - fb.r < 0) { fb.y = fb.r; fb.vy = _abs(fb.vy); bounced = true; }
-   else if (fb.y + fb.r > H) { fb.y = H - fb.r; fb.vy = -_abs(fb.vy); bounced = true; }
-   if (bounced) {
+   let bouncedX = false, bouncedY = false;
+   if (fb.x - fb.r < 0) { fb.x = fb.r; bouncedX = true; }
+   else if (fb.x + fb.r > W) { fb.x = W - fb.r; bouncedX = true; }
+   if (fb.y - fb.r < 0) { fb.y = fb.r; bouncedY = true; }
+   else if (fb.y + fb.r > H) { fb.y = H - fb.r; bouncedY = true; }
+   if (bouncedX || bouncedY) {
     fb.bounces++;
-    // 튕길 때 물방울 6개 사방으로
+    if (bouncedX && bouncedY) { fb.vx = -fb.vx; fb.vy = -fb.vy; }
+    else if (bouncedX) {
+     const ang45 = _a2(fb.vy, -fb.vx) + (Math.random()<0.5?1:-1)*(_PI2/8);
+     const spd = _hp(fb.vx,fb.vy);
+     fb.vx = _co(ang45)*spd; fb.vy = _si(ang45)*spd;
+    } else {
+     const ang45 = _a2(-fb.vy, fb.vx) + (Math.random()<0.5?1:-1)*(_PI2/8);
+     const spd = _hp(fb.vx,fb.vy);
+     fb.vx = _co(ang45)*spd; fb.vy = _si(ang45)*spd;
+    }
+    // 물방울 6개 사방으로 (별도 배열)
     for (let w = 0; w < 6; w++) {
-     const wa = (w / 6) * _PI2;
-     const wx = fb.x + _co(wa) * 18;
-     const wy = fb.y + _si(wa) * 18;
-     fighters.forEach((ft, fi) => {
-      if (fi === fb.ownerId || ft.hp <= 0) return;
-      if (_hp(ft.x - wx, ft.y - wy) < ft.r + 12) {
-       ft.lastDmgFrom = fb.ownerId;
-       applyDmg(ft, 8, fighters[fb.ownerId]);
-       _dt(ft.x, ft.y - ft.r - 10, '💧 8', 700, -0.4, '#4a90d9', 11);
-      }
+     const wa = _r() * _PI2;
+     gameState.waterDrops.push({
+      x: fb.x, y: fb.y,
+      vx: _co(wa)*13, vy: _si(wa)*13,
+      r: 11, ownerId: fb.ownerId,
+      hitIds: new Set(),
      });
     }
-    _sp(fb.x, fb.y, '#4a90d9', 8);
+    _sp(fb.x, fb.y, '#4a90d9', 10);
+    gameState.shake = _mx(gameState.shake||0, 5);
+    fb.hitIds = new Set();
    }
-   // 관통 히트
+   // 강꼬치 관통 히트 (3 데미지)
    fighters.forEach((ft, fi) => {
     if (fi === fb.ownerId || ft.hp <= 0 || fb.hitIds.has(fi)) return;
     if (_hp(ft.x - fb.x, ft.y - fb.y) < ft.r + fb.r) {
      ft.lastDmgFrom = fb.ownerId;
-     applyDmg(ft, 14, fighters[fb.ownerId]);
+     applyDmg(ft, 3, fighters[fb.ownerId]);
      fb.hitIds.add(fi);
-     _dt(ft.x, ft.y - ft.r - 10, '🐟 14', 800, -0.5, '#1a6b8a', 12);
+     _dt(ft.x, ft.y - ft.r - 10, '🐟 3', 800, -0.5, '#4a90d9', 11);
     }
    });
    if (fb.bounces >= fb.maxBounces || fb.life <= 0) {
     _sp(fb.x, fb.y, '#4a90d9', 5);
     gameState.fishBullets.splice(i, 1);
    }
+  }
+ }
+
+ // ── 물방울 업데이트 ──
+ if (gameState.waterDrops) {
+  for (let i = gameState.waterDrops.length - 1; i >= 0; i--) {
+   const wd = gameState.waterDrops[i];
+   wd.x += wd.vx * timeScale;
+   wd.y += wd.vy * timeScale;
+   // 벽에 닿으면 소멸
+   if (wd.x - wd.r < 0 || wd.x + wd.r > W || wd.y - wd.r < 0 || wd.y + wd.r > H) {
+    _sp(wd.x, wd.y, '#88ccff', 4);
+    gameState.waterDrops.splice(i, 1);
+    continue;
+   }
+   // 피격 (관통, 10 데미지)
+   fighters.forEach((ft, fi) => {
+    if (fi === wd.ownerId || ft.hp <= 0 || wd.hitIds.has(fi)) return;
+    if (_hp(ft.x - wd.x, ft.y - wd.y) < ft.r + wd.r) {
+     ft.lastDmgFrom = wd.ownerId;
+     applyDmg(ft, 10, fighters[wd.ownerId]);
+     wd.hitIds.add(fi);
+     _dt(ft.x, ft.y - ft.r - 10, '💧 10', 800, -0.5, '#4a90d9', 12);
+    }
+   });
   }
  }
 
@@ -7196,16 +7393,16 @@ function update(dt) {
   }
  });
 
- // ── 박상진T 자율주행자동차 스킬2 체크 ──
+ // ── 박상진T 자율주행자동차 스킬2 쿨타임 ──
  fighters.forEach((f, fi) => {
-  if (f.def.id !== 'sangjin' || f.hp <= 0 || f._sangjinCarActive) return;
-  if (f.hp / f.maxHp <= 0.5) {
+  if (f.def.id !== 'sangjin' || f.hp <= 0 || !f.def.skill2) return;
+  if (f.skill2Cooldown === undefined) f.skill2Cooldown = 0;
+  f.skill2Cooldown = _mx(0, f.skill2Cooldown - dt);
+  if (f.skill2Cooldown <= 0 && !f._sangjinCarActive) {
+   // AI 자동발동
    f._sangjinCarActive = true;
-   f.speedMult = (f.speedMult || 1) * 2.0;
-   f.def = { ...f.def, touchDmg: _rnd(f.def.touchDmg * 1.5) };
-   f._sangjinHoming = true;
-   _sp(f.x, f.y, '#e87020', 14);
-   _dt(f.x, f.y - f.r - 14, '🚗 자율주행 발동!', 1500, -0.4, '#e87020', 13);
+   f.skill2Cooldown = f.def.skill2.cooldown;
+   _sangjinStartCar(f, fi);
   }
  });
 
@@ -7587,10 +7784,14 @@ function applyDmg(f, dmg, attacker) {
  if (gameState && gameState.dmgTexts) _dt(f.x,f.y - f.r - 14,'해킹 실패!',900,-0.4,'#ff4444',13);
  }
 
- if (actualDmg > 0 && attacker && attacker._campaignVampire) {
- const healAmt = actualDmg * 0.25;
- attacker.hp = _mn(attacker.maxHp, attacker.hp + healAmt);
- if (gameState && gameState.dmgTexts) _dt(attacker.x,attacker.y - attacker.r - 14,'+' + healAmt.toFixed(1) + ' 🩸',800,-0.4,'#ff4466',11);
+ if (actualDmg > 0) {
+  const vampireUser = attacker && attacker._campaignVampire ? attacker
+   : (!attacker && f.lastDmgFrom >= 0 && gameState && gameState.fighters[f.lastDmgFrom] && gameState.fighters[f.lastDmgFrom]._campaignVampire) ? gameState.fighters[f.lastDmgFrom] : null;
+  if (vampireUser) {
+  const healAmt = actualDmg * 0.25;
+  vampireUser.hp = _mn(vampireUser.maxHp, vampireUser.hp + healAmt);
+  if (gameState && gameState.dmgTexts) _dt(vampireUser.x, vampireUser.y - vampireUser.r - 14, '+' + healAmt.toFixed(1) + ' 🩸', 800, -0.4, '#ff4466', 11);
+  }
  }
 
  if (actualDmg > 0 && attacker && attacker._campaignPoison) {
@@ -7914,19 +8115,39 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  }
  }
 
+ if (fighter.def.id === 'sangjin' && fighter._activatingSkill2) {
+  fighter._activatingSkill2 = false;
+  if (!fighter._sangjinCarActive) {
+   fighter._sangjinCarActive = true;
+   fighter.skill2Cooldown = fighter.def.skill2.cooldown;
+   _sangjinStartCar(fighter, idx);
+  }
+  return;
+ }
+
  if (fighter.def.id === 'sangjin') {
-  // 강꼬치고기: 물고기 발사 (관통, 벽 튕김)
   if (!gameState.fishBullets) gameState.fishBullets = [];
-  const ang = _a2(enemy.y - fighter.y, enemy.x - fighter.x);
-  gameState.fishBullets.push({
-  x: fighter.x, y: fighter.y,
-  vx: _co(ang) * 14, vy: _si(ang) * 14,
-  r: 20, bounces: 0, maxBounces: 4,
-  ownerId: idx, life: 8000,
-  hitIds: new Set(),
-  });
-  _sp(fighter.x, fighter.y, '#4a90d9', 6);
-  _dt(fighter.x, fighter.y - fighter.r - 10, '🐟 강꼬치고기!', 900, -0.4, '#4a90d9', 12);
+  // phase0: 데이터 수집 1초
+  _dt(fighter.x, fighter.y - fighter.r - 18, '📊 강꼬치고기 데이터 수집 중...', 1000, -0.2, '#4a90d9', 12);
+  const _fx = fighter.x, _fy = fighter.y, _fidx = idx;
+  setTimeout(() => {
+   if (!gameState || gameState.over) return;
+   const owner = gameState.fighters[_fidx];
+   const tgts = gameState.fighters.filter((ft,i) => i !== _fidx && ft.hp > 0);
+   if (!tgts.length) return;
+   const tgt = tgts.reduce((a,b) => _hp(a.x-_fx,a.y-_fy)<_hp(b.x-_fx,b.y-_fy)?a:b);
+   const ang = _a2(tgt.y - _fy, tgt.x - _fx);
+   const spd = 16;
+   gameState.fishBullets.push({
+    x: _fx, y: _fy,
+    vx: _co(ang)*spd, vy: _si(ang)*spd,
+    r: 18, bounces: 0, maxBounces: 7,
+    ownerId: _fidx, life: 10000,
+    hitIds: new Set(),
+   });
+   _sp(_fx, _fy, '#4a90d9', 8);
+   _dt(_fx, _fy - 40, '🐟 발사!', 800, -0.4, '#4a90d9', 13);
+  }, 1000);
  }
 
  if (fighter.def.id === 'hangeonwoo') {
@@ -8679,24 +8900,32 @@ function render(ctx) {
   ctx.translate(fb.x, fb.y);
   const ang = _a2(fb.vy, fb.vx);
   ctx.rotate(ang);
-  // 물고기 몸통
   ctx.beginPath();
   ctx.ellipse(0, 0, fb.r, fb.r * 0.5, 0, 0, _PI2);
-  ctx.fillStyle='#4a90d9';
-  ctx.fill();
-  // 꼬리
+  ctx.fillStyle='#4a90d9'; ctx.fill();
   ctx.beginPath();
-  ctx.moveTo(-fb.r, 0);
-  ctx.lineTo(-fb.r - 7, -5);
-  ctx.lineTo(-fb.r - 7, 5);
-  ctx.closePath();
-  ctx.fillStyle='#1a6b8a';
-  ctx.fill();
-  // 눈
+  ctx.moveTo(-fb.r, 0); ctx.lineTo(-fb.r-7,-5); ctx.lineTo(-fb.r-7,5);
+  ctx.closePath(); ctx.fillStyle='#1a6b8a'; ctx.fill();
   ctx.beginPath();
-  ctx.arc(fb.r * 0.4, -fb.r * 0.15, 2, 0, _PI2);
-  ctx.fillStyle='#fff';
+  ctx.arc(fb.r*0.4, -fb.r*0.15, 2, 0, _PI2);
+  ctx.fillStyle='#fff'; ctx.fill();
+  ctx.restore();
+ });
+
+ // 물방울 렌더링
+ (gameState.waterDrops || []).forEach(wd => {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(wd.x, wd.y, wd.r, 0, _PI2);
+  const wg = ctx.createRadialGradient(wd.x-3, wd.y-3, 1, wd.x, wd.y, wd.r);
+  wg.addColorStop(0, 'rgba(200,240,255,0.95)');
+  wg.addColorStop(0.6, 'rgba(74,144,217,0.85)');
+  wg.addColorStop(1, 'rgba(26,107,138,0.5)');
+  ctx.fillStyle = wg;
   ctx.fill();
+  ctx.strokeStyle = 'rgba(74,144,217,0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
   ctx.restore();
  });
 
@@ -9998,6 +10227,47 @@ function render(ctx) {
   ctx.restore();
  });
 
+ // ── 박상진T 자율주행 충격 렌더링 + 피격 판정 ──
+ if (gameState._carHits) {
+  const _fighters = gameState.fighters;
+  for (let i = gameState._carHits.length - 1; i >= 0; i--) {
+   const ch = gameState._carHits[i];
+   ch.x += ch.vx * timeScale;
+   ch.y += ch.vy * timeScale;
+   ch.life -= 16;
+   // 피격 판정 (아직 못 때렸으면)
+   if (!ch.hit) {
+    const tf = _fighters[ch.tgtIdx];
+    if (tf && tf.hp > 0 && _hp(tf.x - ch.x, tf.y - ch.y) < tf.r + 22) {
+     ch.hit = true;
+     tf.lastDmgFrom = ch.ownerId;
+     applyDmg(tf, 3, _fighters[ch.ownerId]);
+     _dt(tf.x, tf.y - tf.r - 10, '🚗 3', 700, -0.5, '#e87020', 13);
+     _sp(tf.x, tf.y, '#222', 8);
+    }
+   }
+   if (ch.life <= 0) { gameState._carHits.splice(i, 1); continue; }
+   ctx.save();
+   const alpha = ch.life / ch.maxLife;
+   ctx.globalAlpha = alpha;
+   // 이동 방향으로 회전
+   const ang = _a2(ch.vy, ch.vx);
+   ctx.translate(ch.x, ch.y);
+   ctx.rotate(ang);
+   ctx.fillStyle = '#111';
+   ctx.fillRect(-ch.w/2, -ch.h/2, ch.w, ch.h);
+   ctx.strokeStyle = '#e87020';
+   ctx.lineWidth = 3;
+   ctx.strokeRect(-ch.w/2, -ch.h/2, ch.w, ch.h);
+   ctx.font = 'bold 16px serif';
+   ctx.textAlign = 'center';
+   ctx.textBaseline = 'middle';
+   ctx.fillStyle = '#fff';
+   ctx.fillText('🚗', 0, 0);
+   ctx.restore();
+  }
+ }
+
  // ── 이철행T 트럼펫 렌더링 (최상위 z) ──
  if (gameState && gameState.trumpets) {
   (gameState.trumpets).forEach(tp => {
@@ -10358,7 +10628,10 @@ function updateBattleUI(fighters) {
   if (sk3Lbl) sk3Lbl.textContent = purinaState ? `🌊 푸리나 [${purinaState}]` : (cd3 <= 0 ? '🌊 푸리나 ✦' : `🌊 푸리나 (${(cd3/1000).toFixed(1)}s)`);
  } else if (f.def.id === 'sangjin') {
   const carEl = document.getElementById('sangjin-car-' + pid);
-  if (carEl) carEl.textContent = f._sangjinCarActive ? '🚗 자율주행 중!' : '대기 중';
+  if (carEl) {
+   const sk2cd = f.skill2Cooldown || 0;
+   carEl.textContent = f._sangjinCarActive ? '🚗 자율주행 중!' : sk2cd > 0 ? `🚗 자율주행 (${(sk2cd/1000).toFixed(1)}s)` : '🚗 자율주행 ✦';
+  }
   const skEl2 = document.getElementById('sk-' + pid);
   if (skEl2) {
    const pct = f.skillCooldown <= 0 ? 100 : _mx(0, 100 - (f.skillCooldown / f.def.skill.cooldown) * 100);
@@ -10787,7 +11060,9 @@ function updateBattleUI(fighters) {
 function stopGame() {
  _arenaMode = false;
  _arenaPlayerIdx = -1;
+ _arenaPlayer2Idx = -1;
  _arenaKeys.w = _arenaKeys.a = _arenaKeys.s = _arenaKeys.d = false;
+ _arenaKeys2.up = _arenaKeys2.down = _arenaKeys2.left = _arenaKeys2.right = false;
  const hint = document.getElementById('arenaHint');
  if (hint) hint.style.display = 'none';
  if (gameLoop) { cancelAnimationFrame(gameLoop); gameLoop = null; }
@@ -10893,7 +11168,7 @@ function endGame() {
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
   // playerWon은 외부 스코프에서 이미 계산된 값 재사용
-  if (isBoss3Clear && playerWon) {
+  if (isBoss3Clear && (playerWon || (winner && campaignChar && winner.def.id === campaignChar.id))) {
    document.getElementById('winnerName').textContent = '🏆 캠페인 완료!';
    document.getElementById('resultText').textContent = '이철행T 해금! +200🪙';
    document.getElementById('btn-campaign-next').style.display = 'block';
