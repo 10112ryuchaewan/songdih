@@ -307,14 +307,6 @@
   <button class="btn btn-secondary drop-item" id="btn-bugreport" style="margin-top:6px;animation-delay:2.2s;border-color:#4a90d9;color:#4a90d9">📋 버그 알림판</button>
   <div id="toiletPaperDisplay" style="position:absolute;bottom:12px;right:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-end;pointer-events:none"></div>
   <div id="mustardDisplay" style="position:absolute;bottom:12px;left:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-start;pointer-events:none"></div>
-  <!-- 명예의 전당 -->
-  <div id="hallOfFamePanel" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:160px;background:rgba(10,10,30,0.85);border:2px solid #f5c518;border-radius:14px;padding:12px;max-height:80vh;overflow-y:auto;backdrop-filter:blur(6px)">
-   <div style="font-size:13px;font-weight:900;color:#f5c518;text-align:center;margin-bottom:8px;letter-spacing:1px">🏆 명예의 전당</div>
-   <div style="font-size:10px;color:#888;text-align:center;margin-bottom:8px">마침내 도래한 재앙 격파</div>
-   <div id="hallOfFameList" style="display:flex;flex-direction:column;gap:6px">
-    <div style="color:#555;font-size:11px;text-align:center">기록 없음</div>
-   </div>
-  </div>
 </div>
 
 <div id="gachaOverlay">
@@ -561,7 +553,7 @@
   <div style="display:flex;gap:8px;width:100%;flex:1;min-height:0">
   <div style="flex:1;border-radius:12px;border:2px solid #3a7a1a;overflow:hidden">
     <div id="campaignScroll" style="overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;height:100%;min-height:250px">
-      <div style="position:relative;width:11000px;height:250px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)">
+      <div style="position:relative;width:10500px;height:250px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)">
         <div style="position:absolute;top:20px;left:80px;background:#fff;border-radius:50px;width:90px;height:28px;opacity:0.9"></div>
         <div style="position:absolute;top:30px;left:280px;background:#fff;border-radius:50px;width:70px;height:22px;opacity:0.9"></div>
         <div style="position:absolute;top:15px;left:500px;background:#fff;border-radius:50px;width:110px;height:30px;opacity:0.9"></div>
@@ -571,7 +563,7 @@
         <div style="position:absolute;bottom:50px;left:360px;text-align:center"><div style="width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:34px solid #2d7a1b;margin:0 auto"></div><div style="width:9px;height:16px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:700px;text-align:center"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #2d7a1b;margin:0 auto"></div><div style="width:8px;height:12px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:1020px;text-align:center"><div style="width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid #2d7a1b;margin:0 auto"></div><div style="width:10px;height:18px;background:#8b4513;margin:0 auto"></div></div>
-        <svg style="position:absolute;inset:0;width:11000px;height:250px;pointer-events:none;z-index:0" xmlns="http://www.w3.org/2000/svg">
+        <svg style="position:absolute;inset:0;width:10500px;height:250px;pointer-events:none;z-index:0" xmlns="http://www.w3.org/2000/svg">
           <line x1="130" y1="110" x2="262" y2="110" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="372" y1="110" x2="538" y2="110" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="608" y1="110" x2="778" y2="110" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
@@ -614,7 +606,6 @@
           <line x1="7568" y1="110" x2="7668" y2="110" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="7738" y1="110" x2="7838" y2="110" stroke="rgba(204,0,255,0.9)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="7918" y1="110" x2="8148" y2="110" stroke="rgba(255,0,128,0.95)" stroke-width="5" stroke-dasharray="14,6"/>
-          <line x1="8218" y1="110" x2="8448" y2="110" stroke="rgba(255,34,0,0.95)" stroke-width="6" stroke-dasharray="16,6"/>
         </svg>
         <div id="stage-nodes-container"></div>
       </div>
@@ -732,7 +723,6 @@ function showScreen(id) {
   el.style.opacity = '1';
   el.style.transform = 'translateY(0)';
  });
- updateHallOfFame();
  }
 }
 
@@ -1169,7 +1159,6 @@ function startCampaignStage(stageId) {
    '3-9': { enemies:['seungoh','hyekyung','eunju'], buffs:[{ id:'seungoh' },{ id:'hyekyung' },{ id:'eunju' }] },
    'boss3': { enemy:'cheolhaeng', buff:{ id:'cheolhaeng', hpBonus:180, cdMult:0.8, boss3Mode:true } },
    'multiverse': { enemy:'kimtaeyun', buff:{ id:'kimtaeyun', hpBonus:840, touchDmgSet:20, cdMult:1, multiverseMode:true } },
-   'final-disaster': { enemy:'dogyungyun', buff:{ id:'dogyungyun', hpBonus:80, startGundamTransformed:true } },
   };
  const cfg = _STAGE_CFG[stageId];
  if (!cfg) return;
@@ -1287,7 +1276,6 @@ function loadCampaignProgress() {
   if (cs.includes('3-9')) _show('forge6');
   if (cs.includes('forge6')) _show('boss3');
   if (cs.includes('boss3')) _show('multiverse');
-  if (cs.includes('multiverse')) _show('final-disaster');
  }
  } catch(e) { console.error('load campaign error', e); }
 }
@@ -1364,7 +1352,7 @@ function resetCampaign() {
  campaignBuffs.length = 0;
  updateCampaignStats();
  window._stage2Unlocked = false;
- ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse','final-disaster'].forEach(sid => {
+ ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
  const locked = document.getElementById('stage-' + sid + '-locked');
  const unlocked = document.getElementById('stage-' + sid);
  if (locked) locked.style.display = 'none';
@@ -1477,7 +1465,7 @@ async function addCampaignClearChar(charId) {
 }
 
 let campaignBuffs = [];
-const FORGE_NORMAL = [ { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' }, { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' }, { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' }, { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' }, { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' }, { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' }, { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' }, { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' }, { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' }, { id: 'cd_5', label: '쿨타임 감소 I', desc: '스킬 쿨타임 -5%', icon: '⏱️', type: 'normal' }, { id: 'cd_10', label: '쿨타임 감소 II', desc: '스킬 쿨타임 -10%', icon: '⏰', type: 'normal' }, { id: 'cd_15', label: '쿨타임 감소 III', desc: '스킬 쿨타임 -15%', icon: '⚡⏱️', type: 'normal' }, { id: 'dr_5', label: '피해 감소 I', desc: '받는 피해 -5%', icon: '🛡️', type: 'normal' }, { id: 'dr_7', label: '피해 감소 II', desc: '받는 피해 -7%', icon: '🛡️🛡️', type: 'normal' }, { id: 'dr_9', label: '피해 감소 III', desc: '받는 피해 -9%', icon: '💎🛡️', type: 'normal' }, ];
+const FORGE_NORMAL = [ { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' }, { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' }, { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' }, { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' }, { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' }, { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' }, { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' }, { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' }, { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' }, { id: 'cd_5', label: '쿨타임 감소 I', desc: '스킬 쿨타임 -5%', icon: '⏱️', type: 'normal' }, { id: 'cd_10', label: '쿨타임 감소 II', desc: '스킬 쿨타임 -10%', icon: '⏰', type: 'normal' }, { id: 'cd_15', label: '쿨타임 감소 III', desc: '스킬 쿨타임 -15%', icon: '⚡⏱️', type: 'normal' }, ];
 const FORGE_SPECIAL = [ { id: 'vampire', label: '흡혈', desc: '접촉 공격에 25% 흡혈 추가', icon: '🧛', type: 'special' }, { id: 'satellite', label: '위성', desc: '주변 공전하는 별 3개 (+2 데미지)', icon: '⭐', type: 'special' }, { id: 'poison', label: '독', desc: '피해 +20% 단 3초에 걸쳐 데미지 적용', icon: '☠️', type: 'special' }, { id: 'goonmod', label: 'Goonmod Activate', desc: '3초마다 5데미지 회색 공 발사', icon: '🩶', type: 'special' }, { id: 'qty_over_quality', label: '질보다 양', desc: '전체 데미지 -20% 대신 스킬 쿨타임 -40%', icon: '⚡⚡', type: 'special' }, { id: 'qty_over_quality_adv', label: '양보단 질', desc: '스킬 쿨타임 +20% 대신 전체 데미지 +40%', icon: '💥', type: 'special' }, { id: 'absolute_zero', label: '절대 영도', desc: '오오라 생성 — 적 이동속도 -50%, 4초 노출 시 10데미지 (범위 33% 증가)', icon: '❄️', type: 'special' }, ];
 
 function getForgeOptions() {
@@ -1512,6 +1500,7 @@ function unlock24() {
  if (lk) lk.style.display = 'none';
  if (ul) { ul.style.display = 'block'; ul.style.animation = 'starFloat 0.5s ease-out'; }
  const scroll = document.getElementById('campaignScroll');
+ if (scroll) setTimeout(() => scroll.scrollTo({ left: 9999, behavior: 'smooth' }), 300);
 }
 
 function enterChurch() {
@@ -1584,7 +1573,6 @@ function updateCampaignStats() {
 
  const buffHpMap = { hp_10:10, hp_20:20, hp_30:30 };
  const buffDmgMap = { dmg_5:5, dmg_7:7, dmg_9:9 };
- let dmgReduction = 0;
  campaignBuffs.forEach(id => {
   if (buffHpMap[id]) hp += buffHpMap[id];
   if (buffDmgMap[id]) touchDmg += buffDmgMap[id];
@@ -1596,9 +1584,6 @@ function updateCampaignStats() {
   if (id === 'cd_5') cdMult *= 0.95;
   if (id === 'cd_10') cdMult *= 0.90;
   if (id === 'cd_15') cdMult *= 0.85;
-  if (id === 'dr_5') dmgReduction += 0.05;
-  if (id === 'dr_7') dmgReduction += 0.07;
-  if (id === 'dr_9') dmgReduction += 0.09;
   if (id === 'choco_pie') hp += 20;
  });
 
@@ -1618,7 +1603,6 @@ function updateCampaignStats() {
 
  const cdPct = _rnd((1 - cdMult) * 100);
  const dodgePct = _rnd(dodgeChance * 100);
- const drPct = _rnd(dmgReduction * 100);
 
  el.innerHTML = `
   <div style="background:#0f0f2a;border-radius:10px;padding:12px;margin-bottom:12px">
@@ -1632,8 +1616,6 @@ function updateCampaignStats() {
     <div style="color:#74c0fc;font-weight:700">${cdPct > 0 ? `-${cdPct}%` : '기본 (100%)'}</div>
     <div style="color:#888">💨 회피</div>
     <div style="color:#a9e34b;font-weight:700">${dodgePct > 0 ? `${dodgePct}%` : '없음'}</div>
-    <div style="color:#888">🛡️ 피해 감소</div>
-    <div style="color:#63e6be;font-weight:700">${drPct > 0 ? `-${drPct}%` : '없음'}</div>
    </div>
   </div>
   ${gotSpecial.length > 0 ? `
@@ -1812,7 +1794,7 @@ function closeForge() {
 
 function applyCampaignBuffs(fighter) {
  if (!fighter || !campaignBuffs.length) return;
- const _BUFF_MAP = { hp_10: f => { f.hp += 10; f.maxHp += 10; }, hp_20: f => { f.hp += 20; f.maxHp += 20; }, hp_30: f => { f.hp += 30; f.maxHp += 30; }, choco_pie: f => { f.hp += 20; f.maxHp += 20; }, dmg_5: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 5 }; }, dmg_7: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 7 }; }, dmg_9: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 9 }; }, dodge_3: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.03; }, dodge_5: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.05; }, dodge_7: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.07; }, cd_5: f => { f._cdReduction = (f._cdReduction || 1) * 0.95; }, cd_10: f => { f._cdReduction = (f._cdReduction || 1) * 0.90; }, cd_15: f => { f._cdReduction = (f._cdReduction || 1) * 0.85; }, dr_5: f => { f._dmgReduction = (f._dmgReduction || 0) + 0.05; }, dr_7: f => { f._dmgReduction = (f._dmgReduction || 0) + 0.07; }, dr_9: f => { f._dmgReduction = (f._dmgReduction || 0) + 0.09; }, vampire: f => { f._campaignVampire = true; }, satellite: f => { f._campaignSatellite = true; f._satAngle = 0; }, poison: f => { f._campaignPoison = true; }, goonmod: f => { f._campaignGoonmod = true; f._goonmodTimer = 3000; }, qty_over_quality: f => { f._qtyOverQuality = true; }, qty_over_quality_adv: f => { f._qtyOverQualityAdv = true; }, absolute_zero: f => { f._absoluteZero = true; }, goonmod_boost: f => { f._goonmodTimer = _mn(f._goonmodTimer || 3000, 1500); f._goonmodHalfCd = true; }, };
+ const _BUFF_MAP = { hp_10: f => { f.hp += 10; f.maxHp += 10; }, hp_20: f => { f.hp += 20; f.maxHp += 20; }, hp_30: f => { f.hp += 30; f.maxHp += 30; }, choco_pie: f => { f.hp += 20; f.maxHp += 20; }, dmg_5: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 5 }; }, dmg_7: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 7 }; }, dmg_9: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 9 }; }, dodge_3: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.03; }, dodge_5: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.05; }, dodge_7: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.07; }, cd_5: f => { f._cdReduction = (f._cdReduction || 1) * 0.95; }, cd_10: f => { f._cdReduction = (f._cdReduction || 1) * 0.90; }, cd_15: f => { f._cdReduction = (f._cdReduction || 1) * 0.85; }, vampire: f => { f._campaignVampire = true; }, satellite: f => { f._campaignSatellite = true; f._satAngle = 0; }, poison: f => { f._campaignPoison = true; }, goonmod: f => { f._campaignGoonmod = true; f._goonmodTimer = 3000; }, qty_over_quality: f => { f._qtyOverQuality = true; }, qty_over_quality_adv: f => { f._qtyOverQualityAdv = true; }, absolute_zero: f => { f._absoluteZero = true; }, goonmod_boost: f => { f._goonmodTimer = _mn(f._goonmodTimer || 3000, 1500); f._goonmodHalfCd = true; }, };
  campaignBuffs.forEach(buffId => {
   const fn = _BUFF_MAP[buffId];
   if (fn) fn(fighter);
@@ -1904,34 +1886,6 @@ async function loadBugReports() {
    </div>`;
   }).join('');
  } catch(e) { listEl.innerHTML = '<div style="color:#f66;text-align:center;padding:20px;font-size:13px">불러오기 실패</div>'; }
-}
-
-// ── 명예의 전당 ──
-async function updateHallOfFame() {
- const listEl = document.getElementById('hallOfFameList');
- if (!listEl) return;
- try {
-  const r = await fetch(`${SB_URL}/rest/v1/users?select=nickname,campaign_cleared&order=nickname.asc&limit=50`, { headers: SB_HEADERS });
-  const rows = await r.json();
-  const entries = [];
-  rows.forEach(row => {
-   if (!row.campaign_cleared) return;
-   const chars = row.campaign_cleared.split(',').filter(Boolean);
-   if (chars.length > 0) entries.push({ nickname: row.nickname, chars });
-  });
-  if (!entries.length) { listEl.innerHTML = '<div style="color:#555;font-size:11px;text-align:center">기록 없음</div>'; return; }
-  listEl.innerHTML = entries.map((e, i) => {
-   const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
-   const charIcons = e.chars.map(id => {
-    const def = CHARACTER_DEFS.find(d => d.id === id);
-    return def ? `<span style="background:${def.color};border-radius:50%;padding:1px 5px;font-size:9px;color:#fff">${def.name}</span>` : '';
-   }).join('');
-   return `<div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:6px;border-left:3px solid #f5c518">
-    <div style="font-size:11px;color:#f5c518;font-weight:700">${medal} ${e.nickname}</div>
-    <div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:3px">${charIcons}</div>
-   </div>`;
-  }).join('');
- } catch(e) { listEl.innerHTML = '<div style="color:#f66;font-size:11px;text-align:center">불러오기 실패</div>'; }
 }
 
 let _deleteTargetKey = null;
@@ -3675,15 +3629,6 @@ function startBattle() {
   }
   if (eb.boss3Mode) {
   enemyFighter._boss3Mode = true;
-  }
-  if (eb.startGundamTransformed && enemyFighter.def.id === 'dogyungyun') {
-  enemyFighter.gundamTransformed = true;
-  enemyFighter.gundamTransformAnim = false;
-  enemyFighter.def = { ...enemyFighter.def, touchDmg: 18, radius: 36 };
-  enemyFighter.r = 36;
-  enemyFighter.speedMult = (enemyFighter.speedMult || 1) * 1.3;
-  // 건담 파츠 수집 완료 상태로
-  if (gameState && gameState.gundamParts) gameState.gundamParts.forEach(p => p.collected = true);
   }
   if (eb.multiverseMode) {
   enemyFighter._multiverseMode = true;
@@ -7793,7 +7738,6 @@ function applyDmg(f, dmg, attacker) {
  if (rootF && rootA && rootF === rootA) return;
  }
  if (f.def && f.def.id === 'giwon' && f.tidalActive) dmg *= 0.7;
- if (f._dmgReduction) dmg *= (1 - _mn(0.8, f._dmgReduction)); // 최대 80% 감소 제한
  if (attacker && attacker._qtyOverQuality) dmg *= 0.8;
  else if (!attacker && f.lastDmgFrom >= 0 && gameState && gameState.fighters[f.lastDmgFrom] && gameState.fighters[f.lastDmgFrom]._qtyOverQuality) dmg *= 0.8;
  if (attacker && attacker._qtyOverQualityAdv) dmg *= 1.4;
@@ -11200,7 +11144,7 @@ function endGame() {
    else unlocked.onclick = () => startCampaignStage(sid);
    }
   });
-  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse','final-disaster'].forEach(sid => {
+  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
    const unlocked = document.getElementById('stage-' + sid);
    if (locked) locked.style.display = 'none';
@@ -11219,7 +11163,7 @@ function endGame() {
   document.getElementById('btn-campaign-next').textContent = '맵으로 →';
   document.getElementById('btn-campaign-back').textContent = '메인으로';
   } else {
-  const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍', 'multiverse': '멀티버스의 구원자', 'final-disaster': '마침내 도래한 재앙' };
+  const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍', 'multiverse': '멀티버스의 구원자' };
   const isBossClear = window._campaignStage === 'boss1';
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
@@ -11317,6 +11261,7 @@ function endGame() {
      if (lk) lk.style.display = 'block';
     });
     const scroll = document.getElementById('campaignScroll');
+    if (scroll) scroll.scrollTo({ left: 9999, behavior: 'smooth' });
    }, 1500);
    }
    if (!unlockedHidden.has('jumi')) {
@@ -11377,19 +11322,8 @@ function endGame() {
    updateGachaCoinDisplay();
    }
    const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5','2-5':'2-6','2-6':'forge4','2-7':'2-8','2-8':'2-9','2-9':'boss2','3-1':'3-2','3-2':'forge5','3-3':'3-4','3-4':'3-5','3-5':'forge-sp','3-6':'3-7','3-7':'3-8','3-8':'3-9','3-9':'forge6' };
-   // final-disaster 클리어 시 명예의 전당 등록
-   if (window._campaignStage === 'final-disaster' && campaignChar) {
-    addCampaignClearChar(campaignChar.id);
-    document.getElementById('winnerName').textContent = '🏆 마침내 도래한 재앙 격파!';
-    document.getElementById('resultText').textContent = '명예의 전당에 등록되었습니다! +500🪙';
-    gachaCoins += 500; saveGachaData(); updateGachaCoinDisplay();
-    updateHallOfFame();
-   }
+   const _nextStage = _nextMap[window._campaignStage];
    if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
-   // 멀티버스 클리어 시 final-disaster 해금
-   if (window._campaignStage === 'multiverse') {
-    setTimeout(() => unlockStage('final-disaster'), 700);
-   }
    // 멀티버스 클리어 시 김태윤 해금 + 캠페인 자동 초기화
    if (window._campaignStage === 'multiverse') {
     if (!unlockedHidden.has('kimtaeyun')) {
@@ -11403,7 +11337,7 @@ function endGame() {
      }
      buildCharSelect();
     }
-    // 캠페인 자동 초기화 (해금 연출 후 3초 뒤)
+    // 캠페인 자동 초기화 (3.5초 뒤)
     setTimeout(() => {
      resetCampaign();
      showScreen('campaignMap');
@@ -11418,6 +11352,7 @@ function endGame() {
     if (ul) ul.style.display = 'block';
     });
     const scroll = document.getElementById('campaignScroll');
+    if (scroll) scroll.scrollTo({ left: 9999, behavior: 'smooth' });
    }, 400);
    }
   }
@@ -11473,13 +11408,11 @@ var _CAMPAIGN_NODES = [ { id:'forge0', x:60, y:110, label:'강화', type:'forge'
   { id:'forge6', x:7680, y:110, label:'강화', type:'forge' },
   { id:'boss3', x:7880, y:110, label:'음악의 폭풍', type:'boss3' },
   { id:'multiverse', x:8180, y:110, label:'멀티버스의 구원자', type:'final-boss' },
-  { id:'final-disaster', x:8480, y:110, label:'마침내 도래한 재앙', type:'final-disaster' },
 ];
 
 var _NODE_STYLE = { start: { bg:'#f5c518', border:'#c8a800', text:'#111', labelColor:'#fff', icon:null, size:64, borderW:4 }, ch1: { bg:'#4caf50', border:'#2d8a2d', text:'#fff', labelColor:'#fff', icon:null, size:62, borderW:4 }, ch2: { bg:'#4a7abf', border:'#2a5a9f', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, 'ch2-dark':{ bg:'#1a6b8a', border:'#0a4a6a', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, ch3: { bg:'#7b2fff', border:'#5a00cc', text:'#fff', labelColor:'#d4aaff', icon:null, size:62, borderW:4 }, 'ch3-dark':{ bg:'#4a0080', border:'#7b2fff', text:'#fff', labelColor:'#c084fc', icon:null, size:62, borderW:4 }, boss: { bg:'#8b0000', border:'#ff2222', text:'#ffcccc', labelColor:'#ff6666', icon:'💀', size:62, borderW:4 }, boss2: { bg:'#6b0000', border:'#ff6600', text:'#ffddaa', labelColor:'#ff8844', icon:'💀', size:64, borderW:4 }, boss3: { bg:'#4a0060', border:'#cc00ff', text:'#ffccff', labelColor:'#ee88ff', icon:'💀', size:64, borderW:4 },
  final: { bg:'linear-gradient(135deg,#1a1a2e,#16213e)', border:'#f5c518', text:'#f5c518', labelColor:'#f5c518', icon:'⭐', size:68, borderW:5 },
- 'final-boss': { bg:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', border:'#ff0080', text:'#fff', labelColor:'#ff88cc', icon:'🌌', size:72, borderW:5 },
- 'final-disaster': { bg:'linear-gradient(135deg,#1a0000,#3a0000,#600)', border:'#ff2200', text:'#fff', labelColor:'#ff6644', icon:'💀', size:76, borderW:6 }, forge: { bg:'linear-gradient(135deg,#ff8c00,#ffd700)', border:'#cc6600', text:null, labelColor:'#ffd700', icon:'🔨', size:62, borderW:4 }, 'forge-adv':{ bg:'linear-gradient(135deg,#7b2fff,#c084fc)', border:'#5a00cc', text:null, labelColor:'#c084fc', icon:'💎', size:62, borderW:4 }, 'forge-sp': { bg:'linear-gradient(135deg,#cc00aa,#ff44cc)', border:'#880077', text:null, labelColor:'#ffaaee', icon:'⚗️', size:62, borderW:4 }, church: { bg:'#f5e6c8', border:'#c8a840', text:null, labelColor:'#c8a840', icon:'⛪', size:56, borderW:4 }, toilet: { bg:'#e0eeee', border:'#7ab', text:null, labelColor:'#5aa', icon:'🚽', size:56, borderW:4 }, };
+ 'final-boss': { bg:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', border:'#ff0080', text:'#fff', labelColor:'#ff88cc', icon:'🌌', size:72, borderW:5 }, forge: { bg:'linear-gradient(135deg,#ff8c00,#ffd700)', border:'#cc6600', text:null, labelColor:'#ffd700', icon:'🔨', size:62, borderW:4 }, 'forge-adv':{ bg:'linear-gradient(135deg,#7b2fff,#c084fc)', border:'#5a00cc', text:null, labelColor:'#c084fc', icon:'💎', size:62, borderW:4 }, 'forge-sp': { bg:'linear-gradient(135deg,#cc00aa,#ff44cc)', border:'#880077', text:null, labelColor:'#ffaaee', icon:'⚗️', size:62, borderW:4 }, church: { bg:'#f5e6c8', border:'#c8a840', text:null, labelColor:'#c8a840', icon:'⛪', size:56, borderW:4 }, toilet: { bg:'#e0eeee', border:'#7ab', text:null, labelColor:'#5aa', icon:'🚽', size:56, borderW:4 }, };
 
 var _NODE_LOCK_STYLE = { default: { bg:'#aaa', border:'#888' }, ch2: { bg:'#7090bb', border:'#4a6a9f' }, };
 
@@ -11493,7 +11426,7 @@ function _buildCampaignNodes() {
   const s = _NODE_STYLE[node.type] || _NODE_STYLE.ch1;
   const lkStyle = node.type.startsWith('ch2') ? _NODE_LOCK_STYLE.ch2 : _NODE_LOCK_STYLE.default;
   const nodeW = (node.type === 'forge' || node.type === 'forge-adv' || node.type === 'church' || node.type === 'toilet') ? 70 : 90;
-  const lkIcon = (node.type === 'boss' || node.type === 'boss2' || node.type === 'boss3') ? '💀' : node.type === 'final-disaster' ? '💀' : node.type === 'final-boss' ? '🌌' : node.type === 'final' ? '⭐' : (s.icon || '🔒');
+  const lkIcon = (node.type === 'boss' || node.type === 'boss2' || node.type === 'boss3') ? '💀' : node.type === 'final-boss' ? '🌌' : node.type === 'final' ? '⭐' : (s.icon || '🔒');
   const lkIconSzPx = (node.type === 'church' || node.type === 'toilet') ? 52 : 58;
   const lkFontSz = (node.type.startsWith('ch2') || node.type === 'church' || node.type === 'toilet') ? 20 : 22;
   const lkLblColor = (node.type.startsWith('ch2') || node.type === 'church' || node.type === 'toilet') ? '#aaddff' : '#fff';
@@ -11537,11 +11470,10 @@ function _buildCampaignNodes() {
    const isBoss3 = node.type === 'boss3';
    const isFinal = node.type === 'final';
    const isFinalBoss = node.type === 'final-boss';
-   const isFinalDisaster = node.type === 'final-disaster';
    const isBoss  = node.type === 'boss' || isBoss2 || isBoss3;
-   const label   = isFinalDisaster ? 'FINAL' : (isFinalBoss ? 'FINAL' : (isFinal ? 'STAGE' : (isBoss3 ? 'BOSS-3' : (isBoss2 ? 'BOSS-2' : (isBoss ? 'BOSS' : node.id)))));
+   const label   = isFinalBoss ? 'FINAL' : (isFinal ? 'STAGE' : (isBoss3 ? 'BOSS-3' : (isBoss2 ? 'BOSS-2' : (isBoss ? 'BOSS' : node.id))));
    circDiv.style.fontWeight = '900';
-   circDiv.style.fontSize = (isFinalDisaster ? 10 : isFinalBoss ? 11 : isFinal ? 12 : isBoss2 || isBoss3 ? 12 : 15) + 'px';
+   circDiv.style.fontSize = (isFinalBoss ? 11 : isFinal ? 12 : isBoss2 || isBoss3 ? 12 : 15) + 'px';
    circDiv.style.color = s.text;
    circDiv.textContent = label;
   }
@@ -11677,8 +11609,9 @@ function _doGachaPull(pullCount) {
   const results = [];
   for (let i = 0; i < pullCount; i++) {
     const roll = _r();
-    if (roll < 0.10) {
+    if (roll < 0.20) {
       if (locked.length === 0) {
+        // 모두 보유 → 캐릭터 20% 자리를 겨자로 대체
         mustardCount++;
         results.push({ type: 'mustard' });
       } else {
@@ -11687,16 +11620,16 @@ function _doGachaPull(pullCount) {
         unlockedHidden.add(pick);
         results.push({ type: 'char', id: pick });
       }
-    } else if (roll < 0.11) {
+    } else if (roll < 0.21) {
       // 1% 휴지
       toiletPaperCount++;
       results.push({ type: 'toilet' });
-    } else if (roll < 0.41) {
+    } else if (roll < 0.51) {
       // 30% 겨자
       mustardCount++;
       results.push({ type: 'mustard' });
     } else {
-      // 59% 꽝
+      // 49% 꽝
       results.push({ type: 'miss' });
     }
   }
