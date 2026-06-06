@@ -307,6 +307,14 @@
   <button class="btn btn-secondary drop-item" id="btn-bugreport" style="margin-top:6px;animation-delay:2.2s;border-color:#4a90d9;color:#4a90d9">📋 버그 알림판</button>
   <div id="toiletPaperDisplay" style="position:absolute;bottom:12px;right:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-end;pointer-events:none"></div>
   <div id="mustardDisplay" style="position:absolute;bottom:12px;left:12px;display:flex;flex-wrap:wrap-reverse;gap:2px;max-width:120px;justify-content:flex-start;pointer-events:none"></div>
+  <!-- 명예의 전당 -->
+  <div id="hallOfFamePanel" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:160px;background:rgba(10,10,30,0.85);border:2px solid #f5c518;border-radius:14px;padding:12px;max-height:80vh;overflow-y:auto;backdrop-filter:blur(6px)">
+   <div style="font-size:13px;font-weight:900;color:#f5c518;text-align:center;margin-bottom:8px;letter-spacing:1px">🏆 명예의 전당</div>
+   <div style="font-size:10px;color:#888;text-align:center;margin-bottom:8px">마침내 도래한 재앙 격파</div>
+   <div id="hallOfFameList" style="display:flex;flex-direction:column;gap:6px">
+    <div style="color:#555;font-size:11px;text-align:center">기록 없음</div>
+   </div>
+  </div>
 </div>
 
 <div id="gachaOverlay">
@@ -553,7 +561,7 @@
   <div style="display:flex;gap:8px;width:100%;flex:1;min-height:0">
   <div style="flex:1;border-radius:12px;border:2px solid #3a7a1a;overflow:hidden">
     <div id="campaignScroll" style="overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;height:100%;min-height:250px">
-      <div style="position:relative;width:10500px;height:250px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)">
+      <div id="campaignBg" style="position:relative;width:11800px;height:250px;background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%);transition:background 1.5s">
         <div style="position:absolute;top:20px;left:80px;background:#fff;border-radius:50px;width:90px;height:28px;opacity:0.9"></div>
         <div style="position:absolute;top:30px;left:280px;background:#fff;border-radius:50px;width:70px;height:22px;opacity:0.9"></div>
         <div style="position:absolute;top:15px;left:500px;background:#fff;border-radius:50px;width:110px;height:30px;opacity:0.9"></div>
@@ -563,7 +571,7 @@
         <div style="position:absolute;bottom:50px;left:360px;text-align:center"><div style="width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:34px solid #2d7a1b;margin:0 auto"></div><div style="width:9px;height:16px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:700px;text-align:center"><div style="width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #2d7a1b;margin:0 auto"></div><div style="width:8px;height:12px;background:#8b4513;margin:0 auto"></div></div>
         <div style="position:absolute;bottom:50px;left:1020px;text-align:center"><div style="width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid #2d7a1b;margin:0 auto"></div><div style="width:10px;height:18px;background:#8b4513;margin:0 auto"></div></div>
-        <svg style="position:absolute;inset:0;width:10500px;height:250px;pointer-events:none;z-index:0" xmlns="http://www.w3.org/2000/svg">
+        <svg style="position:absolute;inset:0;width:11800px;height:250px;pointer-events:none;z-index:0" xmlns="http://www.w3.org/2000/svg">
           <line x1="130" y1="110" x2="262" y2="110" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="372" y1="110" x2="538" y2="110" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="608" y1="110" x2="778" y2="110" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-dasharray="10,7"/>
@@ -605,7 +613,11 @@
           <line x1="7168" y1="110" x2="7268" y2="110" stroke="rgba(255,80,80,0.9)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="7568" y1="110" x2="7668" y2="110" stroke="rgba(255,210,0,0.8)" stroke-width="3" stroke-dasharray="10,7"/>
           <line x1="7738" y1="110" x2="7838" y2="110" stroke="rgba(204,0,255,0.9)" stroke-width="3" stroke-dasharray="10,7"/>
-          <line x1="7918" y1="110" x2="8148" y2="110" stroke="rgba(255,0,128,0.95)" stroke-width="5" stroke-dasharray="14,6"/>
+          <line x1="7918" y1="110" x2="8168" y2="110" stroke="rgba(255,0,128,0.95)" stroke-width="5" stroke-dasharray="14,6"/>
+          <line x1="8238" y1="110" x2="8454" y2="110" stroke="rgba(255,68,136,0.9)" stroke-width="3" stroke-dasharray="10,6"/>
+          <line x1="8506" y1="110" x2="8704" y2="110" stroke="rgba(255,68,136,0.9)" stroke-width="3" stroke-dasharray="10,6"/>
+          <line x1="8756" y1="110" x2="8954" y2="110" stroke="rgba(255,68,136,0.9)" stroke-width="3" stroke-dasharray="10,6"/>
+          <line x1="9006" y1="110" x2="9222" y2="110" stroke="rgba(255,34,0,0.95)" stroke-width="6" stroke-dasharray="16,6"/>
         </svg>
         <div id="stage-nodes-container"></div>
       </div>
@@ -695,10 +707,11 @@
 <script>const _r=Math.random.bind(Math),_hp=Math.hypot.bind(Math),_a2=Math.atan2.bind(Math),_co=Math.cos.bind(Math),_si=Math.sin.bind(Math),_mn=Math.min.bind(Math),_mx=Math.max.bind(Math),_fl=Math.floor.bind(Math),_abs=Math.abs.bind(Math),_rnd=Math.round.bind(Math),_PI2=Math.PI*2;
 function _dt(x,y,t,l,v,c,s){if(gameState&&gameState.dmgTexts)gameState.dmgTexts.push({x,y,text:t,life:l,maxLife:l,vy:v,color:c,fontSize:s});}
 
-const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 99999, label: '머리카락', barColor: '#8b4513', }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병현', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 15000, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, }, skill2: { cooldown: 4000, label: '감자지뢰', barColor: '#cc4400' } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', }, skill2: { cooldown: 8000, label: '모기보이스', barColor: '#880066' } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 100, radius: 28, touchDmg: 6, skill: { cooldown: 5000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { cooldown: 12000, label: '자율주행자동차', barColor: '#e87020' } } ,
+const CHARACTER_DEFS = [ { id: 'taeyoung', group: 'STUDENTS', name: '김태양', color: '#e8900a', hp: 160, radius: 28, touchDmg: 12, skill: { cooldown: 10000, label: '태양빛', barColor: '#e8900a', duration: 4000, auraDmgInterval: 100, auraDmg: 0.512, auraRadiusMult: 5.34, homingStrength: 0.05, }, skill2: { cooldown: 10000, label: '트름', barColor: '#c47a00', gasDuration: 5000, poisonDuration: 3000, poisonDmgInterval: 1000, poisonDmg: 2, } }, { id: 'taeyeon', group: 'STUDENTS', name: '김태연', color: '#d0186e', hp: 120, radius: 28, touchDmg: 8, skill: { cooldown: 5000, label: '음표 발사', barColor: '#d0186e', }, skill2: { cooldown: 20000, label: '천안문', barColor: '#8b0000', } }, { id: 'giwon', group: 'STUDENTS', name: '김기원', color: '#3a3a8c', hp: 130, radius: 28, touchDmg: 0, skill: { cooldown: 11000, label: '벽 설치', barColor: '#3a3a8c', wallDmg: 10.7, wallSize: 22, spikeLen: 18, gearRadius: 75, }, skill2: { cooldown: 999999, label: 'TIDAL WAVE', barColor: '#00aacc', } }, { id: 'sumin', group: 'STUDENTS', name: '한수민', color: '#2e8b3a', hp: 70, radius: 28, touchDmg: 0, skill: { cooldown: 6000, label: 'say wallahi', barColor: '#2e8b3a', }, skill2: { label: '쳐웃기', barColor: '#ff6b00', used: false, triggerRange: 90, waveDmg: 4.8, waveCount: 12, waveSpeed: 8.4, knockback: 19.98, wallDmgTimer: 300, wallDmg: 1, transformThreshold: 30, cheoCooldown: 5000, } }, { id: 'chaewan', group: 'STUDENTS', name: '유채완', color: '#8b4513', hp: 180, radius: 28, touchDmg: 0, skill: { cooldown: 8000, label: '머리털기', barColor: '#8b4513', }, skill2: { cooldown: 99999, label: '머리카락(자동)', barColor: '#5a2d0a' }, hairDropCooldown: 1000, } , { id: 'hyuncheol', name: '이현철T', group: 'TEACHER', color: '#2c5f2e', hp: 150, radius: 28, touchDmg: 0, touchKnockback: true, skill: { cooldown: 18000, label: '살아나는 기지개', barColor: '#2c5f2e', healAmt: 15, }, skill3: { label: '올라가!', dmg: 10, freezeDuration: 1000, fallDuration: 800, }, skill2: { label: '자 따라해보자', barColor: '#8b4513', triggerHp: 50, text: '자 따라해보자! 전자는? 짝사랑을 하지 않는다.', charDmg: 2, charSpeed: 18.0, } } , { id: 'byungheon', name: '류병현', group: 'STUDENTS', color: '#7b3fa0', hp: 130, radius: 28, touchDmg: 14, skill: { cooldown: 7000, label: '분열', barColor: '#7b3fa0', }, isClone: false, }, { id: 'seungbin', name: '정승빈', group: 'STUDENTS', color: '#1a7a1a', hp: 130, radius: 28, touchDmg: 0, touchPlantsTurret: true, turretCooldown: 5000, skill: { cooldown: 15000, label: '해바라기', barColor: '#f5c518', healAmt: 3, healInterval: 5000, }, skill2: { cooldown: 4000, label: '감자지뢰', barColor: '#cc4400' } }, { id: 'seungoh', name: '황승오T', group: 'TEACHER', color: '#1a3a8f', hp: 160, radius: 28, touchDmg: 0, skill: { cooldown: 4800, label: '바이 두잉 썸띵~', barColor: '#1a3a8f', }, skill2: { cooldown: 13000, label: '병렬병렬 김병렬!', barColor: '#4a6abf', }, skill3: { cooldown: 999999, label: '든- 든- 든~', barColor: '#00aaff', ballDmg: 12, } } , { id: 'dummy', name: '더미', group: 'STUDENTS', color: '#888888', hp: 500, radius: 32, touchDmg: 0, isDummy: true, skill: { cooldown: 999999, label: '샌드백', barColor: '#888888', } }, { id: 'junjoo', name: '정준우', group: 'STUDENTS', color: '#3a3a3a', hp: 170, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '분노', barColor: '#cc3300', } }, { id: 'younghoon', name: '정영훈', group: 'STUDENTS', color: '#d45c00', hp: 160, radius: 28, touchDmg: 0, bounceKnock: true, skill: { cooldown: 12000, label: '걸레질', barColor: '#4a90d9', } }, { id: 'hyekyung', name: '김혜경T', group: 'TEACHER', color: '#8b1a8b', hp: 140, radius: 28, touchDmg: 5, skill: { cooldown: 5000, label: '인천맛집', barColor: '#e87020', }, skill2: { cooldown: 10000, label: '염탐', barColor: '#222222', }, skill3: { cooldown: 60000, label: '안락사', barColor: '#cc0000', } } , { id: 'dogyungyun', name: '도경윤', group: 'HIDDEN', color: '#1a5fa0', hp: 120, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '(건담 변신 후 활성화)', barColor: '#1a5fa0', } } , { id: 'youngouk', name: '송영욱T', group: 'TEACHER', color: '#4a2080', hp: 180, radius: 32, touchDmg: 0, skill: { cooldown: 999999, label: '수면 유도', barColor: '#9b70d0', }, skill2: { label: '급발진', barColor: '#cc0000', waveDmg: 4.8 * 1.5, waveSpeed: 8.4 * 1.5, waveCount: 5, } } , { id: 'yeonhoo', name: '서연후', group: 'HIDDEN', color: '#cc44aa', hp: 180, radius: 28, touchDmg: 10, skill: { cooldown: 15000, label: '아이템', barColor: '#cc44aa', } } , { id: 'eunju', name: '홍은주T', group: 'TEACHER', color: '#d4186c', hp: 140, radius: 28, touchDmg: 1, skill: { cooldown: 999999, label: '삼각비', barColor: '#d4186c', }, skill2: { cooldown: 8000, label: '모기보이스', barColor: '#880066' } } , { id: 'jumi', name: '이주미T', group: 'CAMPAIGN_NPC', color: '#5b8c5a', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 5000, label: '염산', barColor: '#7abf00', }, skill2: { cooldown: 12000, label: '화학식', barColor: '#3a7a3a', } } , { id: 'woojin', name: '원우진', group: 'CAMPAIGN_NPC', color: '#1a3a6a', hp: 150, radius: 28, touchDmg: 0, skill: { cooldown: 4000, label: '투구', barColor: '#4a90d9', }, skill2: { label: '나이짜!', barColor: '#f5c518', }, skill3: { label: '필드', barColor: '#c8a800', } } , { id: 'sehwan', name: '한세환T', group: 'HIDDEN', color: '#1a6b3a', hp: 170, radius: 28, touchDmg: 5, skill: { cooldown: 20000, label: '진실의 방', barColor: '#1a6b3a', } } , { id: 'geumilcheol', name: '금일철P', group: 'SUPER_HIDDEN', color: '#c8a800', hp: 200, radius: 30, touchDmg: 0, skill: { cooldown: 30000, label: '교장선생님의 말씀', barColor: '#c8a800', }, skill2: { cooldown: 10000, label: '철갑탄', barColor: '#888', } } , { id: 'sangjin', name: '박상진T', group: 'TEACHER', color: '#1a6b8a', hp: 140, radius: 28, touchDmg: 6, skill: { cooldown: 5000, label: '강꼬치고기', barColor: '#4a90d9' }, skill2: { cooldown: 12000, label: '자율주행자동차', barColor: '#e87020' } } ,
  { id: 'hyungjun', name: '차형준T', group: 'SUPER_HIDDEN', color: '#2a2a2a', hp: 150, radius: 28, touchDmg: 10, _randomStats: true, skill: { cooldown: 999999, label: '???', barColor: '#555', } },
  { id: 'cheolhaeng', name: '이철행T', group: 'CAMPAIGN_NPC', color: '#8b2200', hp: 150, radius: 28, touchDmg: 10, skill: { cooldown: 17000, label: '트럼펫', barColor: '#cc4400' }, skill2: { cooldown: 9000, label: '가창', barColor: '#cc8800' } },
- { id: 'hangeonwoo', name: '한건우T', group: 'TEACHER', color: '#b84000', hp: 170, radius: 28, touchDmg: 8, skill: { cooldown: 8000, label: '타원의방정식', barColor: '#e86020' }, skill2: { cooldown: 14000, label: '정사영', barColor: '#cc3300' } },
+ { id: 'hangeonwoo', name: '한건우T', group: 'TEACHER', color: '#b84000', hp: 170, radius: 28, touchDmg: 8, skill: { cooldown: 5600, label: '타원의방정식', barColor: '#e86020' }, skill2: { cooldown: 14000, label: '정사영', barColor: '#cc3300' } },
+ { id: 'kimjinsu', name: '김진수', group: 'STUDENTS', color: '#e040fb', hp: 200, radius: 28, touchDmg: 0, skill: { cooldown: 999999, label: '아앙❤️', barColor: '#e040fb' }, skill2: { cooldown: 10000, label: '오메티비', barColor: '#7b1fa2' }, skill3: { cooldown: 6000, label: '핸드폰', barColor: '#00bcd4' } },
  { id: 'kimtaeyun', name: '김태윤', group: 'CAMPAIGN_NPC', color: '#c0008a', hp: 160, radius: 30, touchDmg: 8, skill: { cooldown: 14000, label: '노트북 사수', barColor: '#0066cc' }, skill2: { cooldown: 20000, label: '키리네', barColor: '#ff44aa' }, skill3: { cooldown: 10000, label: '푸리나', barColor: '#44aaff' } },
 ];
 
@@ -723,6 +736,7 @@ function showScreen(id) {
   el.style.opacity = '1';
   el.style.transform = 'translateY(0)';
  });
+ updateHallOfFame();
  }
 }
 
@@ -761,6 +775,9 @@ function _initTouchBindings() {
  if (overlay) overlay.style.display = 'none';
  showScreen('campaignMap');
  setTimeout(() => {
+  // 로컬 클리어 상태로 맵 즉시 복원
+  const cs = window._clearedStages || [];
+  cs.forEach(sid => markStageCleared(sid));
   loadCampaignProgress();
  }, 200);
  });
@@ -1082,7 +1099,14 @@ function openCampaign() {
  const row = document.getElementById('campaignCharRow');
  if (!row) return;
  row.innerHTML = '';
- CHARACTER_DEFS.filter(d => !d.isDummy && d.group !== 'CAMPAIGN_NPC' && d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && (d.group !== 'TEACHER' || unlockedHidden.has(d.id)) || (!d.isDummy && d.group === 'CAMPAIGN_NPC' && unlockedHidden.has(d.id))).forEach(def => {
+ CHARACTER_DEFS.filter(d =>
+  !d.isDummy &&
+  d.group !== 'CAMPAIGN_NPC' &&
+  (
+   (d.group !== 'HIDDEN' && d.group !== 'SUPER_HIDDEN' && d.group !== 'TEACHER') ||
+   unlockedHidden.has(d.id)
+  )
+ ).forEach(def => {
  const card = document.createElement('div');
  card.className = 'char-card';
  card.style.cursor = 'pointer';
@@ -1159,6 +1183,7 @@ function startCampaignStage(stageId) {
    '3-9': { enemies:['seungoh','hyekyung','eunju'], buffs:[{ id:'seungoh' },{ id:'hyekyung' },{ id:'eunju' }] },
    'boss3': { enemy:'cheolhaeng', buff:{ id:'cheolhaeng', hpBonus:180, cdMult:0.8, boss3Mode:true } },
    'multiverse': { enemy:'kimtaeyun', buff:{ id:'kimtaeyun', hpBonus:840, touchDmgSet:20, cdMult:1, multiverseMode:true } },
+   'final-disaster': { enemy:'dogyungyun', buff:{ id:'dogyungyun', hpBonus:80, startGundamTransformed:true } },
   };
  const cfg = _STAGE_CFG[stageId];
  if (!cfg) return;
@@ -1193,16 +1218,17 @@ async function saveCampaignProgress() {
 }
 
 function loadCampaignProgress() {
- if (!currentUser || !currentUser.campaign_progress) return;
  try {
- const progress = JSON.parse(currentUser.campaign_progress);
- if (progress.charId) {
-  campaignChar = CHARACTER_DEFS.find(d => d.id === progress.charId) || null;
+ // DB에서 로드하거나 로컬 변수로 복원
+ if (currentUser && currentUser.campaign_progress) {
+  const progress = JSON.parse(currentUser.campaign_progress);
+  if (progress.charId) campaignChar = CHARACTER_DEFS.find(d => d.id === progress.charId) || campaignChar;
+  window._clearedStages = progress.clearedStages || window._clearedStages || [];
+  window._stage2Unlocked = progress.stage2Unlocked || window._stage2Unlocked || false;
+  campaignBuffs = progress.buffs || campaignBuffs || [];
  }
- window._clearedStages = progress.clearedStages || [];
- window._stage2Unlocked = progress.stage2Unlocked || false;
- campaignBuffs = progress.buffs || [];
- const cs = window._clearedStages;
+ // 로컬 상태로 맵 복원
+ const cs = window._clearedStages || [];
  const _show = (id) => {
   const lk = document.getElementById('stage-'+id+'-locked');
   const ul = document.getElementById('stage-'+id);
@@ -1276,6 +1302,23 @@ function loadCampaignProgress() {
   if (cs.includes('3-9')) _show('forge6');
   if (cs.includes('forge6')) _show('boss3');
   if (cs.includes('boss3')) _show('multiverse');
+  if (cs.includes('multiverse')) {
+   _show('forge-fd1');
+   _show('final-disaster');
+  }
+  if (cs.includes('forge-fd1')) _show('forge-fd2');
+  if (cs.includes('forge-fd2')) _show('forge-fd3');
+  if (cs.includes('forge-fd3')) _show('final-disaster');
+  // 멀티버스 클리어 후 배경 빨갛게
+  const bg = document.getElementById('campaignBg');
+  if (bg) {
+   if (window._campaignRedBg || cs.includes('multiverse')) {
+    window._campaignRedBg = true;
+    bg.style.background = 'linear-gradient(180deg,#4a0000 0%,#8b0000 40%,#3a0000 40%,#220000 100%)';
+   } else {
+    bg.style.background = 'linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)';
+   }
+  }
  }
  } catch(e) { console.error('load campaign error', e); }
 }
@@ -1352,7 +1395,10 @@ function resetCampaign() {
  campaignBuffs.length = 0;
  updateCampaignStats();
  window._stage2Unlocked = false;
- ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
+ window._campaignRedBg = false;
+ const _bgEl = document.getElementById('campaignBg');
+ if (_bgEl) _bgEl.style.background = 'linear-gradient(180deg,#87ceeb 0%,#87ceeb 40%,#5a9e3a 40%,#4a8a2a 100%)';
+ ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse','forge-fd1','forge-fd2','forge-fd3','final-disaster'].forEach(sid => {
  const locked = document.getElementById('stage-' + sid + '-locked');
  const unlocked = document.getElementById('stage-' + sid);
  if (locked) locked.style.display = 'none';
@@ -1465,7 +1511,7 @@ async function addCampaignClearChar(charId) {
 }
 
 let campaignBuffs = [];
-const FORGE_NORMAL = [ { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' }, { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' }, { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' }, { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' }, { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' }, { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' }, { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' }, { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' }, { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' }, { id: 'cd_5', label: '쿨타임 감소 I', desc: '스킬 쿨타임 -5%', icon: '⏱️', type: 'normal' }, { id: 'cd_10', label: '쿨타임 감소 II', desc: '스킬 쿨타임 -10%', icon: '⏰', type: 'normal' }, { id: 'cd_15', label: '쿨타임 감소 III', desc: '스킬 쿨타임 -15%', icon: '⚡⏱️', type: 'normal' }, ];
+const FORGE_NORMAL = [ { id: 'hp_10', label: '체력 강화 I', desc: '최대 체력 +10', icon: '❤️', type: 'normal' }, { id: 'hp_20', label: '체력 강화 II', desc: '최대 체력 +20', icon: '❤️‍🔥', type: 'normal' }, { id: 'hp_30', label: '체력 강화 III', desc: '최대 체력 +30', icon: '💗', type: 'normal' }, { id: 'dmg_5', label: '공격 강화 I', desc: '접촉 공격 +5', icon: '⚔️', type: 'normal' }, { id: 'dmg_7', label: '공격 강화 II', desc: '접촉 공격 +7', icon: '🗡️', type: 'normal' }, { id: 'dmg_9', label: '공격 강화 III', desc: '접촉 공격 +9', icon: '⚡', type: 'normal' }, { id: 'dodge_3', label: '회피 I', desc: '데미지 3% 확률로 무시 (중첩 가능)', icon: '💨', type: 'normal' }, { id: 'dodge_5', label: '회피 II', desc: '데미지 5% 확률로 무시 (중첩 가능)', icon: '🌀', type: 'normal' }, { id: 'dodge_7', label: '회피 III', desc: '데미지 7% 확률로 무시 (중첩 가능)', icon: '⚡💨', type: 'normal' }, { id: 'cd_5', label: '쿨타임 감소 I', desc: '스킬 쿨타임 -5%', icon: '⏱️', type: 'normal' }, { id: 'cd_10', label: '쿨타임 감소 II', desc: '스킬 쿨타임 -10%', icon: '⏰', type: 'normal' }, { id: 'cd_15', label: '쿨타임 감소 III', desc: '스킬 쿨타임 -15%', icon: '⚡⏱️', type: 'normal' }, { id: 'dr_5', label: '피해 감소 I', desc: '받는 피해 -5%', icon: '🛡️', type: 'normal' }, { id: 'dr_7', label: '피해 감소 II', desc: '받는 피해 -7%', icon: '🛡️🛡️', type: 'normal' }, { id: 'dr_9', label: '피해 감소 III', desc: '받는 피해 -9%', icon: '💎🛡️', type: 'normal' }, ];
 const FORGE_SPECIAL = [ { id: 'vampire', label: '흡혈', desc: '접촉 공격에 25% 흡혈 추가', icon: '🧛', type: 'special' }, { id: 'satellite', label: '위성', desc: '주변 공전하는 별 3개 (+2 데미지)', icon: '⭐', type: 'special' }, { id: 'poison', label: '독', desc: '피해 +20% 단 3초에 걸쳐 데미지 적용', icon: '☠️', type: 'special' }, { id: 'goonmod', label: 'Goonmod Activate', desc: '3초마다 5데미지 회색 공 발사', icon: '🩶', type: 'special' }, { id: 'qty_over_quality', label: '질보다 양', desc: '전체 데미지 -20% 대신 스킬 쿨타임 -40%', icon: '⚡⚡', type: 'special' }, { id: 'qty_over_quality_adv', label: '양보단 질', desc: '스킬 쿨타임 +20% 대신 전체 데미지 +40%', icon: '💥', type: 'special' }, { id: 'absolute_zero', label: '절대 영도', desc: '오오라 생성 — 적 이동속도 -50%, 4초 노출 시 10데미지 (범위 33% 증가)', icon: '❄️', type: 'special' }, ];
 
 function getForgeOptions() {
@@ -1500,7 +1546,6 @@ function unlock24() {
  if (lk) lk.style.display = 'none';
  if (ul) { ul.style.display = 'block'; ul.style.animation = 'starFloat 0.5s ease-out'; }
  const scroll = document.getElementById('campaignScroll');
- if (scroll) setTimeout(() => scroll.scrollTo({ left: 9999, behavior: 'smooth' }), 300);
 }
 
 function enterChurch() {
@@ -1573,6 +1618,7 @@ function updateCampaignStats() {
 
  const buffHpMap = { hp_10:10, hp_20:20, hp_30:30 };
  const buffDmgMap = { dmg_5:5, dmg_7:7, dmg_9:9 };
+ let dmgReduction = 0;
  campaignBuffs.forEach(id => {
   if (buffHpMap[id]) hp += buffHpMap[id];
   if (buffDmgMap[id]) touchDmg += buffDmgMap[id];
@@ -1584,6 +1630,9 @@ function updateCampaignStats() {
   if (id === 'cd_5') cdMult *= 0.95;
   if (id === 'cd_10') cdMult *= 0.90;
   if (id === 'cd_15') cdMult *= 0.85;
+  if (id === 'dr_5') dmgReduction += 0.05;
+  if (id === 'dr_7') dmgReduction += 0.07;
+  if (id === 'dr_9') dmgReduction += 0.09;
   if (id === 'choco_pie') hp += 20;
  });
 
@@ -1603,6 +1652,7 @@ function updateCampaignStats() {
 
  const cdPct = _rnd((1 - cdMult) * 100);
  const dodgePct = _rnd(dodgeChance * 100);
+ const drPct = _rnd(dmgReduction * 100);
 
  el.innerHTML = `
   <div style="background:#0f0f2a;border-radius:10px;padding:12px;margin-bottom:12px">
@@ -1616,6 +1666,8 @@ function updateCampaignStats() {
     <div style="color:#74c0fc;font-weight:700">${cdPct > 0 ? `-${cdPct}%` : '기본 (100%)'}</div>
     <div style="color:#888">💨 회피</div>
     <div style="color:#a9e34b;font-weight:700">${dodgePct > 0 ? `${dodgePct}%` : '없음'}</div>
+    <div style="color:#888">🛡️ 피해 감소</div>
+    <div style="color:#63e6be;font-weight:700">${drPct > 0 ? `-${drPct}%` : '없음'}</div>
    </div>
   </div>
   ${gotSpecial.length > 0 ? `
@@ -1627,6 +1679,40 @@ function updateCampaignStats() {
   </div>` : `<div style="color:#555;font-size:13px;text-align:center;padding:8px">특수 강화 없음</div>`}
   ${campaignBuffs.length === 0 ? '<div style="color:#555;font-size:12px;text-align:center;margin-top:8px">강화 없음</div>' : ''}
  `;
+}
+
+function openForgeFd(forgeId) {
+ if ((window._clearedStages||[]).includes(forgeId)) { alert('이미 강화를 완료했습니다!'); return; }
+ window._currentForgeId = forgeId;
+ const modal = document.getElementById('forgeModal');
+ const optionsEl = document.getElementById('forgeOptions');
+ if (!modal || !optionsEl) return;
+ optionsEl.innerHTML = '';
+ // 일반+고급+특수 모두에서 3개 뽑기
+ const allOpts = [...FORGE_NORMAL, ...FORGE_SPECIAL].filter(o => !campaignBuffs.includes(o.id));
+ const pool = allOpts.sort(() => _r()-0.5).slice(0, 3);
+ pool.forEach(opt => {
+  const isSpecial = opt.type === 'special';
+  const btn = document.createElement('button');
+  btn.className = 'btn';
+  btn.style.cssText = `display:flex;align-items:center;gap:10px;text-align:left;padding:12px 16px;border:2px solid ${isSpecial?'#cc00aa':'#ff2244'};background:rgba(${isSpecial?'204,0,170':'255,34,68'},0.1)`;
+  btn.innerHTML = `<span style="font-size:24px">${opt.icon}</span><span><b style="color:${isSpecial?'#ffaaee':'#ff88aa'}">${opt.label}</b><br><span style="font-size:11px;color:#aaa">${opt.desc}</span></span>`;
+  btn.onclick = () => {
+   campaignBuffs.push(opt.id);
+   updateCampaignStats();
+   window._clearedStages = window._clearedStages || [];
+   window._clearedStages.push(forgeId);
+   markStageCleared(forgeId);
+   // 다음 강화칸 해금
+   const next = forgeId === 'forge-fd1' ? 'forge-fd2' : forgeId === 'forge-fd2' ? 'forge-fd3' : null;
+   if (next) setTimeout(() => unlockStage(next), 300);
+   else setTimeout(() => unlockStage('final-disaster'), 300);
+   saveCampaignProgress();
+   modal.style.display = 'none';
+  };
+  optionsEl.appendChild(btn);
+ });
+ modal.style.display = 'flex';
 }
 
 function openForgeSp(forgeId) {
@@ -1794,7 +1880,7 @@ function closeForge() {
 
 function applyCampaignBuffs(fighter) {
  if (!fighter || !campaignBuffs.length) return;
- const _BUFF_MAP = { hp_10: f => { f.hp += 10; f.maxHp += 10; }, hp_20: f => { f.hp += 20; f.maxHp += 20; }, hp_30: f => { f.hp += 30; f.maxHp += 30; }, choco_pie: f => { f.hp += 20; f.maxHp += 20; }, dmg_5: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 5 }; }, dmg_7: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 7 }; }, dmg_9: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 9 }; }, dodge_3: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.03; }, dodge_5: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.05; }, dodge_7: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.07; }, cd_5: f => { f._cdReduction = (f._cdReduction || 1) * 0.95; }, cd_10: f => { f._cdReduction = (f._cdReduction || 1) * 0.90; }, cd_15: f => { f._cdReduction = (f._cdReduction || 1) * 0.85; }, vampire: f => { f._campaignVampire = true; }, satellite: f => { f._campaignSatellite = true; f._satAngle = 0; }, poison: f => { f._campaignPoison = true; }, goonmod: f => { f._campaignGoonmod = true; f._goonmodTimer = 3000; }, qty_over_quality: f => { f._qtyOverQuality = true; }, qty_over_quality_adv: f => { f._qtyOverQualityAdv = true; }, absolute_zero: f => { f._absoluteZero = true; }, goonmod_boost: f => { f._goonmodTimer = _mn(f._goonmodTimer || 3000, 1500); f._goonmodHalfCd = true; }, };
+ const _BUFF_MAP = { hp_10: f => { f.hp += 10; f.maxHp += 10; }, hp_20: f => { f.hp += 20; f.maxHp += 20; }, hp_30: f => { f.hp += 30; f.maxHp += 30; }, choco_pie: f => { f.hp += 20; f.maxHp += 20; }, dmg_5: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 5 }; }, dmg_7: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 7 }; }, dmg_9: f => { f.def = { ...f.def, touchDmg: f.def.touchDmg + 9 }; }, dodge_3: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.03; }, dodge_5: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.05; }, dodge_7: f => { f._dodgeChance = (f._dodgeChance || 0) + 0.07; }, cd_5: f => { f._cdReduction = (f._cdReduction || 1) * 0.95; }, cd_10: f => { f._cdReduction = (f._cdReduction || 1) * 0.90; }, cd_15: f => { f._cdReduction = (f._cdReduction || 1) * 0.85; }, dr_5: f => { f._dmgReduction = (f._dmgReduction || 0) + 0.05; }, dr_7: f => { f._dmgReduction = (f._dmgReduction || 0) + 0.07; }, dr_9: f => { f._dmgReduction = (f._dmgReduction || 0) + 0.09; }, vampire: f => { f._campaignVampire = true; }, satellite: f => { f._campaignSatellite = true; f._satAngle = 0; }, poison: f => { f._campaignPoison = true; }, goonmod: f => { f._campaignGoonmod = true; f._goonmodTimer = 3000; }, qty_over_quality: f => { f._qtyOverQuality = true; }, qty_over_quality_adv: f => { f._qtyOverQualityAdv = true; }, absolute_zero: f => { f._absoluteZero = true; }, goonmod_boost: f => { f._goonmodTimer = _mn(f._goonmodTimer || 3000, 1500); f._goonmodHalfCd = true; }, };
  campaignBuffs.forEach(buffId => {
   const fn = _BUFF_MAP[buffId];
   if (fn) fn(fighter);
@@ -1886,6 +1972,38 @@ async function loadBugReports() {
    </div>`;
   }).join('');
  } catch(e) { listEl.innerHTML = '<div style="color:#f66;text-align:center;padding:20px;font-size:13px">불러오기 실패</div>'; }
+}
+
+// ── 명예의 전당 ──
+async function updateHallOfFame() {
+ const listEl = document.getElementById('hallOfFameList');
+ if (!listEl) return;
+ try {
+  const r = await fetch(`${SB_URL}/rest/v1/users?select=nickname,campaign_progress&order=nickname.asc&limit=100`, { headers: SB_HEADERS });
+  const rows = await r.json();
+  const entries = [];
+  rows.forEach(row => {
+   if (!row.campaign_progress) return;
+   try {
+    const prog = JSON.parse(row.campaign_progress);
+    const cs = prog.clearedStages || [];
+    if (!cs.includes('final-disaster')) return;
+    // 클리어한 캐릭터 목록 (campaign_cleared or 마지막 클리어 캐릭터)
+    const charId = prog.charId;
+    entries.push({ nickname: row.nickname, charId });
+   } catch(e) {}
+  });
+  if (!entries.length) { listEl.innerHTML = '<div style="color:#555;font-size:11px;text-align:center">기록 없음</div>'; return; }
+  listEl.innerHTML = entries.map((e, i) => {
+   const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
+   const def = CHARACTER_DEFS.find(d => d.id === e.charId);
+   const charTag = def ? `<span style="background:${def.color};border-radius:50%;padding:1px 6px;font-size:9px;color:#fff">${def.name}</span>` : '';
+   return `<div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:6px;border-left:3px solid #f5c518">
+    <div style="font-size:11px;color:#f5c518;font-weight:700">${medal} ${e.nickname}</div>
+    <div style="margin-top:3px">${charTag}</div>
+   </div>`;
+  }).join('');
+ } catch(e) { listEl.innerHTML = '<div style="color:#f66;font-size:11px;text-align:center">불러오기 실패</div>'; }
 }
 
 let _deleteTargetKey = null;
@@ -3089,7 +3207,17 @@ function checkHiddenCode(val) {
  'hansehwan': 'sehwan',
  'gold1iron': 'geumilcheol',
  'carbro': 'hyungjun',
+ '1gunright': 'hangeonwoo',
  };
+ if (code === 'givemesomecoin') {
+  gachaCoins += 1000;
+  saveGachaData();
+  updateGachaCoinDisplay();
+  if (msg) { msg.textContent = '💰 +1000 코인!'; msg.style.color = '#f5c518'; }
+  const inp = document.getElementById('hiddenCodeInput');
+  if (inp) setTimeout(() => { inp.value = ''; if (msg) msg.textContent = ''; }, 1500);
+  return;
+ }
  if (hiddenCodes[code]) {
  const charId = hiddenCodes[code];
  if (!unlockedHidden.has(charId)) {
@@ -3532,7 +3660,7 @@ function startBattle() {
  const greenHairs = [];
 
  const dmgDealt = new Array(fighters.length).fill(0);
- gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], waterDrops: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], hangeonwooBalls: [], cones: [], potatoMines: [], mosquitoes: [], shake: 0, over: false, winner: null };
+ gameState = { fighters, notes, particles, walls, gears, soundwaves, saywords, gases, hairs, greenHairs, totalHairCollected: 0, dmgTexts: [], dmgDealt, turrets, sunflowers, bombs, mopWaters, syringes, gundamParts, sehwanRoom: false, sehwanRoomX: null, sehwanRoomY: null, sehwanRoomR: null, geumBullets: [], geumFireZones: [], robots: [], robotBullets: [], netWaves: [], jumiFlasks: [], goonBalls: [], woojinBalls: [], fishBullets: [], waterDrops: [], trumpets: [], cheolhaengNotes: [], laptops: [], glassShards: [], hangeonwooBalls: [], cones: [], potatoMines: [], mosquitoes: [], omeTVs: [], phoneBullets: [], shake: 0, over: false, winner: null };
 
  if (window._campaignMode && campaignChar) {
  const playerFighter = fighters.find(f => f.def.id === campaignChar.id);
@@ -3629,6 +3757,19 @@ function startBattle() {
   }
   if (eb.boss3Mode) {
   enemyFighter._boss3Mode = true;
+  }
+  if (eb.startGundamTransformed && enemyFighter.def.id === 'dogyungyun') {
+  enemyFighter.gundamTransformed = true;
+  enemyFighter.gundamTransformAnim = false;
+  enemyFighter.gundamOrbitParts = [];
+  enemyFighter.awakeningActive = false;
+  enemyFighter.def = { ...enemyFighter.def, name: '건담경윤', color: '#cc0000',
+   touchDmg: 18,
+   skill: { cooldown: 1000, label: '검 휘두르기', barColor: '#cc0000' } };
+  enemyFighter.r = 36;
+  enemyFighter.speedMult = (enemyFighter.speedMult || 1) * 1.5;
+  enemyFighter.gundamSwordTimer = 0;
+  if (gameState && gameState.gundamParts) gameState.gundamParts.forEach(p => p.collected = true);
   }
   if (eb.multiverseMode) {
   enemyFighter._multiverseMode = true;
@@ -6031,9 +6172,11 @@ function update(dt) {
   if (sw.isSehwanShock && !f.sehwanInRoom) return;
   if (f.hp <= 0) return;
   const dist = _hp(f.x - sw.x, f.y - sw.y);
-  if (dist < sw.r + f.r && dist > sw.r - 10) {
+  const swHitR = sw._isAang ? 120 : sw.r;
+  if (dist < swHitR + f.r && dist > swHitR - 10) {
   f.lastDmgFrom = sw.owner >= 0 ? sw.owner : -1;
   applyDmg(f, sw.dmg);
+  if (sw.knockback > 0) {
   const dx = f.x - sw.x, dy = f.y - sw.y;
   const len = _hp(dx, dy) || 1;
   f.vx = (dx / len) * sw.knockback;
@@ -6041,6 +6184,7 @@ function update(dt) {
   f.knockback = true;
   f.wallDmgTimer = sw.wallDmgTimer;
   f.wallDmgHits = 0;
+  }
   sw.hit.add(idx);
   }
  });
@@ -6780,6 +6924,205 @@ function update(dt) {
   }
  }
 
+ // ── 김진수 핸드폰 스킬3 쿨타임 ──
+ fighters.forEach((f, fi) => {
+  if (f.def.id !== 'kimjinsu' || f.hp <= 0 || f.sleepTimer >= 0 || f.isHyunLifted || !f.def.skill3) return;
+  if (f._phoneSk3Cd === undefined) f._phoneSk3Cd = f.def.skill3.cooldown;
+  f._phoneSk3Cd = _mx(0, f._phoneSk3Cd - dt);
+  if (f._phoneSk3Cd <= 0 && !f._phoneActive) {
+   f._phoneSk3Cd = f.def.skill3.cooldown;
+   f._phoneActive = true;
+   const tgts = fighters.filter((ft,i) => i !== fi && ft.hp > 0);
+   if (!tgts.length) { f._phoneActive = false; return; }
+   const tgt = tgts.reduce((a,b) => _hp(a.x-f.x,a.y-f.y)<_hp(b.x-f.x,b.y-f.y)?a:b);
+   // phase0: 최대한 멀리 도망 (반대 방향으로 순간이동)
+   const awayAng = _a2(f.y - tgt.y, f.x - tgt.x);
+   const runDist = 180;
+   let runX = _mx(f.r, _mn(W - f.r, f.x + _co(awayAng) * runDist));
+   let runY = _mx(f.r, _mn(H - f.r, f.y + _si(awayAng) * runDist));
+   f.x = runX; f.y = runY;
+   f.vx = 0; f.vy = 0;
+   f._phonePhase = 1;
+   f._phoneTimer = 1000;
+   f._phoneTgtIdx = fighters.indexOf(tgt);
+   _dt(f.x, f.y - f.r - 14, '📱 핸드폰 가져오는중...', 1100, -0.2, '#00bcd4', 12);
+   _sp(f.x, f.y, '#00bcd4', 8);
+  }
+  // phase1: 정지 대기
+  if (f._phonePhase === 1) {
+   f.vx = 0; f.vy = 0;
+   f._phoneTimer -= dt;
+   if (f._phoneTimer <= 0) {
+    f._phonePhase = 2;
+    // phase2: 적에게 돌진
+    const tgt = fighters[f._phoneTgtIdx];
+    if (!tgt || tgt.hp <= 0) { f._phoneActive = false; f._phonePhase = 0; return; }
+    const ang = _a2(tgt.y - f.y, tgt.x - f.x);
+    const spd = 22;
+    f.vx = _co(ang) * spd;
+    f.vy = _si(ang) * spd;
+    f.knockback = true;
+    // 핸드폰 29개 사방으로 뿌림
+    for (let p = 0; p < 29; p++) {
+     const pAng = (p / 29) * _PI2;
+     if (!gameState.phoneBullets) gameState.phoneBullets = [];
+     gameState.phoneBullets.push({
+      x: f.x, y: f.y,
+      vx: _co(pAng) * 11, vy: _si(pAng) * 11,
+      ownerId: fi, r: 9, life: 2200,
+      hitIds: new Set(),
+     });
+    }
+    _dt(f.x, f.y - f.r - 14, '📱×29', 900, -0.5, '#00bcd4', 15);
+    _sp(f.x, f.y, '#00bcd4', 12);
+    f._phoneActive = false;
+    f._phonePhase = 0;
+   }
+  }
+ });
+
+ // ── 김진수 핸드폰 탄환 업데이트 ──
+ if (gameState.phoneBullets) {
+  for (let i = gameState.phoneBullets.length - 1; i >= 0; i--) {
+   const pb = gameState.phoneBullets[i];
+   pb.x += pb.vx * timeScale;
+   pb.y += pb.vy * timeScale;
+   pb.life -= dt;
+   // 벽에 닿으면 소멸
+   if (pb.x < pb.r || pb.x > W - pb.r || pb.y < pb.r || pb.y > H - pb.r) {
+    gameState.phoneBullets.splice(i, 1); continue;
+   }
+   if (pb.life <= 0) { gameState.phoneBullets.splice(i, 1); continue; }
+   // 관통 피격
+   fighters.forEach((ft, fi) => {
+    if (fi === pb.ownerId || ft.hp <= 0 || pb.hitIds.has(fi)) return;
+    if (_hp(ft.x - pb.x, ft.y - pb.y) < ft.r + pb.r) {
+     ft.lastDmgFrom = pb.ownerId;
+     applyDmg(ft, 1, fighters[pb.ownerId]);
+     pb.hitIds.add(fi);
+     _dt(ft.x, ft.y - ft.r - 8, '📱 1', 600, -0.4, '#00bcd4', 10);
+    }
+   });
+  }
+ }
+
+ // ── 김진수 오메티비 스킬2 쿨타임 ──
+ fighters.forEach((f, fi) => {
+  if (f.def.id !== 'kimjinsu' || f.hp <= 0 || f.sleepTimer >= 0 || f.isHyunLifted || !f.def.skill2) return;
+  if (f._omeTVCd === undefined) f._omeTVCd = f.def.skill2.cooldown;
+  f._omeTVCd = _mx(0, f._omeTVCd - dt);
+  if (f._omeTVCd <= 0 && !f._omeTVActive) {
+   f._omeTVCd = f.def.skill2.cooldown;
+   f._omeTVActive = true;
+   const tgts = fighters.filter((ft,i) => i !== fi && ft.hp > 0);
+   if (!tgts.length) { f._omeTVActive = false; return; }
+   const tgt = tgts.reduce((a,b) => _hp(a.x-f.x,a.y-f.y)<_hp(b.x-f.x,b.y-f.y)?a:b);
+   const tgtIdx = fighters.indexOf(tgt);
+   // phase0: 연결중 1초
+   _dt(f.x, f.y - f.r - 14, '📺 연결중...', 1000, -0.3, '#7b1fa2', 13);
+   setTimeout(() => {
+    if (!gameState || gameState.over) { f._omeTVActive = false; return; }
+    // phase1: 티비 낙하 시작
+    if (!gameState.omeTVs) gameState.omeTVs = [];
+    gameState.omeTVs.push({
+     x: tgt.x, y: -40, targetY: tgt.y - tgt.r,
+     ownerId: fi, tgtIdx,
+     phase: 1, dmgCount: 0, dmgTimer: 0,
+     knockTimer: 0,
+    });
+    _dt(tgt.x, tgt.y - tgt.r - 20, '📺', 600, -0.3, '#7b1fa2', 20);
+   }, 1000);
+  }
+ });
+
+ // ── 김진수 오메티비 업데이트 ──
+ if (gameState.omeTVs) {
+  for (let i = gameState.omeTVs.length - 1; i >= 0; i--) {
+   const tv = gameState.omeTVs[i];
+   if (tv.phase === 1) {
+    // 낙하
+    tv.y += 12 * timeScale;
+    if (tv.y >= tv.targetY) {
+     tv.y = tv.targetY;
+     tv.phase = 2;
+     tv.dmgTimer = 0;
+     // 가둠
+     const tgt = fighters[tv.tgtIdx];
+     if (tgt && tgt.hp > 0) {
+      tgt._tvTrapped = true;
+      tgt.vx = 0; tgt.vy = 0;
+      _sp(tgt.x, tgt.y, '#7b1fa2', 10);
+      _dt(tgt.x, tgt.y - tgt.r - 10, '📺 갇힘!', 1000, -0.4, '#e040fb', 14);
+      gameState.shake = _mx(gameState.shake||0, 8);
+     }
+    }
+   } else if (tv.phase === 2) {
+    // 데미지 5번 - 사각형 범위 안 모두에게
+    tv.dmgTimer -= dt;
+    if (tv.dmgTimer <= 0 && tv.dmgCount < 5) {
+     tv.dmgTimer = 400;
+     fighters.forEach((ft, fi) => {
+      if (fi === tv.ownerId || ft.hp <= 0) return;
+      // 사각형 범위 체크 (±66 x, ±56 y)
+      if (_abs(ft.x - tv.x) < 66 + ft.r && _abs(ft.y - tv.y) < 56 + ft.r) {
+       ft.lastDmgFrom = tv.ownerId;
+       applyDmg(ft, 3, fighters[tv.ownerId]);
+       _dt(ft.x, ft.y - ft.r - 10, '📺 3', 700, -0.5, '#7b1fa2', 12);
+       ft.vx = 0; ft.vy = 0;
+      }
+     });
+     // 주 타겟은 항상 정지
+     const tgt = fighters[tv.tgtIdx];
+     if (tgt && tgt.hp > 0) { tgt.vx = 0; tgt.vy = 0; }
+     tv.dmgCount++;
+    }
+    if (tv.dmgCount >= 5) {
+     tv.phase = 3;
+     tv.knockTimer = 200;
+     const tgt = fighters[tv.tgtIdx];
+     if (tgt) tgt._tvTrapped = false;
+     // 반반 확률 성별 판정
+     tv._isMale = _r() < 0.5;
+    }
+   } else if (tv.phase === 3) {
+    // 부서지며 튕겨냄
+    tv.knockTimer -= dt;
+    if (tv.knockTimer <= 0) {
+     const tgt = fighters[tv.tgtIdx];
+     if (tgt && tgt.hp > 0) {
+      const ang = _r() * _PI2;
+      tgt.vx = _co(ang) * 22;
+      tgt.vy = _si(ang) * 22;
+      tgt.knockback = true;
+      _sp(tv.x, tv.y, '#7b1fa2', 14);
+      _dt(tgt.x, tgt.y, '💥', 800, -0.5, '#7b1fa2', 20);
+     }
+     // 성별 판정
+     const owner = fighters[tv.ownerId];
+     if (tv._isMale) {
+      if (tgt && tgt.hp > 0) {
+       tgt.lastDmgFrom = tv.ownerId;
+       applyDmg(tgt, 10, owner);
+       _dt(tv.x, tv.targetY - 70, '남자!! 💥+10', 1500, -0.4, '#4488ff', 17);
+      }
+     } else {
+      if (owner && owner.def.id === 'kimjinsu') {
+       owner.hp = _mn(owner.maxHp, owner.hp + 10);
+       _dt(owner.x, owner.y - owner.r - 18, '여자!! ❤️+10', 1500, -0.4, '#ff88bb', 17);
+       _sp(owner.x, owner.y, '#ff88bb', 8);
+      }
+     }
+     const f2 = fighters[tv.ownerId];
+     if (f2) f2._omeTVActive = false;
+     gameState.omeTVs.splice(i, 1);
+    }
+   }
+  }
+ }
+
+ // ── TV에 갇힌 이동 차단 ──
+ fighters.forEach(f => { if (f._tvTrapped) { f.vx = 0; f.vy = 0; } });
+
  // ── 한건우T 타원의방정식 공 ──
  if (gameState.hangeonwooBalls) {
   for (let i = gameState.hangeonwooBalls.length - 1; i >= 0; i--) {
@@ -6811,26 +7154,26 @@ function update(dt) {
     // 적 충돌
     fighters.forEach((ft, fi) => {
      if (fi === hb.ownerId || ft.hp <= 0 || hb.phase !== 1) return;
-     if (_hp(ft.x - hb.x, ft.y - hb.y) < ft.r + 12) { exploded = true; hb._hitX = hb.x; hb._hitY = hb.y; }
+     if (_hp(ft.x - hb.x, ft.y - hb.y) < ft.r + 18) { exploded = true; hb._hitX = hb.x; hb._hitY = hb.y; }
     });
     // 벽 충돌
     if (hb.x < 0 || hb.x > W || hb.y < 0 || hb.y > H) { exploded = true; hb._hitX = _mx(0,_mn(W,hb.x)); hb._hitY = _mx(0,_mn(H,hb.y)); }
     if (exploded) {
      hb.phase = 2;
      const ex = hb._hitX || hb.x, ey = hb._hitY || hb.y;
-     // 범위 15 폭발 데미지
+     // 폭발 데미지
      fighters.forEach((ft, fi) => {
       if (fi === hb.ownerId || ft.hp <= 0) return;
-      if (_hp(ft.x - ex, ft.y - ey) < ft.r + 45) {
+      if (_hp(ft.x - ex, ft.y - ey) < ft.r + 65) {
        ft.lastDmgFrom = hb.ownerId;
        applyDmg(ft, 15, fighters[hb.ownerId]);
        _dt(ft.x, ft.y - ft.r - 10, '🔥 15', 900, -0.5, '#e86020', 13);
       }
      });
-     _sp(ex, ey, '#e86020', 12);
-     gameState.shake = _mx(gameState.shake || 0, 8);
+     _sp(ex, ey, '#e86020', 14);
+     gameState.shake = _mx(gameState.shake || 0, 10);
      // 장판 생성 (3초)
-     gameState.gases.push({ x: ex, y: ey, r: 45, life: 3000, maxLife: 3000, ownerId: hb.ownerId, hitCooldown: 0, _hangeonZone: true });
+     gameState.gases.push({ x: ex, y: ey, r: 65, life: 3000, maxLife: 3000, ownerId: hb.ownerId, hitCooldown: 0, _hangeonZone: true });
      gameState.hangeonwooBalls.splice(i, 1);
     }
    }
@@ -7043,7 +7386,7 @@ function _sangjinStartCar(f, fi) {
     }
     // 물방울 6개 사방으로 (별도 배열)
     for (let w = 0; w < 6; w++) {
-     const wa = _r() * _PI2;
+     const wa = (w / 6) * _PI2;
      gameState.waterDrops.push({
       x: fb.x, y: fb.y,
       vx: _co(wa)*13, vy: _si(wa)*13,
@@ -7089,9 +7432,9 @@ function _sangjinStartCar(f, fi) {
     if (fi === wd.ownerId || ft.hp <= 0 || wd.hitIds.has(fi)) return;
     if (_hp(ft.x - wd.x, ft.y - wd.y) < ft.r + wd.r) {
      ft.lastDmgFrom = wd.ownerId;
-     applyDmg(ft, 10, fighters[wd.ownerId]);
+     applyDmg(ft, 4, fighters[wd.ownerId]);
      wd.hitIds.add(fi);
-     _dt(ft.x, ft.y - ft.r - 10, '💧 10', 800, -0.5, '#4a90d9', 12);
+     _dt(ft.x, ft.y - ft.r - 10, '💧 4', 800, -0.5, '#4a90d9', 12);
     }
    });
   }
@@ -7737,7 +8080,7 @@ function applyDmg(f, dmg, attacker) {
  const rootA = byungheonRoot(attacker);
  if (rootF && rootA && rootF === rootA) return;
  }
- if (f.def && f.def.id === 'giwon' && f.tidalActive) dmg *= 0.7;
+ if (f._dmgReduction) dmg *= (1 - _mn(0.8, f._dmgReduction)); // 최대 80% 감소 제한
  if (attacker && attacker._qtyOverQuality) dmg *= 0.8;
  else if (!attacker && f.lastDmgFrom >= 0 && gameState && gameState.fighters[f.lastDmgFrom] && gameState.fighters[f.lastDmgFrom]._qtyOverQuality) dmg *= 0.8;
  if (attacker && attacker._qtyOverQualityAdv) dmg *= 1.4;
@@ -7776,6 +8119,15 @@ function applyDmg(f, dmg, attacker) {
  const prevHp = f.hp;
  f.hp = _mx(0, f.hp - dmg);
  const actualDmg = prevHp - f.hp;
+ // 김진수 아앙 반격 파동
+ if (f.def && f.def.id === 'kimjinsu' && actualDmg > 0 && gameState && !gameState.over) {
+  const ownIdx = gameState.fighters.indexOf(f);
+  if (ownIdx >= 0) {
+   const aangDmg = _mx(1, _rnd(actualDmg * 0.2));
+   gameState.soundwaves.push({ x: f.x, y: f.y, r: f.r, speed: 14, life: 900, dmg: aangDmg, knockback: 0, wallDmgTimer: 0, owner: ownIdx, hit: new Set(), _isAang: true });
+   _dt(f.x, f.y - f.r - 12, '아앙❤️', 900, -0.4, '#e040fb', 13);
+  }
+ }
  if (actualDmg > 0 && f.def && f.def.id === 'hyungjun' && f._hackActive) {
  f._hackActive = false;
  f._hackTarget = null;
@@ -7926,6 +8278,23 @@ function activateSkill(fighter, idx, _enemyIgnored) {
  const aliveTargets = gameState.fighters.filter((_,i)=>i!==idx&&gameState.fighters[i].hp>0);
  if (aliveTargets.length === 0) return;
  const enemy = aliveTargets.reduce((a,b)=>_hp(a.x-fighter.x,a.y-fighter.y)<_hp(b.x-fighter.x,b.y-fighter.y)?a:b);
+ // ── 유채완 머리털기: 8방향 머리카락 발사 ──
+ if (fighter.def.id === 'chaewan') {
+  _dt(fighter.x, fighter.y - fighter.r - 14, '머리털기!', 900, -0.5, '#8b4513', 14);
+  _sp(fighter.x, fighter.y, '#8b4513', 10);
+  const spread = 60;
+  for (let d = 0; d < 8; d++) {
+   const ang = (d / 8) * _PI2;
+   const dist = 30 + _r() * spread;
+   gameState.hairs.push({
+    x: _mx(6, _mn(W-6, fighter.x + _co(ang) * dist)),
+    y: _mx(6, _mn(H-6, fighter.y + _si(ang) * dist)),
+    ownerId: idx,
+    r: 6,
+   });
+  }
+  return;
+ }
  if (fighter.def.id === 'woojin') {
   // 투구 발사
   const tgt = enemy;
@@ -9124,6 +9493,7 @@ function render(ctx) {
  });
 
  gameState.soundwaves.forEach(sw => {
+ if (sw._isAang || sw._isPurinaWave) return; // 별도 렌더링
  const maxLife = sw.isHairExplosion ? 400 : 800;
  const alpha = (sw.life / maxLife) * (sw.isHairExplosion ? 0.8 : 0.5);
  ctx.globalAlpha=alpha;
@@ -9133,6 +9503,23 @@ function render(ctx) {
  ctx.arc(sw.x, sw.y, sw.r, 0, _PI2);
  ctx.stroke();
  ctx.globalAlpha=1;
+ });
+ // 아앙 파동 렌더링
+ (gameState.soundwaves || []).forEach(sw => {
+ if (!sw._isAang) return;
+ const prog = 1 - sw.life / 900;
+ const alpha = sw.life / 900 * 0.7;
+ ctx.save();
+ ctx.globalAlpha = alpha;
+ ctx.strokeStyle = '#e040fb';
+ ctx.lineWidth = 3;
+ ctx.beginPath();
+ ctx.arc(sw.x, sw.y, 20 + prog * 120, 0, _PI2);
+ ctx.stroke();
+ ctx.globalAlpha = alpha * 0.2;
+ ctx.fillStyle = '#e040fb';
+ ctx.fill();
+ ctx.restore();
  });
 
  gameState.hairs.forEach(h => {
@@ -10135,6 +10522,45 @@ function render(ctx) {
   ctx.restore();
  });
 
+ // ── 김진수 핸드폰 탄환 렌더링 ──
+ (gameState.phoneBullets || []).forEach(pb => {
+  ctx.save();
+  ctx.globalAlpha = _mx(0.3, pb.life / 2200);
+  ctx.font = 'bold 14px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('📱', pb.x, pb.y);
+  ctx.restore();
+ });
+
+ // ── 김진수 오메티비 렌더링 ──
+ (gameState.omeTVs || []).forEach(tv => {
+  ctx.save();
+  // 낙하 중 예고 그림자
+  if (tv.phase === 1) {
+   ctx.globalAlpha = 0.3;
+   ctx.fillStyle = '#7b1fa2';
+   ctx.beginPath();
+   ctx.ellipse(tv.x, tv.targetY + 10, 60, 16, 0, 0, _PI2);
+   ctx.fill();
+  }
+  // 티비 아이콘
+  ctx.globalAlpha = tv.phase === 3 ? 0.4 : 1;
+  ctx.font = `bold ${tv.phase === 2 ? 96 : 80}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('📺', tv.x, tv.y);
+  // phase2: 갇힘 테두리
+  if (tv.phase === 2) {
+   const pulse = 0.5 + 0.3 * _si(Date.now() / 150);
+   ctx.globalAlpha = pulse;
+   ctx.strokeStyle = '#e040fb';
+   ctx.lineWidth = 4;
+   ctx.strokeRect(tv.x - 66, tv.y - 56, 132, 110);
+  }
+  ctx.restore();
+ });
+
  // ── 정승빈 감자지뢰 렌더링 ──
  (gameState.potatoMines || []).forEach(pm => {
   ctx.save();
@@ -10181,8 +10607,8 @@ function render(ctx) {
   ctx.globalAlpha = 1;
   const pulse = 0.8 + 0.2 * _si(Date.now() / 80);
   ctx.beginPath();
-  ctx.arc(hb.x, hb.y, 12 * pulse, 0, _PI2);
-  const grad = ctx.createRadialGradient(hb.x, hb.y, 0, hb.x, hb.y, 12 * pulse);
+  ctx.arc(hb.x, hb.y, 20 * pulse, 0, _PI2);
+  const grad = ctx.createRadialGradient(hb.x, hb.y, 0, hb.x, hb.y, 20 * pulse);
   grad.addColorStop(0, '#fff8e0');
   grad.addColorStop(0.4, '#ff8020');
   grad.addColorStop(1, '#cc2000');
@@ -10406,6 +10832,12 @@ function buildBattleUI(fighters) {
   html += bar('sk', '#1a6b8a', '100%', '4px');
   html += lbl('sklbl', '#1a6b8a', '🐟 강꼬치고기');
   html += lbl('sangjin-car-' + pid, '#e87020', '대기 중');
+ } else if (id === 'kimjinsu') {
+  html += lbl('jinsu-aang', '#e040fb', '아앙❤️ — 피격 시 자동 발동');
+  html += bar('jinsu-sk2', '#7b1fa2', '100%', '4px');
+  html += lbl('jinsu-sk2lbl', '#7b1fa2', '📺 오메티비 ✦');
+  html += bar('jinsu-sk3', '#00bcd4', '100%', '4px');
+  html += lbl('jinsu-sk3lbl', '#00bcd4', '📱 핸드폰 ✦');
  } else if (id === 'hangeonwoo') {
   html += bar('sk', '#e86020', '100%', '4px');
   html += lbl('sklbl', '#e86020', '🔥 타원의방정식 ✦');
@@ -10599,6 +11031,17 @@ function updateBattleUI(fighters) {
   if (njEl) njEl.style.width = _mn(100, ((f.woojinNaijja||0)/10)*100) + '%';
   if (njLbl) njLbl.textContent = `나이짜! (${f.woojinNaijja||0}/10)${f.woojinFieldActive ? ' ✦ 회복 활성' : ''}`;
   if (flLbl) { flLbl.textContent = f.woojinFieldActive ? '⚡ 필드 발동!' : '필드 — 대기 중'; flLbl.style.color = f.woojinFieldActive ? '#c8a800' : '#555'; }
+ } else if (f.def.id === 'kimjinsu') {
+  const sk2El = document.getElementById('jinsu-sk2-' + pid);
+  const sk2Lbl = document.getElementById('jinsu-sk2lbl-' + pid);
+  const cd2 = f._omeTVCd !== undefined ? f._omeTVCd : 0;
+  if (sk2El) sk2El.style.width = cd2 <= 0 ? '100%' : _mx(0, 100 - (cd2/f.def.skill2.cooldown)*100) + '%';
+  if (sk2Lbl) sk2Lbl.textContent = f._omeTVActive ? '📺 오메티비 진행중!' : cd2 <= 0 ? '📺 오메티비 ✦' : `📺 오메티비 (${(cd2/1000).toFixed(1)}s)`;
+  const sk3El = document.getElementById('jinsu-sk3-' + pid);
+  const sk3Lbl = document.getElementById('jinsu-sk3lbl-' + pid);
+  const cd3 = f._phoneSk3Cd !== undefined ? f._phoneSk3Cd : 0;
+  if (sk3El) sk3El.style.width = cd3 <= 0 ? '100%' : _mx(0, 100 - (cd3/f.def.skill3.cooldown)*100) + '%';
+  if (sk3Lbl) sk3Lbl.textContent = cd3 <= 0 ? '📱 핸드폰 ✦' : `📱 핸드폰 (${(cd3/1000).toFixed(1)}s)`;
  } else if (f.def.id === 'hangeonwoo') {
   const sk1El = document.getElementById('sk-' + pid);
   const sk1Lbl = document.getElementById('sklbl-' + pid);
@@ -11144,7 +11587,7 @@ function endGame() {
    else unlocked.onclick = () => startCampaignStage(sid);
    }
   });
-  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse'].forEach(sid => {
+  ['forge-adv','2-1','2-2','2-3','2-4','2-5','2-6','forge4','2-7','2-8','2-9','boss2','church','toilet','3-1','3-2','forge5','3-3','3-4','3-5','forge-sp','3-6','3-7','3-8','3-9','forge6','boss3','multiverse','forge-fd1','forge-fd2','forge-fd3','final-disaster'].forEach(sid => {
    const locked = document.getElementById('stage-' + sid + '-locked');
    const unlocked = document.getElementById('stage-' + sid);
    if (locked) locked.style.display = 'none';
@@ -11163,7 +11606,7 @@ function endGame() {
   document.getElementById('btn-campaign-next').textContent = '맵으로 →';
   document.getElementById('btn-campaign-back').textContent = '메인으로';
   } else {
-  const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍', 'multiverse': '멀티버스의 구원자' };
+  const stageNames = { '1-1': '빛나는 악취', '1-2': '끊임없이 자라나는 머리털', '1-3': '사라지지 않는 소음', '1-4': '식물 재배장', '1-5': '잠자는 분노', '1-6': '무한 증식', '1-7': '고중력 지대', '1-8': '천조국의 선율', '1-9': '졸음과의 싸움', 'boss1': '거짓된 산성 확산자', '2-1': '느껴지는 시선', '2-2': '비트가 흐르는 비상구', '2-3': '어딘가 축축한 농구장', '2-4': '소음의 정점', '2-5': '황금비의 첫경험', '2-6': '기하학적 변화', '2-7': '참을수 없는 피곤함의 영역', '2-8': '재앙급 위기', '2-9': '보보보복사ㅅㅅㅅㅅ사사사', 'boss2': '모래폭풍이 휘날리는 지대', '3-1': '단순한 무작위성', '3-2': '최신 기술의 비린내', '3-3': '양면의 음악가들', '3-4': '머리카락 바다', '3-5': '사라지지 않는 물리현상', '3-6': '원칙주의의 대항마', '3-7': '다시 도래한 재앙', '3-8': '식물원', '3-9': '학업의 삼원색', 'boss3': '음악의 폭풍', 'multiverse': '멀티버스의 구원자', 'final-disaster': '마침내 도래한 재앙' };
   const isBossClear = window._campaignStage === 'boss1';
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
@@ -11261,7 +11704,6 @@ function endGame() {
      if (lk) lk.style.display = 'block';
     });
     const scroll = document.getElementById('campaignScroll');
-    if (scroll) scroll.scrollTo({ left: 9999, behavior: 'smooth' });
    }, 1500);
    }
    if (!unlockedHidden.has('jumi')) {
@@ -11323,7 +11765,22 @@ function endGame() {
    }
    const _nextMap = { '1-1':'1-2','1-2':'1-3','1-3':'forge','1-4':'1-5','1-5':'1-6','1-6':'forge2','1-7':'1-8','1-8':'1-9','1-9':'forge3','2-1':'2-2','2-2':'2-3','2-4':'2-5','2-5':'2-6','2-6':'forge4','2-7':'2-8','2-8':'2-9','2-9':'boss2','3-1':'3-2','3-2':'forge5','3-3':'3-4','3-4':'3-5','3-5':'forge-sp','3-6':'3-7','3-7':'3-8','3-8':'3-9','3-9':'forge6' };
    const _nextStage = _nextMap[window._campaignStage];
+   // final-disaster 클리어 시 명예의 전당 등록
+   if (window._campaignStage === 'final-disaster' && campaignChar) {
+    addCampaignClearChar(campaignChar.id);
+    document.getElementById('winnerName').textContent = '🏆 마침내 도래한 재앙 격파!';
+    document.getElementById('resultText').textContent = '명예의 전당에 등록되었습니다! +500🪙';
+    gachaCoins += 500; saveGachaData(); updateGachaCoinDisplay();
+    updateHallOfFame();
+   }
    if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
+   // 멀티버스 클리어 시 forge-fd1 해금
+   if (window._campaignStage === 'multiverse') {
+    setTimeout(() => { unlockStage('forge-fd1'); }, 700);
+    // 배경 빨갛게
+    window._campaignRedBg = true;
+    saveCampaignProgress();
+   }
    // 멀티버스 클리어 시 김태윤 해금 + 캠페인 자동 초기화
    if (window._campaignStage === 'multiverse') {
     if (!unlockedHidden.has('kimtaeyun')) {
@@ -11337,7 +11794,7 @@ function endGame() {
      }
      buildCharSelect();
     }
-    // 캠페인 자동 초기화 (3.5초 뒤)
+    // 캠페인 자동 초기화 (해금 연출 후 3초 뒤)
     setTimeout(() => {
      resetCampaign();
      showScreen('campaignMap');
@@ -11352,7 +11809,6 @@ function endGame() {
     if (ul) ul.style.display = 'block';
     });
     const scroll = document.getElementById('campaignScroll');
-    if (scroll) scroll.scrollTo({ left: 9999, behavior: 'smooth' });
    }, 400);
    }
   }
@@ -11407,12 +11863,18 @@ var _CAMPAIGN_NODES = [ { id:'forge0', x:60, y:110, label:'강화', type:'forge'
   { id:'3-9', x:7480, y:110, label:'학업의 삼원색', type:'ch3-dark' },
   { id:'forge6', x:7680, y:110, label:'강화', type:'forge' },
   { id:'boss3', x:7880, y:110, label:'음악의 폭풍', type:'boss3' },
-  { id:'multiverse', x:8180, y:110, label:'멀티버스의 구원자', type:'final-boss' },
+  { id:'multiverse', x:8200, y:110, label:'멀티버스의 구원자', type:'final-boss' },
+  { id:'forge-fd1', x:8480, y:110, label:'강화', type:'forge-fd' },
+  { id:'forge-fd2', x:8730, y:110, label:'강화', type:'forge-fd' },
+  { id:'forge-fd3', x:8980, y:110, label:'강화', type:'forge-fd' },
+  { id:'final-disaster', x:9260, y:110, label:'마침내 도래한 재앙', type:'final-disaster' },
 ];
 
 var _NODE_STYLE = { start: { bg:'#f5c518', border:'#c8a800', text:'#111', labelColor:'#fff', icon:null, size:64, borderW:4 }, ch1: { bg:'#4caf50', border:'#2d8a2d', text:'#fff', labelColor:'#fff', icon:null, size:62, borderW:4 }, ch2: { bg:'#4a7abf', border:'#2a5a9f', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, 'ch2-dark':{ bg:'#1a6b8a', border:'#0a4a6a', text:'#fff', labelColor:'#aaddff', icon:null, size:62, borderW:4 }, ch3: { bg:'#7b2fff', border:'#5a00cc', text:'#fff', labelColor:'#d4aaff', icon:null, size:62, borderW:4 }, 'ch3-dark':{ bg:'#4a0080', border:'#7b2fff', text:'#fff', labelColor:'#c084fc', icon:null, size:62, borderW:4 }, boss: { bg:'#8b0000', border:'#ff2222', text:'#ffcccc', labelColor:'#ff6666', icon:'💀', size:62, borderW:4 }, boss2: { bg:'#6b0000', border:'#ff6600', text:'#ffddaa', labelColor:'#ff8844', icon:'💀', size:64, borderW:4 }, boss3: { bg:'#4a0060', border:'#cc00ff', text:'#ffccff', labelColor:'#ee88ff', icon:'💀', size:64, borderW:4 },
  final: { bg:'linear-gradient(135deg,#1a1a2e,#16213e)', border:'#f5c518', text:'#f5c518', labelColor:'#f5c518', icon:'⭐', size:68, borderW:5 },
- 'final-boss': { bg:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', border:'#ff0080', text:'#fff', labelColor:'#ff88cc', icon:'🌌', size:72, borderW:5 }, forge: { bg:'linear-gradient(135deg,#ff8c00,#ffd700)', border:'#cc6600', text:null, labelColor:'#ffd700', icon:'🔨', size:62, borderW:4 }, 'forge-adv':{ bg:'linear-gradient(135deg,#7b2fff,#c084fc)', border:'#5a00cc', text:null, labelColor:'#c084fc', icon:'💎', size:62, borderW:4 }, 'forge-sp': { bg:'linear-gradient(135deg,#cc00aa,#ff44cc)', border:'#880077', text:null, labelColor:'#ffaaee', icon:'⚗️', size:62, borderW:4 }, church: { bg:'#f5e6c8', border:'#c8a840', text:null, labelColor:'#c8a840', icon:'⛪', size:56, borderW:4 }, toilet: { bg:'#e0eeee', border:'#7ab', text:null, labelColor:'#5aa', icon:'🚽', size:56, borderW:4 }, };
+ 'final-boss': { bg:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', border:'#ff0080', text:'#fff', labelColor:'#ff88cc', icon:'🌌', size:72, borderW:5 },
+ 'final-disaster': { bg:'linear-gradient(135deg,#1a0000,#3a0000,#600)', border:'#ff2200', text:'#fff', labelColor:'#ff6644', icon:'💀', size:76, borderW:6 },
+ 'forge-fd': { bg:'linear-gradient(135deg,#3a0010,#700030)', border:'#ff4488', text:'#ffaacc', labelColor:'#ff88bb', icon:'🔨', size:52, borderW:3 }, forge: { bg:'linear-gradient(135deg,#ff8c00,#ffd700)', border:'#cc6600', text:null, labelColor:'#ffd700', icon:'🔨', size:62, borderW:4 }, 'forge-adv':{ bg:'linear-gradient(135deg,#7b2fff,#c084fc)', border:'#5a00cc', text:null, labelColor:'#c084fc', icon:'💎', size:62, borderW:4 }, 'forge-sp': { bg:'linear-gradient(135deg,#cc00aa,#ff44cc)', border:'#880077', text:null, labelColor:'#ffaaee', icon:'⚗️', size:62, borderW:4 }, church: { bg:'#f5e6c8', border:'#c8a840', text:null, labelColor:'#c8a840', icon:'⛪', size:56, borderW:4 }, toilet: { bg:'#e0eeee', border:'#7ab', text:null, labelColor:'#5aa', icon:'🚽', size:56, borderW:4 }, };
 
 var _NODE_LOCK_STYLE = { default: { bg:'#aaa', border:'#888' }, ch2: { bg:'#7090bb', border:'#4a6a9f' }, };
 
@@ -11426,7 +11888,7 @@ function _buildCampaignNodes() {
   const s = _NODE_STYLE[node.type] || _NODE_STYLE.ch1;
   const lkStyle = node.type.startsWith('ch2') ? _NODE_LOCK_STYLE.ch2 : _NODE_LOCK_STYLE.default;
   const nodeW = (node.type === 'forge' || node.type === 'forge-adv' || node.type === 'church' || node.type === 'toilet') ? 70 : 90;
-  const lkIcon = (node.type === 'boss' || node.type === 'boss2' || node.type === 'boss3') ? '💀' : node.type === 'final-boss' ? '🌌' : node.type === 'final' ? '⭐' : (s.icon || '🔒');
+  const lkIcon = (node.type === 'boss' || node.type === 'boss2' || node.type === 'boss3') ? '💀' : node.type === 'final-disaster' ? '💀' : node.type === 'final-boss' ? '🌌' : node.type === 'final' ? '⭐' : (s.icon || '🔒');
   const lkIconSzPx = (node.type === 'church' || node.type === 'toilet') ? 52 : 58;
   const lkFontSz = (node.type.startsWith('ch2') || node.type === 'church' || node.type === 'toilet') ? 20 : 22;
   const lkLblColor = (node.type.startsWith('ch2') || node.type === 'church' || node.type === 'toilet') ? '#aaddff' : '#fff';
@@ -11470,10 +11932,11 @@ function _buildCampaignNodes() {
    const isBoss3 = node.type === 'boss3';
    const isFinal = node.type === 'final';
    const isFinalBoss = node.type === 'final-boss';
+   const isFinalDisaster = node.type === 'final-disaster';
    const isBoss  = node.type === 'boss' || isBoss2 || isBoss3;
-   const label   = isFinalBoss ? 'FINAL' : (isFinal ? 'STAGE' : (isBoss3 ? 'BOSS-3' : (isBoss2 ? 'BOSS-2' : (isBoss ? 'BOSS' : node.id))));
+   const label   = isFinalDisaster ? 'FINAL' : (isFinalBoss ? 'FINAL' : (isFinal ? 'STAGE' : (isBoss3 ? 'BOSS-3' : (isBoss2 ? 'BOSS-2' : (isBoss ? 'BOSS' : node.id)))));
    circDiv.style.fontWeight = '900';
-   circDiv.style.fontSize = (isFinalBoss ? 11 : isFinal ? 12 : isBoss2 || isBoss3 ? 12 : 15) + 'px';
+   circDiv.style.fontSize = (isFinalDisaster ? 10 : isFinalBoss ? 11 : isFinal ? 12 : isBoss2 || isBoss3 ? 12 : 15) + 'px';
    circDiv.style.color = s.text;
    circDiv.textContent = label;
   }
@@ -11489,6 +11952,7 @@ function _buildCampaignNodes() {
    if (n.type === 'forge')      actDiv.onclick = function() { openForge(n.id); };
    else if (n.type === 'forge-adv') actDiv.onclick = function() { openForgeAdv(); };
    else if (n.type === 'forge-sp')  actDiv.onclick = function() { openForgeSp(n.id); };
+   else if (n.type === 'forge-fd')  actDiv.onclick = function() { openForgeFd(n.id); };
    else if (n.type === 'church') actDiv.onclick = function() { enterChurch(); };
    else if (n.type === 'toilet') actDiv.onclick = function() { enterToilet(); };
    else actDiv.onclick = function() { startCampaignStage(n.id); };
@@ -11534,19 +11998,12 @@ function updateMustardDisplay() {
   const el = document.getElementById('mustardDisplay');
   if (!el) return;
   el.innerHTML = '';
-  const show = Math.min(mustardCount, 30);
-  for (let i = 0; i < show; i++) {
+  for (let i = 0; i < mustardCount; i++) {
     const t = document.createElement('span');
     t.textContent = '🟡';
     t.style.cssText = 'font-size:16px;line-height:1;animation:dropIn 0.3s ease both';
-    t.style.animationDelay = (i * 0.03) + 's';
+    t.style.animationDelay = (Math.min(i, 30) * 0.03) + 's';
     el.appendChild(t);
-  }
-  if (mustardCount > 30) {
-    const more = document.createElement('span');
-    more.textContent = `+${mustardCount - 30}`;
-    more.style.cssText = 'font-size:11px;color:#aaa;font-weight:700;align-self:center';
-    el.appendChild(more);
   }
 }
 
@@ -11609,9 +12066,8 @@ function _doGachaPull(pullCount) {
   const results = [];
   for (let i = 0; i < pullCount; i++) {
     const roll = _r();
-    if (roll < 0.20) {
+    if (roll < 0.10) {
       if (locked.length === 0) {
-        // 모두 보유 → 캐릭터 20% 자리를 겨자로 대체
         mustardCount++;
         results.push({ type: 'mustard' });
       } else {
@@ -11620,16 +12076,16 @@ function _doGachaPull(pullCount) {
         unlockedHidden.add(pick);
         results.push({ type: 'char', id: pick });
       }
-    } else if (roll < 0.21) {
+    } else if (roll < 0.11) {
       // 1% 휴지
       toiletPaperCount++;
       results.push({ type: 'toilet' });
-    } else if (roll < 0.51) {
+    } else if (roll < 0.41) {
       // 30% 겨자
       mustardCount++;
       results.push({ type: 'mustard' });
     } else {
-      // 49% 꽝
+      // 59% 꽝
       results.push({ type: 'miss' });
     }
   }
