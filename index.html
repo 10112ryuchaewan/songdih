@@ -11647,6 +11647,7 @@ function endGame() {
   window._campaignMode = false;
   const isBoss2ClearEarly = window._campaignStage === 'boss2';
   const isBoss3ClearEarly = window._campaignStage === 'boss3';
+  const isMultiverseClearEarly = window._campaignStage === 'multiverse';
   const playerWon = !!(campaignChar && (
    (winner && winner.def.id === campaignChar.id) ||
    fighters.every(f => f.def.id === campaignChar.id || f.isByungheonClone || f._isLaptop || f.hp <= 0)
@@ -11654,7 +11655,7 @@ function endGame() {
   const isDraw = draw;
   if (normalBtns) normalBtns.style.display = 'none';
   if (campaignBtns) campaignBtns.style.display = 'block';
-  if ((isDraw || !playerWon) && !isBoss2ClearEarly && !isBoss3ClearEarly) {
+  if ((isDraw || !playerWon) && !isBoss2ClearEarly && !isBoss3ClearEarly && !isMultiverseClearEarly) {
   document.getElementById('winnerName').textContent = '패배..';
   document.getElementById('resultText').textContent = '캠페인이 초기화됩니다.';
   document.getElementById('btn-campaign-next').style.display = 'none';
@@ -11699,7 +11700,7 @@ function endGame() {
    }
   });
   saveCampaignProgress();
-  } else if ((isDraw || !playerWon) && (isBoss2ClearEarly || isBoss3ClearEarly)) {
+  } else if ((isDraw || !playerWon) && (isBoss2ClearEarly || isBoss3ClearEarly || isMultiverseClearEarly)) {
   // boss2/boss3 패배 처리
   document.getElementById('winnerName').textContent = '패배..';
   document.getElementById('resultText').textContent = '다시 도전하세요!';
@@ -11711,6 +11712,7 @@ function endGame() {
   const isBossClear = window._campaignStage === 'boss1';
   const isBoss2Clear = window._campaignStage === 'boss2';
   const isBoss3Clear = window._campaignStage === 'boss3';
+  const isMultiverseClear = window._campaignStage === 'multiverse';
   // playerWon은 외부 스코프에서 이미 계산된 값 재사용
   if (isBoss3Clear && (playerWon || (winner && campaignChar && winner.def.id === campaignChar.id))) {
    document.getElementById('winnerName').textContent = '🏆 캠페인 완료!';
@@ -11774,6 +11776,36 @@ function endGame() {
    document.getElementById('resultText').textContent = '캠페인이 초기화됩니다.';
    document.getElementById('btn-campaign-next').style.display = 'none';
    document.getElementById('btn-campaign-back').textContent = '돌아가기';
+  } else if (isMultiverseClear && playerWon) {
+   document.getElementById('winnerName').textContent = '🌌 멀티버스 격파!';
+   document.getElementById('resultText').textContent = '김태윤 해금! +200🪙';
+   document.getElementById('btn-campaign-next').style.display = 'block';
+   document.getElementById('btn-campaign-next').textContent = '맵으로 →';
+   document.getElementById('btn-campaign-back').textContent = '메인으로';
+   window._clearedStages = window._clearedStages || [];
+   if (!window._clearedStages.includes('multiverse')) window._clearedStages.push('multiverse');
+   markStageCleared('multiverse');
+   gachaCoins += 200; saveGachaData(); updateGachaCoinDisplay();
+   window._campaignRedBg = true;
+   saveCampaignProgress();
+   setTimeout(() => unlockStage('forge-fd1'), 700);
+   if (!unlockedHidden.has('kimtaeyun')) {
+    unlockedHidden.add('kimtaeyun');
+    saveUnlockedHidden();
+    const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
+    if (def) {
+     window._pendingUnlockDef = def;
+     window._pendingUnlockSub = '💻 멀티버스 격파 보상!';
+     window._pendingUnlockColor = '#c0008a';
+    }
+    buildCharSelect();
+   }
+  } else if (isMultiverseClear) {
+   document.getElementById('winnerName').textContent = '패배..';
+   document.getElementById('resultText').textContent = '다시 도전하세요!';
+   document.getElementById('btn-campaign-next').style.display = 'block';
+   document.getElementById('btn-campaign-next').textContent = '맵으로 →';
+   document.getElementById('btn-campaign-back').textContent = '메인으로';
   } else if (isBossClear) {
    document.getElementById('resultText').textContent = (campaignChar ? campaignChar.name + '(으)로 클리어! ' : '') + '2스테이지 개방!';
    document.getElementById('btn-campaign-next').style.display = 'block';
@@ -11854,7 +11886,7 @@ function endGame() {
   }
   window._lastClearedStage = window._campaignStage;
   window._campaignJustWon = true;
-  if (!isBossClear && !isBoss2Clear && !isBoss3Clear) {
+  if (!isBossClear && !isBoss2Clear && !isBoss3Clear && !isMultiverseClear) {
    window._clearedStages = window._clearedStages || [];
    if (!window._clearedStages.includes(window._campaignStage)) {
    window._clearedStages.push(window._campaignStage);
@@ -11875,32 +11907,7 @@ function endGame() {
     updateHallOfFame();
    }
    if (_nextStage) setTimeout(() => unlockStage(_nextStage), 300);
-   // 멀티버스 클리어 시 forge-fd1 해금
-   if (window._campaignStage === 'multiverse') {
-    setTimeout(() => { unlockStage('forge-fd1'); }, 700);
-    // 배경 빨갛게
-    window._campaignRedBg = true;
-    saveCampaignProgress();
-   }
-   // 멀티버스 클리어 시 김태윤 해금 + 캠페인 자동 초기화
-   if (window._campaignStage === 'multiverse') {
-    if (!unlockedHidden.has('kimtaeyun')) {
-     unlockedHidden.add('kimtaeyun');
-     saveUnlockedHidden();
-     const def = CHARACTER_DEFS.find(d => d.id === 'kimtaeyun');
-     if (def) {
-      window._pendingUnlockDef = def;
-      window._pendingUnlockSub = '💻 멀티버스의 구원자 격파 보상!';
-      window._pendingUnlockColor = '#c0008a';
-     }
-     buildCharSelect();
-    }
-    // 캠페인 자동 초기화 (해금 연출 후 3초 뒤)
-    setTimeout(() => {
-     resetCampaign();
-     showScreen('campaignMap');
-    }, 3500);
-   }
+   // 멀티버스 클리어 시 forge-fd1 해금 (isMultiverseClear 블록에서 처리)
    if (window._campaignStage === '2-3') {
    setTimeout(() => {
     ['church','toilet'].forEach(id => {
